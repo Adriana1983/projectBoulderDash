@@ -35,6 +35,8 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll.meta
+Assets/Plugins/Editor/JetBrains.meta
 .idea/.idea.projectBoulderDash/riderModule.iml
 .idea/.idea.projectBoulderDash/.idea/workspace.xml
 .idea/.idea.projectBoulderDash/.idea/vcs.xml
@@ -43,5 +45,3 @@ sysinfo.txt
 .idea/.idea.projectBoulderDash/.idea/indexLayout.xml
 .idea/.idea.projectBoulderDash/.idea/encodings.xml
 .idea/.idea.projectBoulderDash/.idea/contentModel.xml
-Assets/Plugins/Editor/JetBrains.meta
-Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll.meta
