@@ -132,9 +132,9 @@ GameObject:
   - component: {fileID: 1722001165}
   - component: {fileID: 1722001164}
   - component: {fileID: 1722001163}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Main Camera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -155,6 +155,9 @@ MonoBehaviour:
   mainCamera: {fileID: 1722001166}
   offset: {x: 0, y: 0, z: 0}
   dampTime: 0.15
+  bounds: 0
+  minCamPos: {x: 0, y: 0, z: 0}
+  maxCamPos: {x: 0, y: 0, z: 0}
 --- !u!81 &1722001164
 AudioListener:
   m_ObjectHideFlags: 0
@@ -5490,11 +5493,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2061714724}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49ab57a9ac923cf40934bdad5647a4d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 32bfdc94ad694f09973c816530468422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  goalvecter: {x: 0, y: 0}
+  hitDirection: 
+  inputGot: 
+  isHit: 0
+  moveDirection: 
+  lastPos: {x: 0, y: 0, z: 0}
+  targetPos: {x: 0, y: 0, z: 0}
+  mustMove: 0
+  isMoving: 0
+  player: {fileID: 2061714726}
 --- !u!50 &2061714726
 Rigidbody2D:
   serializedVersion: 4
@@ -5573,7 +5584,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2061714724}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
+  m_LocalPosition: {x: 10.5, y: 7.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
