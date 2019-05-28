@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Camera
+  - CameraBounds
+  - Bounds
+  - Dirt
+  - Rock
   layers:
   - Default
   - TransparentFX
@@ -15,8 +19,8 @@ TagManager:
   - 
   - 
   - Camera Bounds
-  - 
-  - 
+  - Rock
+  - Ground
   - 
   - 
   - 
