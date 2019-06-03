@@ -18,6 +18,10 @@ namespace Behaviour.Player
         public Vector3 targetPos;
         public bool mustMove;
         public bool isMoving;
+        public bool isRight;
+        public bool isIdle;
+        public Animator animator;
+        public float time;
 
         private void Start()
         {
@@ -47,10 +51,11 @@ namespace Behaviour.Player
             if (Input.GetKey(KeyCode.A) && !isMoving)
             {
                 RaycastHit2D hitleft = Physics2D.Raycast(transform.position, Vector2.left, 1);
+                animator.SetBool("isRight", false);
                 if (hitleft.collider == null)
                 {
                     mustMove = true;
-                    moveDirection = "left";
+                    moveDirection = "isLeft";
                     targetPos += Vector3.left;
                 }
                 else
@@ -58,6 +63,8 @@ namespace Behaviour.Player
                     isHit = true;
                     hitDirection = moveDirection;
                 }
+                animator.SetBool(moveDirection, true);
+                animator.SetBool("isMoving", true);
             }
 
             else if (Input.GetKey(KeyCode.D) && !isMoving)
@@ -66,7 +73,7 @@ namespace Behaviour.Player
                 if (hitright.collider == null)
                 {
                     mustMove = true;
-                    moveDirection = "right";
+                    moveDirection = "isRight";
                     targetPos += Vector3.right;
                 }
                 else
@@ -74,15 +81,18 @@ namespace Behaviour.Player
                     isHit = true;
                     hitDirection = moveDirection;
                 }
+                animator.SetBool(moveDirection, true);
+                animator.SetBool("isMoving", true);
             }
 
             else if (Input.GetKey(KeyCode.W) && !isMoving)
             {
                 RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector2.up, 1);
+                animator.SetBool("isRight", false);
                 if (hitup.collider == null)
                 {
                     mustMove = true;
-                    moveDirection = "up";
+                    moveDirection = "isUp";
                     targetPos += Vector3.up;
                 }
                 else
@@ -90,15 +100,19 @@ namespace Behaviour.Player
                     isHit = true;
                     hitDirection = moveDirection;
                 }
+                
+                animator.SetBool(moveDirection, false);
+                animator.SetBool("isMoving", true);
             }
 
             else if (Input.GetKey(KeyCode.S) && !isMoving)
             {
                 RaycastHit2D hitdown = Physics2D.Raycast(transform.position, Vector2.down, 1);
+                animator.SetBool("isRight", false);
                 if (hitdown.collider == null)
                 {
                     mustMove = true;
-                    moveDirection = "down";
+                    moveDirection = "isDown";
                     targetPos += Vector3.down;
                 }
                 else
@@ -106,6 +120,8 @@ namespace Behaviour.Player
                     isHit = true;
                     hitDirection = moveDirection;
                 }
+                animator.SetBool(moveDirection, true);
+                animator.SetBool("isMoving", true);
             }
 
             if (mustMove)
@@ -120,16 +136,34 @@ namespace Behaviour.Player
                     isMoving = false;
                     mustMove = false;
                 }
+                time = 0;
             }
             else
             {
                 Idle();
             }
+            
         }
 
         public void Idle()
         {
-            moveDirection = "idle";
+            time += Time.deltaTime;
+            
+            if (time > 10.0f)
+            {
+                animator.SetInteger("idle", 2);
+            }
+            else if (time > 5.0f)
+            {
+                animator.SetInteger("idle", 1);
+            } 
+            else
+            {
+                animator.SetInteger("idle", 0);
+            }
+            isIdle = true;
+            animator.SetBool("isMoving", isMoving);
+            
         }
     }
 }
