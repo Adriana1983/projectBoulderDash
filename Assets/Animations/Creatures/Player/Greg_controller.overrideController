@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Greg_controller
+  m_Controller: {fileID: 9100000, guid: c252d673fcc2b1c4a89aeefe00d2e5b7, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 5f0e1fe376f41154a8904da468164697, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b00f868c58b07a7458cafa7f56285321, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: c3e69d7303fde5a44b020f217ef473d5, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d4c0ab491b8410d4e89a8d84156b80e3, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 95a8091e13b1cd34f8b1490857077965, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: df5a62106cf4325448a81c02b0b1c3b2, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 27e77add45016c34db2f42864a622b59, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 203f98787b8edf546ba6e2e0179e37eb, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: fae44899f83fe4640a1c6a4c967520dc, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b3d121cf85116d24f89c2210ecd2cf6e, type: 2}

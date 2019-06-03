@@ -1,31 +1,31 @@
 fileFormatVersion: 2
-guid: 2f63c6f6e49832f49ba53df478a5eecd
+guid: 6ae75aca2c4805f4d923fbd7ccd86b99
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3238175687207755550
-    second: Player_animation_idle_2_set_0
+      213: 2260887103096575001
+    second: Plant_idle_1_animation_set_0
   - first:
-      213: 5076601171217729157
-    second: Player_animation_idle_2_set_1
+      213: -7392588746796682294
+    second: Plant_idle_1_animation_set_1
   - first:
-      213: 1487042056678079197
-    second: Player_animation_idle_2_set_2
+      213: 6892334604430204865
+    second: Plant_idle_1_animation_set_2
   - first:
-      213: -1393670157753400065
-    second: Player_animation_idle_2_set_3
+      213: -9071525026465004192
+    second: Plant_idle_1_animation_set_3
   - first:
-      213: 4952787940827190334
-    second: Player_animation_idle_2_set_4
+      213: -3785940961999430780
+    second: Plant_idle_1_animation_set_4
   - first:
-      213: -5983242604126577615
-    second: Player_animation_idle_2_set_5
+      213: 2708358918170510557
+    second: Plant_idle_1_animation_set_5
   - first:
-      213: 7041732354180290172
-    second: Player_animation_idle_2_set_6
+      213: -177671421613819089
+    second: Plant_idle_1_animation_set_6
   - first:
-      213: -5468790951807782375
-    second: Player_animation_idle_2_set_7
+      213: 3662298888133476428
+    second: Plant_idle_1_animation_set_7
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player_animation_idle_2_set_0
+      name: Plant_idle_1_animation_set_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4ff14b2baf9bf3d43861a4c8ca81f62b
-      internalID: -3238175687207755550
+      spriteID: 313ea9fb82ca4884ba04bfdda52234f6
+      internalID: 2260887103096575001
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_animation_idle_2_set_1
+      name: Plant_idle_1_animation_set_1
       rect:
         serializedVersion: 2
         x: 32
@@ -145,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5e9b3c441fcebbb4c8b68a11701ba92f
-      internalID: 5076601171217729157
+      spriteID: 18cb578c5c8d86d43b27ab028ca254c2
+      internalID: -7392588746796682294
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_animation_idle_2_set_2
+      name: Plant_idle_1_animation_set_2
       rect:
         serializedVersion: 2
         x: 64
@@ -166,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d305a5438aa32a344bf8366bf27b7d31
-      internalID: 1487042056678079197
+      spriteID: fa0f245ccc68713478cbee25e8a17499
+      internalID: 6892334604430204865
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_animation_idle_2_set_3
+      name: Plant_idle_1_animation_set_3
       rect:
         serializedVersion: 2
         x: 96
@@ -187,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2a4e6300d3d9ab246a86a7ddf37ca2a6
-      internalID: -1393670157753400065
+      spriteID: c5cb95f302cf215449a5c0a063d29f77
+      internalID: -9071525026465004192
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_animation_idle_2_set_4
+      name: Plant_idle_1_animation_set_4
       rect:
         serializedVersion: 2
         x: 128
@@ -208,14 +208,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6965de15644448c47a34a4bff3f3d34f
-      internalID: 4952787940827190334
+      spriteID: c6d43271cc7c6f1419185a938ace3047
+      internalID: -3785940961999430780
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_animation_idle_2_set_5
+      name: Plant_idle_1_animation_set_5
       rect:
         serializedVersion: 2
         x: 160
@@ -229,14 +229,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 15f863e272aab424e9b221bb9809bc70
-      internalID: -5983242604126577615
+      spriteID: 5e31286bece9e3e4d888ae815c7f19fe
+      internalID: 2708358918170510557
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_animation_idle_2_set_6
+      name: Plant_idle_1_animation_set_6
       rect:
         serializedVersion: 2
         x: 192
@@ -250,14 +250,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dc8f1c2ccfbee984d9c8c06237c72393
-      internalID: 7041732354180290172
+      spriteID: 0a7e88e8b1993c74f95aa84fedb34b0c
+      internalID: -177671421613819089
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_animation_idle_2_set_7
+      name: Plant_idle_1_animation_set_7
       rect:
         serializedVersion: 2
         x: 224
@@ -271,8 +271,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f88d4db94f45a324fad26cb24fb9bf72
-      internalID: -5468790951807782375
+      spriteID: 1487f4d3a6bd2c44988832ddb16fa204
+      internalID: 3662298888133476428
       vertices: []
       indices: 
       edges: []
