@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: Dirt
+  m_Name: New Cool Rule Tile
   m_EditorClassIdentifier: Assembly-CSharp:Custom_Tile_Scripts:RuleTile
   m_DefaultSprite: {fileID: 0}
   m_DefaultGameObject: {fileID: 0}
