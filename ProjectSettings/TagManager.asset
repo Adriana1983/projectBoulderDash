@@ -9,6 +9,9 @@ TagManager:
   - Bounds
   - Dirt
   - Rock
+  - Diamond
+  - Boulder
+  - Wall
   layers:
   - Default
   - TransparentFX
