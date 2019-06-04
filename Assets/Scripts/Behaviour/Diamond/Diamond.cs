@@ -39,20 +39,18 @@ public class Diamond : MonoBehaviour
         RaycastHit2D hitleftup = Physics2D.Raycast(positionrayleftup, Vector2.up, 1.5f);
 
         //Tester rays
-        /*
+        
         Debug.DrawRay(positionrayup, Vector2.up, Color.red);
         Debug.DrawRay(positionraydown, Vector2.down, Color.blue);
         Debug.DrawRay(positionrayright, Vector2.right, Color.magenta);
         Debug.DrawRay(positionrayleft, Vector2.left, Color.yellow);
         
-        Debug.DrawRay(positionraydowndown, Vector2.down, Color.cyan);
         Debug.DrawRay(positionrayleftdown, Vector2.down, Color.white);
         Debug.DrawRay(positionrayrightdown, Vector2.down, Color.white);
        
-        Debug.DrawRay(positionrayupup, Vector2.up, Color.cyan);
         Debug.DrawRay(positionrayrightup, Vector2.up, Color.white);
         Debug.DrawRay(positionrayleftup, Vector2.up, Color.white);
-        */
+        
         timer -= Time.deltaTime;
 
         if (timer < 0)
@@ -70,7 +68,8 @@ public class Diamond : MonoBehaviour
                 //If down is Diamond and up is empty, checkt of de diamond bovenop staat zodat hij kan vallen
                 if (hitdown.collider != null && hitup.collider == null)
                 {
-                    if (hitdown.collider.CompareTag("Diamond") || hitdown.collider.CompareTag("Wall") || hitdown.collider.CompareTag("Boulder"))
+                    if (hitdown.collider.CompareTag("Diamond") || hitdown.collider.CompareTag("Wall") ||
+                        hitdown.collider.CompareTag("Boulder") || hitdown.collider.CompareTag("Player"))
                     {
                         //If left and right raycasts are empty
                         if (hitright.collider == null && hitleft.collider == null && moved == false)
@@ -150,15 +149,17 @@ public class Diamond : MonoBehaviour
                             }
                         }
                     }
-
                 }
             }
-
+            
             moved = false;
             leftorright = 0;
             timer = 0.15f;
         }
+
     }
+    //verplaats naar player
+    
 }
 
 

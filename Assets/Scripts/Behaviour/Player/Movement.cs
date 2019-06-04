@@ -131,5 +131,12 @@ namespace Behaviour.Player
         {
             moveDirection = "idle";
         }
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Dirt"))
+            {
+                Destroy(other);
+            }
+        }
     }
 }
