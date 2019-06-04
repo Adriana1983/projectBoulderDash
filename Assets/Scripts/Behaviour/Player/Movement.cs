@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace Behaviour.Player
@@ -18,6 +19,9 @@ namespace Behaviour.Player
         public Vector3 targetPos;
         public bool mustMove;
         public bool isMoving;
+        public bool isIdle;
+        public Animator animator;
+        public Stopwatch stopwatch;
 
         private void Start()
         {
@@ -25,7 +29,9 @@ namespace Behaviour.Player
             moveDirection = "idle";
             isMoving = false;
             mustMove = false;
+            isIdle = true;
             hitDirection = "";
+            animator.SetBool("isRight", true);
         }
 
         private void Update()
@@ -47,6 +53,8 @@ namespace Behaviour.Player
             if (Input.GetKey(KeyCode.A) && !isMoving)
             {
                 RaycastHit2D hitleft = Physics2D.Raycast(transform.position, Vector2.left, 1);
+                animator.SetBool("isMoving", true);
+                animator.SetBool("isRight", false);
                 if (hitleft.collider == null)
                 {
                     mustMove = true;
@@ -63,6 +71,8 @@ namespace Behaviour.Player
             else if (Input.GetKey(KeyCode.D) && !isMoving)
             {
                 RaycastHit2D hitright = Physics2D.Raycast(transform.position, Vector2.right, 1);
+                animator.SetBool("isMoving", true);
+                animator.SetBool("isRight", true);
                 if (hitright.collider == null)
                 {
                     mustMove = true;
@@ -79,6 +89,7 @@ namespace Behaviour.Player
             else if (Input.GetKey(KeyCode.W) && !isMoving)
             {
                 RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector2.up, 1);
+                animator.SetBool("isMoving", true);
                 if (hitup.collider == null)
                 {
                     mustMove = true;
@@ -95,6 +106,7 @@ namespace Behaviour.Player
             else if (Input.GetKey(KeyCode.S) && !isMoving)
             {
                 RaycastHit2D hitdown = Physics2D.Raycast(transform.position, Vector2.down, 1);
+                animator.SetBool("isMoving", true);
                 if (hitdown.collider == null)
                 {
                     mustMove = true;
@@ -123,13 +135,34 @@ namespace Behaviour.Player
             }
             else
             {
+                animator.SetBool("isMoving", false);
                 Idle();
             }
         }
 
         public void Idle()
         {
-            moveDirection = "idle";
+            UnityEngine.Debug.Log(stopwatch.ElapsedMilliseconds);
+            if (isIdle)
+            {
+                moveDirection = "idle";
+                if (stopwatch.ElapsedMilliseconds > 10000)
+                {
+                    animator.SetInteger("idle", 2);
+                }
+                else if (stopwatch.ElapsedMilliseconds > 5000)
+                {
+                    animator.SetInteger("idle", 1);
+                }
+                else
+                {
+                    animator.SetInteger("idle", 0);
+                }
+            } else
+            {
+                stopwatch = Stopwatch.StartNew();
+                isIdle = true;
+            }
         }
     }
 }
