@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: Crystal
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: -5670260843737341449, guid: 16c02d3a341cd384eaf6ec9e99a961f2, type: 3}
+  - {fileID: 8508992190483796575, guid: 16c02d3a341cd384eaf6ec9e99a961f2, type: 3}
+  - {fileID: 4615780657014331590, guid: 16c02d3a341cd384eaf6ec9e99a961f2, type: 3}
+  - {fileID: 1875079823608253501, guid: 16c02d3a341cd384eaf6ec9e99a961f2, type: 3}
+  - {fileID: 7145800226482595452, guid: 16c02d3a341cd384eaf6ec9e99a961f2, type: 3}
+  - {fileID: -8111231528924890405, guid: 16c02d3a341cd384eaf6ec9e99a961f2, type: 3}
+  - {fileID: 3373811256790231094, guid: 16c02d3a341cd384eaf6ec9e99a961f2, type: 3}
+  - {fileID: -2866522962934918824, guid: 16c02d3a341cd384eaf6ec9e99a961f2, type: 3}
+  m_MinSpeed: 5
+  m_MaxSpeed: 5
+  m_AnimationStartTime: 0
+  m_TileColliderType: 0
