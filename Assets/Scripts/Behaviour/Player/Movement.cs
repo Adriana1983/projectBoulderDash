@@ -23,6 +23,8 @@ namespace Behaviour.Player
         public bool isIdle;
         public Animator animator;
         public float time;
+        public LayerMask layer;
+        public Tilemap dirtTileMap;
 
         private void Start()
         {
@@ -51,7 +53,7 @@ namespace Behaviour.Player
 
             if (Input.GetKey(KeyCode.A) && !isMoving)
             {
-                RaycastHit2D hitleft = Physics2D.Raycast(transform.position, Vector2.left, 1);
+                RaycastHit2D hitleft = Physics2D.Raycast(transform.position, Vector2.left, 1, layer);
                 animator.SetBool("isRight", false);
                 if (hitleft.collider == null)
                 {
@@ -59,10 +61,21 @@ namespace Behaviour.Player
                     moveDirection = "isLeft";
                     targetPos += Vector3.left;
                 }
+                else if (hitleft.collider.CompareTag("Dirt"))
+                {
+                    mustMove = true;
+                    moveDirection = "isLeft";
+                    targetPos += Vector3.left;
+                    if (dirtTileMap != null)
+                    {
+                        dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos), null);
+                    }
+                } 
                 else
                 {
                     isHit = true;
                     hitDirection = moveDirection;
+                    
                 }
                 animator.SetBool(moveDirection, true);
                 animator.SetBool("isMoving", true);
@@ -70,13 +83,23 @@ namespace Behaviour.Player
 
             else if (Input.GetKey(KeyCode.D) && !isMoving)
             {
-                RaycastHit2D hitright = Physics2D.Raycast(transform.position, Vector2.right, 1);
+                RaycastHit2D hitright = Physics2D.Raycast(transform.position, Vector2.right, 1, layer);
                 if (hitright.collider == null)
                 {
                     mustMove = true;
                     moveDirection = "isRight";
                     targetPos += Vector3.right;
                 }
+                else if (hitright.collider.CompareTag("Dirt"))
+                {
+                    mustMove = true;
+                    moveDirection = "isRight";
+                    targetPos += Vector3.right;
+                    if (dirtTileMap != null)
+                    {
+                        dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos), null);
+                    }
+                } 
                 else
                 {
                     isHit = true;
@@ -88,7 +111,7 @@ namespace Behaviour.Player
 
             else if (Input.GetKey(KeyCode.W) && !isMoving)
             {
-                RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector2.up, 1);
+                RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector2.up, 1, layer);
                 animator.SetBool("isRight", false);
                 if (hitup.collider == null)
                 {
@@ -96,6 +119,16 @@ namespace Behaviour.Player
                     moveDirection = "isUp";
                     targetPos += Vector3.up;
                 }
+                else if (hitup.collider.CompareTag("Dirt"))
+                {
+                    mustMove = true;
+                    moveDirection = "isUp";
+                    targetPos += Vector3.up;
+                    if (dirtTileMap != null)
+                    {
+                        dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos), null);
+                    }
+                } 
                 else
                 {
                     isHit = true;
@@ -108,7 +141,7 @@ namespace Behaviour.Player
 
             else if (Input.GetKey(KeyCode.S) && !isMoving)
             {
-                RaycastHit2D hitdown = Physics2D.Raycast(transform.position, Vector2.down, 1);
+                RaycastHit2D hitdown = Physics2D.Raycast(transform.position, Vector2.down, 1, layer);
                 animator.SetBool("isRight", false);
                 if (hitdown.collider == null)
                 {
@@ -116,6 +149,16 @@ namespace Behaviour.Player
                     moveDirection = "isDown";
                     targetPos += Vector3.down;
                 }
+                else if (hitdown.collider.CompareTag("Dirt"))
+                {
+                    mustMove = true;
+                    moveDirection = "isDown";
+                    targetPos += Vector3.down;
+                    if (dirtTileMap != null)
+                    {
+                        dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos), null);
+                    }
+                } 
                 else
                 {
                     isHit = true;
