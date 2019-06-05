@@ -6,11 +6,9 @@ public class MagicWall : MonoBehaviour
 {
     public GameObject Boulder;
     public GameObject Diamond;
-    private bool activatedDiamond;
-    private bool activatedBoulder;
-    private int activeTime;
+    private float activeDuration = 5;
+    private bool activated;
     private float Timer = 0.15f;
-    private float Timer2 = 0.30f;
 
     private void Update()
     {
@@ -22,32 +20,49 @@ public class MagicWall : MonoBehaviour
         Timer -= Time.deltaTime;
         if (Timer <= 0)
         {
-            if (hitup.collider == null && hitupup.collider != null)
+            if (hitup.collider != null)
             {
-                if (hitupup.collider.CompareTag("Diamond"))
+                activated = true;
+                
+                if (activated)
                 {
-                    activatedDiamond = true;
-                }
-            }
-
-            if (activatedDiamond)
-            {
-                bool falling = GetComponent<Diamond>().Falling;
-                print(falling);
-                if (falling == true)
-                {
+                    activeDuration -= Time.deltaTime;
+                    if (activeDuration <= 0)
                     {
-                        Destroy(hitup.collider.gameObject);
-                        Instantiate(Boulder,
-                            new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 1),
-                            Quaternion.identity);
+                        activated = false;
+                    }
+                    if (hitup.collider.CompareTag("Diamond"))
+                    {
+                        bool falling = hitup.collider.gameObject.GetComponent<Diamond>().Falling;
+                        if (falling)
+                        {
+                            Destroy(hitup.collider.gameObject);
+                            Instantiate(Boulder,
+                                new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 1),
+                                Quaternion.identity);
+                        }
+                    }
+                    if (hitup.collider.CompareTag("Boulder"))
+                    {
+                        bool falling = hitup.collider.gameObject.GetComponent<Diamond>().Falling;
+                        if (falling)
+                        {
+                            Destroy(hitup.collider.gameObject);
+                            Instantiate(Diamond,
+                                new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 1),
+                                Quaternion.identity);
+                        }
                     }
                 }
+                else
+                {
+                    print("False");
+                }
+                
             }
 
+            Timer = 0.15f;
         }
-
-        Timer = 0.15f;
     }
 }
 

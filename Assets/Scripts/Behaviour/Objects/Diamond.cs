@@ -70,13 +70,13 @@ public class Diamond : MonoBehaviour
             {
                 //Falling = false;
                 //If down is Diamond and up is empty, checkt of de diamond bovenop staat zodat hij kan vallen
-                if (hitdown.collider != null && hitup.collider == null)
+                if (hitdown.collider != null && hitup.collider == null && moved == false)
                 {
                     if (hitdown.collider.CompareTag("Diamond") || hitdown.collider.CompareTag("Wall") ||
                         hitdown.collider.CompareTag("Boulder") || hitdown.collider.CompareTag("Player"))
                     {
                         //If left and right raycasts are empty
-                        if (hitright.collider == null && hitleft.collider == null && moved == false)
+                        if (hitright.collider == null && hitleft.collider == null)
                         {
                             //If leftdown is niet empty en rechtsdown is empty
                             if (hitleftdown.collider != null && hitrightdown.collider == null &&
@@ -127,8 +127,7 @@ public class Diamond : MonoBehaviour
                         }
 
                         //If right raycast is empty and left raycast is not empty
-                        if (hitright.collider == null && hitleft.collider != null && hitrightup.collider == null &&
-                            moved == false)
+                        if (hitright.collider == null && hitleft.collider != null && hitrightup.collider == null)
                         {
                             //If rightdown is empty, checken of er ruimte is om te vallen
                             if (hitrightdown.collider == null)
@@ -141,8 +140,7 @@ public class Diamond : MonoBehaviour
                         }
 
                         //If left raycast is empty and right raycast is not empty
-                        if (hitleft.collider == null && hitright.collider != null && hitleftup.collider == null &&
-                            moved == false)
+                        if (hitleft.collider == null && hitright.collider != null && hitleftup.collider == null)
                         {
                             if (hitleftdown.collider == null)
                             {
