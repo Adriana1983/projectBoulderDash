@@ -12,6 +12,7 @@ TagManager:
   - Boulder
   - Wall
   - Diamond
+  - Magic Wall
   layers:
   - Default
   - TransparentFX
