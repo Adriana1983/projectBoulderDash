@@ -92,6 +92,8 @@ public class Boulder : MonoBehaviour
                         {
                             //Player dies
                             Debug.Log("Player dead");
+                            Destroy(hit.collider.gameObject);
+
                         }
                         break;
 
