@@ -9,27 +9,40 @@ namespace Behaviour.Player
 {
     public class Movement : MonoBehaviour
     {
-        public Rigidbody2D player;
+        public SoundManager soundManager;
+
         public float speed = 10.0f;
         public string hitDirection;
         public string inputGot;
         public bool isHit;
-        public string moveDirection;
+        
         public Vector3 lastPos;
         public Vector3 targetPos;
         public bool mustMove;
         public bool isMoving;
-        public bool isRight;
+
+        public int animationDirection = 0;
         public bool isIdle;
         public Animator animator;
         public float time;
+
         public LayerMask layer;
         public Tilemap dirtTileMap;
+        public Tilemap bouldersMap;
+
+        //Animation direction clockwise
+        enum Direction
+        {
+            Idle = 0,
+            Up = 1,
+            Right = 2,
+            Down = 3,
+            Left = 4
+        }
 
         private void Start()
         {
             targetPos = transform.position;
-            moveDirection = "idle";
             isMoving = false;
             mustMove = false;
             hitDirection = "";
@@ -51,148 +64,117 @@ namespace Behaviour.Player
 
             isHit = false;
 
-            if (Input.GetKey(KeyCode.A) && !isMoving)
+            //Player isn't moving, allow movement
+            if (!isMoving)
             {
-                RaycastHit2D hitleft = Physics2D.Raycast(transform.position, Vector2.left, 1, layer);
-                animator.SetBool("isRight", false);
-                if (hitleft.collider == null)
+                //Variable for requested player direction
+                Vector3 targetDirection = Vector3.zero;
+                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
                 {
                     mustMove = true;
-                    moveDirection = "isLeft";
-                    targetPos += Vector3.left;
+                    targetDirection = Vector3.left;
+                    animationDirection = (int)Direction.Left;
                 }
-                else if (hitleft.collider.CompareTag("Dirt"))
+                else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
                 {
                     mustMove = true;
-                    moveDirection = "isLeft";
-                    targetPos += Vector3.left;
-                    if (dirtTileMap != null)
+                    targetDirection = Vector3.right;
+                    animationDirection = (int)Direction.Right;
+                }
+                else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+                {
+                    mustMove = true;
+                    targetDirection = Vector3.up;
+                    animationDirection = (int)Direction.Up;
+                }
+                else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+                {
+                    mustMove = true;
+                    targetDirection = Vector3.down;
+                    animationDirection = (int)Direction.Down;
+                }
+
+                //Check for collision in requested player direction
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, targetDirection, 1, layer);
+
+                //Did we hit anything?
+                if (hit.collider != null)
+                {
+                    //What did we hit?
+                    switch (hit.collider.gameObject.tag)
                     {
-                        dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos), null);
+                        //We hit a boulder
+                        case "Boulder":
+                            //can't move boulders in stay in place mode
+                            if (!Input.GetKey(KeyCode.LeftControl))
+                                //Call boulder hit function, decides if the player can move the boulder
+                                mustMove = hit.collider.gameObject.GetComponent<Boulder>().BoulderHit(targetDirection);
+                            else
+                                mustMove = false;
+                            break;
+
+                        //We hit dirt
+                        case "Dirt":
+                            //Allow player to move
+                            mustMove = true;
+                            //Delete the dirt
+                            if (dirtTileMap != null)
+                            {
+                                soundManager.Play_Walk_Dirt();
+                                dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos + targetDirection), null);
+                            }
+                            break;
+
+                        //We hit something else, player cannot move
+                        default:
+                            mustMove = false;
+                            break;
                     }
-                } 
+                }
+
+                //Did the player have to move?
+                if (mustMove)
+                {
+                    //Check for stay in place mode, else allow player movement
+                    if (!Input.GetKey(KeyCode.LeftControl))
+                    {
+                        soundManager.Play_Walk_empty();
+                        targetPos += targetDirection;
+                        animator.SetInteger("AnimationDirection", animationDirection);
+                        
+                        animator.SetBool("isMoving", true);
+                        isMoving = true;
+                    }
+                }
                 else
                 {
-                    isHit = true;
-                    hitDirection = moveDirection;
-                    
+                    animator.SetInteger("AnimationDirection", 0);
+                    Idle();
                 }
-                animator.SetBool(moveDirection, true);
-                animator.SetBool("isMoving", true);
             }
-
-            else if (Input.GetKey(KeyCode.D) && !isMoving)
+            //Player is still moving
+            else
             {
-                RaycastHit2D hitright = Physics2D.Raycast(transform.position, Vector2.right, 1, layer);
-                if (hitright.collider == null)
-                {
-                    mustMove = true;
-                    moveDirection = "isRight";
-                    targetPos += Vector3.right;
-                }
-                else if (hitright.collider.CompareTag("Dirt"))
-                {
-                    mustMove = true;
-                    moveDirection = "isRight";
-                    targetPos += Vector3.right;
-                    if (dirtTileMap != null)
-                    {
-                        dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos), null);
-                    }
-                } 
-                else
-                {
-                    isHit = true;
-                    hitDirection = moveDirection;
-                }
-                animator.SetBool(moveDirection, true);
-                animator.SetBool("isMoving", true);
-            }
-
-            else if (Input.GetKey(KeyCode.W) && !isMoving)
-            {
-                RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector2.up, 1, layer);
-                animator.SetBool("isRight", false);
-                if (hitup.collider == null)
-                {
-                    mustMove = true;
-                    moveDirection = "isUp";
-                    targetPos += Vector3.up;
-                }
-                else if (hitup.collider.CompareTag("Dirt"))
-                {
-                    mustMove = true;
-                    moveDirection = "isUp";
-                    targetPos += Vector3.up;
-                    if (dirtTileMap != null)
-                    {
-                        dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos), null);
-                    }
-                } 
-                else
-                {
-                    isHit = true;
-                    hitDirection = moveDirection;
-                }
-                
-                animator.SetBool(moveDirection, false);
-                animator.SetBool("isMoving", true);
-            }
-
-            else if (Input.GetKey(KeyCode.S) && !isMoving)
-            {
-                RaycastHit2D hitdown = Physics2D.Raycast(transform.position, Vector2.down, 1, layer);
-                animator.SetBool("isRight", false);
-                if (hitdown.collider == null)
-                {
-                    mustMove = true;
-                    moveDirection = "isDown";
-                    targetPos += Vector3.down;
-                }
-                else if (hitdown.collider.CompareTag("Dirt"))
-                {
-                    mustMove = true;
-                    moveDirection = "isDown";
-                    targetPos += Vector3.down;
-                    if (dirtTileMap != null)
-                    {
-                        dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos), null);
-                    }
-                } 
-                else
-                {
-                    isHit = true;
-                    hitDirection = moveDirection;
-                }
-                animator.SetBool(moveDirection, true);
-                animator.SetBool("isMoving", true);
-            }
-
-            if (mustMove)
-            {
-                isMoving = true;
-
                 //The Current Position = Move To (the current position to the new position by the speed * Time.DeltaTime)
-                transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+                if (isMoving)
+                {
+                    time = 0;
+                    transform.position = Vector2.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+                }
 
+                //Wait for movement to finish
                 if (transform.position == targetPos)
                 {
                     isMoving = false;
                     mustMove = false;
                 }
-                time = 0;
             }
-            else
-            {
-                Idle();
-            }
-            
         }
 
         public void Idle()
         {
             time += Time.deltaTime;
-            
+
             if (time > 10.0f)
             {
                 animator.SetInteger("idle", 2);
@@ -200,14 +182,14 @@ namespace Behaviour.Player
             else if (time > 5.0f)
             {
                 animator.SetInteger("idle", 1);
-            } 
+            }
             else
             {
                 animator.SetInteger("idle", 0);
             }
             isIdle = true;
             animator.SetBool("isMoving", isMoving);
-            
+
         }
     }
 }
