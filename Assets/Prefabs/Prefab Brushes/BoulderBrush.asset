@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BoulderBrush
   m_EditorClassIdentifier: 
   m_Cells:
-  - m_Tile: {fileID: 0}
+  - m_Tile: {fileID: 11400000, guid: d40db9e8611bd314ca29738fca1d196f, type: 2}
     m_Matrix:
       e00: 1
       e01: 0
@@ -35,6 +35,6 @@ MonoBehaviour:
   m_Size: {x: 1, y: 1, z: 1}
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Prefabs:
-  - {fileID: 2007398031164448160, guid: fb0ae78d6cb28ab4ea8292676cee680b, type: 3}
+  - {fileID: 4472148672978847059, guid: 1e0b2ee316303f748b67923ca64ea3ef, type: 3}
   m_PerlinScale: 0.5
   m_Z: 0

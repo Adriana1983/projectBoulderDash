@@ -1,72 +1,91 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Behaviour.Objects;
+using Behaviour;
 using UnityEngine;
 
 public class MagicWall : MonoBehaviour
 {
+    public Sprite wallSprite;
+    public Sprite magicWallSprite;
     public GameObject Boulder;
     public GameObject Diamond;
-    private float activeDuration = 5;
-    private bool activated;
+    public bool activated;
+    private float activeDuration = 15f;
     private float Timer = 0.15f;
-
+    private SpriteRenderer wallRenderer;
+    
     private void Update()
     {
-        Vector2 positionrayup = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.6f);
-        Vector2 positionraydown = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.6f);
-        Vector2 positionrayupup = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 1.6f);
-
-        RaycastHit2D hitup = Physics2D.Raycast(positionrayup, Vector2.up, 0.5f);
-        RaycastHit2D hitupup = Physics2D.Raycast(positionrayupup, Vector2.up, 0.5f);
-        RaycastHit2D hitdown = Physics2D.Raycast(positionraydown, Vector2.down, 0.5f);
-        Timer -= Time.deltaTime;
-        if (Timer <= 0)
+        //Als er een boulder een Magic wall heeft geactiveerd doe dit
+        if (activated)
         {
-            if (hitup.collider != null && hitdown.collider == null)
+            //Zoekt alle andere magic walls en zet hun variable activated naar true
+            foreach (var variable in GameObject.FindGameObjectsWithTag("MagicWall"))
             {
-                activated = true;
-                
-                if (activated)
-                {
-                    activeDuration -= Time.deltaTime;
-                    if (activeDuration <= 0)
-                    {
-                        activated = false;
-                    }
-                    if (hitup.collider.CompareTag("Diamond"))
-                    {
-                        bool falling = hitup.collider.gameObject.GetComponent<Diamond>().Falling;
-                        if (falling)
-                        {
-                            Destroy(hitup.collider.gameObject);
-                            Instantiate(Boulder,
-                                new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 1),
-                                Quaternion.identity);
-                        }
-                    }
-                    if (hitup.collider.CompareTag("Boulder"))
-                    {
-                        bool falling = hitup.collider.gameObject.GetComponent<Diamond>().Falling;
-                        if (falling)
-                        {
-                            Destroy(hitup.collider.gameObject);
-                            Instantiate(Diamond,
-                                new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 1),
-                                Quaternion.identity);
-                        }
-                    }
-                }
-                else
-                {
-                    print("False");
-                }
-                
+                variable.GetComponent<MagicWall>().activated = true;
             }
+            //Verandert sprite naar Magic wall moet worden verplaatst met animaties
+            wallRenderer= GetComponent<SpriteRenderer>(); 
+            wallRenderer.sprite = magicWallSprite;
+            
+            //Start countdown van de duration
+            if (activeDuration >= 0)
+            {
+                activeDuration -= Time.deltaTime;                
+            }
+        }
+        //if duration is still active
+        if (activeDuration > 0)
+        {
+            Timer -= Time.deltaTime;
+            if (Timer < 0)
+            {
+                RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector2.up, 1);
+                RaycastHit2D hitdown = Physics2D.Raycast(transform.position, Vector2.down, 1f);
+                
+                //Check of er een boulder of diamond boven de wall is en of er ruimte onder de wall zit
+                if (hitup.collider != null && hitdown.collider == null)
+                {
+                    switch (hitup.collider.tag)
+                    {
+                        case "Diamond":
+                            //activated = true;
+                            if (hitup.collider.gameObject.GetComponent<Diamond>().LastpositionFalling)
+                            {
+                                Destroy(hitup.collider.gameObject);
+                                Instantiate(Boulder,
+                                    new Vector2(gameObject.transform.position.x,
+                                        gameObject.transform.position.y - 1),
+                                    Quaternion.identity);
+                            }
 
-            Timer = 0.15f;
+                            break;
+                        case "Boulder":
+                            //activated = true;
+                            if (hitup.collider.gameObject.GetComponent<Boulder>().LastpositionFalling)
+                            {
+                                Destroy(hitup.collider.gameObject);
+                                Instantiate(Diamond,
+                                    new Vector2(gameObject.transform.position.x,
+                                        gameObject.transform.position.y - 1),
+                                    Quaternion.identity);
+                            }
+
+                            break;
+                    }
+                }
+
+                Timer = 0.15f;
+            }
+        }
+        else //If duration expired
+        {
+            wallRenderer = GetComponent<SpriteRenderer>();
+            wallRenderer.sprite = wallSprite;
         }
     }
 }
+
+
 
 

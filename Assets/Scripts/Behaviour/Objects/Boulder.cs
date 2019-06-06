@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Behaviour;
 using UnityEngine;
 using Random = System.Random;
 
 public class Boulder : MonoBehaviour
 {
-    private float timer = 0.15f; //time betwee actions
+    private float timer = 0.15f; //time between actions
     Random random = new Random();
     public bool Falling;
     bool moving = false;
+    public bool activatedWall;
+    public bool LastpositionFalling;
 
     public bool BoulderHit(Vector3 targetDirection)
     {
@@ -49,12 +52,22 @@ public class Boulder : MonoBehaviour
                 //there is something beneath this boulder
                 switch (hit.collider.tag)
                 {
+                    case "MagicWall":
+                        if (LastpositionFalling)
+                        {
+                            if (activatedWall == false)
+                            {
+                                hit.collider.gameObject.GetComponent<MagicWall>().activated = true;
+                                activatedWall = true;
+                            }
+                        }
+                        break;
                     case "Diamond":
                     case "Boulder":
                         //Don't test collision on falling things
                         if (hit.collider.tag == "Boulder" && hit.collider.gameObject.GetComponent<Boulder>().Falling) break;
                         if (hit.collider.tag == "Diamond" && hit.collider.gameObject.GetComponent<Diamond>().Falling) break;
-
+                        Falling = false;
                         //Check space left and right of hit object
                         RaycastHit2D hit_left = Physics2D.Raycast(hit.collider.transform.position, Vector2.left, 1);
                         RaycastHit2D hit_right = Physics2D.Raycast(hit.collider.transform.position, Vector2.right, 1);
@@ -99,6 +112,7 @@ public class Boulder : MonoBehaviour
                     default:
                         break;
                 }
+                LastpositionFalling = Falling;
                 Falling = false;
             }
 

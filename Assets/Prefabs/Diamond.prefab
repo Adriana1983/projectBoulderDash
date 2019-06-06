@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7498296973035551778}
   - component: {fileID: 7518183433384529}
-  - component: {fileID: 7931090930487893602}
   - component: {fileID: 7849602288092946887}
+  - component: {fileID: 3113701147773592888}
   m_Layer: 0
   m_Name: Diamond
   m_TagString: Diamond
@@ -83,19 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7931090930487893602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3307045083705134715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dcee921828263045beeddca840fffb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Falling: 0
 --- !u!61 &7849602288092946887
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -122,3 +109,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3113701147773592888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3307045083705134715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c945c20198ec24f893973882669d9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Falling: 0

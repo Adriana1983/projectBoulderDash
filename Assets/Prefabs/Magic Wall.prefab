@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 861039773488812780}
   m_Layer: 0
   m_Name: Magic Wall
-  m_TagString: Wall
+  m_TagString: MagicWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -4306768063022953764, guid: ee9737bd621734a4e81cd1d15b7c87ac,
+  m_Sprite: {fileID: 3815593721904376672, guid: ee9737bd621734a4e81cd1d15b7c87ac,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -95,8 +95,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d6a5dbc070e0f4792bacbb6315988a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallSprite: {fileID: 3815593721904376672, guid: ee9737bd621734a4e81cd1d15b7c87ac,
+    type: 3}
+  magicWallSprite: {fileID: -4306768063022953764, guid: ee9737bd621734a4e81cd1d15b7c87ac,
+    type: 3}
   Boulder: {fileID: 4928018769824077841, guid: 4f97d299174e6d64f8b22839d7d3813e, type: 3}
   Diamond: {fileID: 3307045083705134715, guid: 690c40b3b641e8e4b934d0b9cf0403ca, type: 3}
+  activeDuration: 5
 --- !u!61 &861039773488812780
 BoxCollider2D:
   m_ObjectHideFlags: 0
