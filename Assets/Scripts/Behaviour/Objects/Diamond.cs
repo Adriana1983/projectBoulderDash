@@ -70,54 +70,114 @@ public class Diamond : MonoBehaviour
             {
                 //Falling = false;
                 //If down is Diamond and up is empty, checkt of de diamond bovenop staat zodat hij kan vallen
-                if (hitdown.collider != null && hitup.collider == null && moved == false)
+                if (hitdown.collider != null && moved == false)
                 {
-                    if (hitdown.collider.CompareTag("Diamond") || hitdown.collider.CompareTag("Wall") ||
-                        hitdown.collider.CompareTag("Boulder") || hitdown.collider.CompareTag("Player"))
+                    if (hitup.collider == null || hitup.collider.CompareTag("Wall"))
                     {
-                        //If left and right raycasts are empty
-                        if (hitright.collider == null && hitleft.collider == null)
+
+                        if (hitdown.collider.CompareTag("Diamond") || hitdown.collider.CompareTag("Wall") ||
+                            hitdown.collider.CompareTag("Boulder") || hitdown.collider.CompareTag("Player"))
                         {
-                            //If leftdown is niet empty en rechtsdown is empty
-                            if (hitleftdown.collider != null && hitrightdown.collider == null &&
-                                hitrightup.collider == null)
-                            {
-                                Vector2 Newposition = new Vector2(gameObject.transform.position.x + 1,
-                                    gameObject.transform.position.y);
-                                gameObject.transform.position = Newposition;
-                                moved = true;
-                            }
 
-                            //If rechtsdown is niet empty en linksdown is empty
-                            if (hitrightdown.collider != null && hitleftdown.collider == null &&
-                                hitleftup.collider == null)
+                            //If left and right raycasts are empty
+                            if (hitright.collider == null && hitleft.collider == null)
                             {
-                                Vector2 Newposition = new Vector2(gameObject.transform.position.x - 1,
-                                    gameObject.transform.position.y);
-                                gameObject.transform.position = Newposition;
-                                moved = true;
-                            }
-
-                            //If beide linksdown en rechtsdown empty zijn
-                            if (hitleftdown.collider == null && hitrightdown.collider == null)
-                            {
-                                //If er niks naast de diamond/boulder naar beneden valt
-                                if (hitleftup.collider != null || hitrightup.collider != null ||
-                                    hitleftup.collider == null && hitrightup.collider == null)
+                                //If leftdown is niet empty en rechtsdown is empty
+                                if (hitleftdown.collider != null && hitrightdown.collider == null &&
+                                    hitrightup.collider == null)
                                 {
-                                    //kans berekening om naar links of rechts te vallen
-                                    leftorright = random.Next(-1, 2);
-                                    if (leftorright <= 0)
+                                    Vector2 Newposition = new Vector2(gameObject.transform.position.x + 1,
+                                        gameObject.transform.position.y);
+                                    gameObject.transform.position = Newposition;
+                                    moved = true;
+                                }
+
+                                //If rechtsdown is niet empty en linksdown is empty
+                                if (hitrightdown.collider != null && hitleftdown.collider == null &&
+                                    hitleftup.collider == null)
+                                {
+                                    Vector2 Newposition = new Vector2(gameObject.transform.position.x - 1,
+                                        gameObject.transform.position.y);
+                                    gameObject.transform.position = Newposition;
+                                    moved = true;
+                                }
+
+                                //If beide linksdown en rechtsdown empty zijn
+                                if (hitleftdown.collider == null && hitrightdown.collider == null)
+                                {
+                                    //If er niks naast de diamond/boulder naar beneden valt
+                                    if (hitleftup.collider != null || hitrightup.collider != null ||
+                                        hitleftup.collider == null && hitrightup.collider == null)
+                                    {
+                                        //kans berekening om naar links of rechts te vallen
+                                        leftorright = random.Next(-1, 2);
+                                        if (leftorright <= 0)
+                                        {
+                                            Vector2 Newposition = new Vector2(gameObject.transform.position.x - 1,
+                                                gameObject.transform.position.y);
+                                            gameObject.transform.position = Newposition;
+                                            moved = true;
+                                        }
+
+                                        if (leftorright >= 1)
+                                        {
+                                            Vector2 Newposition = new Vector2(gameObject.transform.position.x + 1,
+                                                gameObject.transform.position.y);
+                                            gameObject.transform.position = Newposition;
+                                            moved = true;
+                                        }
+                                    }
+                                }
+                            }
+
+                            //If right raycast is empty and left raycast is not empty
+                            if (hitright.collider == null && hitleft.collider != null && hitrightup.collider == null)
+                            {
+                                if (hitrightdown.collider == null)
+                                {
+                                    Vector2 Newposition = new Vector2(gameObject.transform.position.x + 1,
+                                        gameObject.transform.position.y);
+                                    gameObject.transform.position = Newposition;
+                                    moved = true;
+                                }
+                            }
+                            if (hitrightup.collider != null)
+                            {
+                                if (hitright.collider == null && hitleft.collider != null &&
+                                    hitrightup.collider.tag != "Diamond" || hitrightup.collider.tag != "Boulder")
+                                {
+                                    if (hitrightdown.collider == null)
                                     {
                                         Vector2 Newposition = new Vector2(gameObject.transform.position.x - 1,
                                             gameObject.transform.position.y);
                                         gameObject.transform.position = Newposition;
                                         moved = true;
                                     }
+                                }
+                            }
 
-                                    if (leftorright >= 1)
+
+                            //If left raycast is empty and right raycast is not empty
+                            if (hitleft.collider == null && hitright.collider != null && hitleftup.collider == null)
+                            {
+                                if (hitleftdown.collider == null)
+                                {
+                                    Vector2 Newposition = new Vector2(gameObject.transform.position.x - 1,
+                                        gameObject.transform.position.y);
+                                    gameObject.transform.position = Newposition;
+                                    moved = true;
+                                }
+                            }
+
+                            if (hitleftup.collider != null)
+                            {
+
+                                if (hitleft.collider == null && hitright.collider != null &&
+                                    hitleftup.collider.tag != "Diamond" || hitleftup.collider.tag != "Boulder")
+                                {
+                                    if (hitleftdown.collider == null)
                                     {
-                                        Vector2 Newposition = new Vector2(gameObject.transform.position.x + 1,
+                                        Vector2 Newposition = new Vector2(gameObject.transform.position.x - 1,
                                             gameObject.transform.position.y);
                                         gameObject.transform.position = Newposition;
                                         moved = true;
@@ -125,35 +185,10 @@ public class Diamond : MonoBehaviour
                                 }
                             }
                         }
-
-                        //If right raycast is empty and left raycast is not empty
-                        if (hitright.collider == null && hitleft.collider != null && hitrightup.collider == null)
-                        {
-                            //If rightdown is empty, checken of er ruimte is om te vallen
-                            if (hitrightdown.collider == null)
-                            {
-                                Vector2 Newposition = new Vector2(gameObject.transform.position.x + 1,
-                                    gameObject.transform.position.y);
-                                gameObject.transform.position = Newposition;
-                                moved = true;
-                            }
-                        }
-
-                        //If left raycast is empty and right raycast is not empty
-                        if (hitleft.collider == null && hitright.collider != null && hitleftup.collider == null)
-                        {
-                            if (hitleftdown.collider == null)
-                            {
-                                Vector2 Newposition = new Vector2(gameObject.transform.position.x - 1,
-                                    gameObject.transform.position.y);
-                                gameObject.transform.position = Newposition;
-                                moved = true;
-                            }
-                        }
                     }
                 }
             }
-            
+
             moved = false;
             leftorright = 0;
             timer = 0.15f;

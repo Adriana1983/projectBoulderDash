@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 861039773488812780}
   m_Layer: 0
   m_Name: Magic Wall
-  m_TagString: Magic Wall
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,8 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d6a5dbc070e0f4792bacbb6315988a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Boulder: {fileID: 0}
-  Diamond: {fileID: 0}
+  Boulder: {fileID: 4928018769824077841, guid: 4f97d299174e6d64f8b22839d7d3813e, type: 3}
+  Diamond: {fileID: 3307045083705134715, guid: 690c40b3b641e8e4b934d0b9cf0403ca, type: 3}
 --- !u!61 &861039773488812780
 BoxCollider2D:
   m_ObjectHideFlags: 0

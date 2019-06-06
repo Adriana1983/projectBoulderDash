@@ -13,14 +13,16 @@ public class MagicWall : MonoBehaviour
     private void Update()
     {
         Vector2 positionrayup = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.6f);
+        Vector2 positionraydown = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.6f);
         Vector2 positionrayupup = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 1.6f);
 
         RaycastHit2D hitup = Physics2D.Raycast(positionrayup, Vector2.up, 0.5f);
         RaycastHit2D hitupup = Physics2D.Raycast(positionrayupup, Vector2.up, 0.5f);
+        RaycastHit2D hitdown = Physics2D.Raycast(positionraydown, Vector2.down, 0.5f);
         Timer -= Time.deltaTime;
         if (Timer <= 0)
         {
-            if (hitup.collider != null)
+            if (hitup.collider != null && hitdown.collider == null)
             {
                 activated = true;
                 
