@@ -26,9 +26,9 @@ namespace Behaviour.Objects
             Vector2 positionraydown =
                 new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.5f);
             Vector2 positionrayright =
-                new Vector2(gameObject.transform.position.x + 0.5f, gameObject.transform.position.y);
+                new Vector2(gameObject.transform.position.x + 0.6f, gameObject.transform.position.y);
             Vector2 positionrayleft =
-                new Vector2(gameObject.transform.position.x - 0.5f, gameObject.transform.position.y);
+                new Vector2(gameObject.transform.position.x - 0.6f, gameObject.transform.position.y);
 
             Vector2 positionrayleftdown =
                 new Vector2(gameObject.transform.position.x - 1, gameObject.transform.position.y - 0.5f);
@@ -40,29 +40,29 @@ namespace Behaviour.Objects
             Vector2 positionrayleftup =
                 new Vector2(gameObject.transform.position.x - 1f, gameObject.transform.position.y + 0.5f);
 
-            RaycastHit2D hitup = Physics2D.Raycast(positionrayup, Vector2.up, 0.5f, layer);
-            RaycastHit2D hitdown = Physics2D.Raycast(positionraydown, Vector2.down, 0.5f, layer);
-            RaycastHit2D hitright = Physics2D.Raycast(positionrayright, Vector2.right, 0.5f, layer);
-            RaycastHit2D hitleft = Physics2D.Raycast(positionrayleft, Vector2.left, 0.5f, layer);
+            RaycastHit2D hitup = Physics2D.Raycast(positionrayup, Vector2.up, 0.5f);
+            RaycastHit2D hitdown = Physics2D.Raycast(positionraydown, Vector2.down, 0.5f);
+            RaycastHit2D hitright = Physics2D.Raycast(positionrayright, Vector2.right, 0.5f);
+            RaycastHit2D hitleft = Physics2D.Raycast(positionrayleft, Vector2.left, 0.5f);
 
-            RaycastHit2D hitleftdown = Physics2D.Raycast(positionrayleftdown, Vector2.down, 0.5f, layer);
-            RaycastHit2D hitrightdown = Physics2D.Raycast(positionrayrightdown, Vector2.down, 0.5f, layer);
+            RaycastHit2D hitleftdown = Physics2D.Raycast(positionrayleftdown, Vector2.down, 0.5f);
+            RaycastHit2D hitrightdown = Physics2D.Raycast(positionrayrightdown, Vector2.down, 0.5f);
 
-            RaycastHit2D hitrightup = Physics2D.Raycast(positionrayrightup, Vector2.up, 1.5f, layer);
-            RaycastHit2D hitleftup = Physics2D.Raycast(positionrayleftup, Vector2.up, 1.5f, layer);
+            RaycastHit2D hitrightup = Physics2D.Raycast(positionrayrightup, Vector2.up, 1.5f);
+            RaycastHit2D hitleftup = Physics2D.Raycast(positionrayleftup, Vector2.up, 1.5f);
 
             //Tester rays
-//
+
             Debug.DrawRay(positionrayup, Vector2.up, Color.red);
             Debug.DrawRay(positionraydown, Vector2.down, Color.blue);
             Debug.DrawRay(positionrayright, Vector2.right, Color.magenta);
             Debug.DrawRay(positionrayleft, Vector2.left, Color.yellow);
 
-//            Debug.DrawRay(positionrayleftdown, Vector2.down, Color.white);
-//            Debug.DrawRay(positionrayrightdown, Vector2.down, Color.white);
-//
-//            Debug.DrawRay(positionrayrightup, Vector2.up, Color.white);
-//            Debug.DrawRay(positionrayleftup, Vector2.up, Color.white);
+            Debug.DrawRay(positionrayleftdown, Vector2.down, Color.white);
+            Debug.DrawRay(positionrayrightdown, Vector2.down, Color.white);
+
+            Debug.DrawRay(positionrayrightup, Vector2.up, Color.white);
+            Debug.DrawRay(positionrayleftup, Vector2.up, Color.white);
 
             timer -= Time.deltaTime;
 
@@ -81,14 +81,12 @@ namespace Behaviour.Objects
                 //If down raycast is niet empty
                 if (hitdown.collider != null)
                 {
-                    Debug.Log("collision" + hitdown.collider);
                     //Falling = false;
                     //If down is Diamond and up is empty, checkt of de diamond bovenop staat zodat hij kan vallen
                     if (hitdown.collider != null && hitup.collider == null)
                     {
                         if (hitdown.collider.CompareTag("Diamond") || hitdown.collider.CompareTag("Bounds") ||
-                            hitdown.collider.CompareTag("Boulder") || hitdown.collider.CompareTag("Player") ||
-                            hitdown.collider.CompareTag("Dirt"))
+                            hitdown.collider.CompareTag("Boulder") || hitdown.collider.CompareTag("Player"))
                         {
                             //If left and right raycasts are empty
                             if (hitright.collider == null && hitleft.collider == null && moved == false)
@@ -175,8 +173,11 @@ namespace Behaviour.Objects
                 leftorright = 0;
                 timer = 0.15f;
             }
+
         }
+        //verplaats naar player
+
     }
-    
 }
+
 
