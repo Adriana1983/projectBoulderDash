@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6631082007534243}
   - component: {fileID: 3712153448206349324}
   - component: {fileID: 921043398591998767}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Boulder
   m_TagString: Boulder
   m_Icon: {fileID: 0}
@@ -121,4 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e62210c2231c354d8167395a2a545e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundManager: {fileID: 0}
   Falling: 0
+  explosion: {fileID: 5259553897754313578, guid: ba8bed6362cba7248bc2254eb5fdd83c,
+    type: 3}

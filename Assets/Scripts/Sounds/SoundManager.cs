@@ -4,206 +4,212 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    AudioSource bdmusic; //opening tune
-    AudioSource cover; //building up cave/intermission
-    AudioSource crack; //Rockford appears in cave - he's immediately able to move - cave timer starts running -- opening exit
-    AudioSource finished; //upon completing cave/intermission remaining seconds turn in to score
+    //https://www.youtube.com/watch?v=tLyj02T51Oc
+    private static SoundManager instance;
+    public static SoundManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<SoundManager>();
+                if (instance == null)
+                {
+                    instance = new GameObject("Spawned SoundManager", typeof(SoundManager)).GetComponent<SoundManager>();
+                }
+            }
 
-    AudioSource amoeba; //when amoeba grows
-    AudioSource explosion; //all explosions
-    AudioSource boulder; //when a boulder falls on dirt/boulder/diamond/amoeba/wall/titaninum wall (NOT on magic wall)
-    AudioSource box_push; //pushing boulder
-    AudioSource walk_empty;
-    AudioSource walk_dirt; 
-    
-    AudioSource collectdiamond;
-    AudioSource diamond1; //when a diamond falls on dirt/boulder/diamond/amoeba/wall/titaninum wall (NOT on magic wall)
-    AudioSource diamond2; //when more then 1 diamond fell on dirt/boulder/diamond/amoeba/Wall/titaninum wall
-    AudioSource diamond3; //in a very short time period each fallen diamond has it's on sound-pitch
-    AudioSource diamond4; //when more then 6 diamonds have fallen the cycle of sound-pitches starts over 
-    AudioSource diamond5; //and the 7th diamond gets the sound-pitch of the 1st diamond
-    AudioSource diamond6;
-    AudioSource magic_wall;
+            return instance;
+        }
+        private set
+        {
+            instance = value;
+        }
+    }
 
-    AudioSource timeout1; //9 sec remaining befor "out of time"
-    AudioSource timeout2; //8 sec remaining befor "out of time"
-    AudioSource timeout3; //7 sec remaining befor "out of time"
-    AudioSource timeout4; //6 sec remaining befor "out of time"
-    AudioSource timeout5; //5 sec remaining befor "out of time"
-    AudioSource timeout6; //4 sec remaining befor "out of time"
-    AudioSource timeout7; //3 sec remaining befor "out of time"
-    AudioSource timeout8; //2 sec remaining befor "out of time"
-    AudioSource timeout9; //1 sec remaining befor "out of time"
+    private AudioSource sfxSource;
+
+    public AudioClip bdmusic; //opening tune
+    public AudioClip cover; //building up cave/intermission
+    public AudioClip crack; //Rockford appears in cave - he's immediately able to move - cave timer starts running -- opening exit
+    public AudioClip finished; //upon completing cave/intermission remaining seconds turn in to score
+
+    public AudioClip amoeba; //when amoeba grows
+    public AudioClip explosion; //all explosions
+    public AudioClip boulder; //when a boulder falls on dirt/boulder/diamond/amoeba/wall/titaninum wall (NOT on magic wall)
+    public AudioClip box_push; //pushing boulder
+    public AudioClip walk_empty;
+    public AudioClip walk_dirt;
+
+    public AudioClip collectdiamond;
+    public AudioClip diamond1; //when a diamond falls on dirt/boulder/diamond/amoeba/wall/titaninum wall (NOT on magic wall)
+    public AudioClip diamond2; //when more then 1 diamond fell on dirt/boulder/diamond/amoeba/Wall/titaninum wall
+    public AudioClip diamond3; //in a very short time period each fallen diamond has it's on sound-pitch
+    public AudioClip diamond4; //when more then 6 diamonds have fallen the cycle of sound-pitches starts over 
+    public AudioClip diamond5; //and the 7th diamond gets the sound-pitch of the 1st diamond
+    public AudioClip diamond6;
+    public AudioClip magic_wall;
+
+    public AudioClip timeout1; //9 sec remaining befor "out of time"
+    public AudioClip timeout2; //8 sec remaining befor "out of time"
+    public AudioClip timeout3; //7 sec remaining befor "out of time"
+    public AudioClip timeout4; //6 sec remaining befor "out of time"
+    public AudioClip timeout5; //5 sec remaining befor "out of time"
+    public AudioClip timeout6; //4 sec remaining befor "out of time"
+    public AudioClip timeout7; //3 sec remaining befor "out of time"
+    public AudioClip timeout8; //2 sec remaining befor "out of time"
+    public AudioClip timeout9; //1 sec remaining befor "out of time"
 
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        bdmusic = GameObject.Find("bdmusic").GetComponent<AudioSource>();
-        cover = GameObject.Find("cover").GetComponent<AudioSource>();
-        crack = GameObject.Find("crack").GetComponent<AudioSource>();
-        finished = GameObject.Find("finished").GetComponent<AudioSource>();
+        DontDestroyOnLoad(this.gameObject);
 
-        amoeba = GameObject.Find("amoeba").GetComponent<AudioSource>();
-        explosion = GameObject.Find("explosion").GetComponent<AudioSource>();
-        boulder = GameObject.Find("boulder").GetComponent<AudioSource>();
-        box_push = GameObject.Find("box_push").GetComponent<AudioSource>();
-        walk_empty = GameObject.Find("walk_empty").GetComponent<AudioSource>();
-        walk_dirt = GameObject.Find("walk_dirt").GetComponent<AudioSource>();
-
-        collectdiamond = GameObject.Find("collectdiamond").GetComponent<AudioSource>();
-        diamond1 = GameObject.Find("diamond1").GetComponent<AudioSource>();
-        diamond2 = GameObject.Find("diamond2").GetComponent<AudioSource>();
-        diamond3 = GameObject.Find("diamond3").GetComponent<AudioSource>();
-        diamond4 = GameObject.Find("diamond4").GetComponent<AudioSource>();
-        diamond5 = GameObject.Find("diamond5").GetComponent<AudioSource>();
-        diamond6 = GameObject.Find("diamond6").GetComponent<AudioSource>();
-        magic_wall = GameObject.Find("magic_wall").GetComponent<AudioSource>();
-
-        timeout1 = GameObject.Find("timeout1").GetComponent<AudioSource>();
-        timeout2 = GameObject.Find("timeout2").GetComponent<AudioSource>();
-        timeout3 = GameObject.Find("timeout3").GetComponent<AudioSource>();
-        timeout4 = GameObject.Find("timeout4").GetComponent<AudioSource>();
-        timeout5 = GameObject.Find("timeout5").GetComponent<AudioSource>();
-        timeout6 = GameObject.Find("timeout6").GetComponent<AudioSource>();
-        timeout7 = GameObject.Find("timeout7").GetComponent<AudioSource>();
-        timeout8 = GameObject.Find("timeout8").GetComponent<AudioSource>();
-        timeout9 = GameObject.Find("timeout9").GetComponent<AudioSource>();
+        sfxSource = this.gameObject.AddComponent<AudioSource>();
     }
-    
+
+    public void PlaySound(AudioClip clip)
+    {
+        if (clip != null)
+            sfxSource.PlayOneShot(clip);
+        else
+            Debug.Log("Audio clip is null");
+    }
+
     public void PlayBDmusic()
     {
-        bdmusic.Play();
+        PlaySound(bdmusic);
     }
 
     public void PlayCover()
     {
-        cover.Play();
+        PlaySound(cover);
     }
 
     public void PlayCrack()
     {
-        crack.Play();
+        PlaySound(crack);
     }
 
     public void PlayFinished()
     {
-        finished.Play();
+        PlaySound(finished);
     }
 
     public void PlayAmoeba()
     {
-        amoeba.Play();
+        PlaySound(amoeba);
     }
 
     public void PlayExplosion()
     {
-        explosion.Play();
+        PlaySound(explosion);
     }
 
     public void PlayBoulder()
     {
-        boulder.Play();
+        PlaySound(boulder);
     }
 
     public void PlayBox_push()
     {
-        box_push.Play();
+        PlaySound(box_push);
     }
 
     public void PlayWalkEmpty()
     {
-        walk_empty.Play();  
+        PlaySound(walk_empty);
     }
 
     public void PlayWalkDirt()
     {
-        walk_dirt.Play();
+        PlaySound(walk_dirt);
     }
 
     public void PlayCollectdiamond()
     {
-        collectdiamond.Play();
+        PlaySound(collectdiamond);
     }
 
     public void PlayDiamond1()
     {
-        diamond1.Play();
+        PlaySound(diamond1);
     }
 
     public void PlayDiamond2()
     {
-        diamond2.Play();
+        PlaySound(diamond2);
     }
 
     public void PlayDiamond3()
     {
-        diamond3.Play();
+        PlaySound(diamond3);
     }
 
     public void PlayDiamond4()
     {
-        diamond4.Play();
+        PlaySound(diamond4);
     }
 
     public void PlayDiamond5()
     {
-        diamond5.Play();
+        PlaySound(diamond5);
     }
 
     public void PlayDiamond6()
     {
-        diamond6.Play();
+        PlaySound(diamond6);
     }
 
     public void PlayMagicWall()
     {
-        magic_wall.Play();
+        PlaySound(magic_wall);
     }
 
     public void PlayTimeout1()
     {
-        timeout1.Play();
+        PlaySound(timeout1);
     }
 
     public void PlayTimeout2()
     {
-        timeout2.Play();
+        PlaySound(timeout2);
     }
 
     public void PlayTimeout3()
     {
-        timeout3.Play();
+        PlaySound(timeout3);
     }
 
     public void PlayTimeout4()
     {
-        timeout4.Play();
+        PlaySound(timeout4);
     }
 
     public void PlayTimeout5()
     {
-        timeout5.Play();
+        PlaySound(timeout5);
     }
 
     public void PlayTimeout6()
     {
-        timeout6.Play();
+        PlaySound(timeout6);
     }
 
     public void PlayTimeout7()
     {
-        timeout7.Play();
+        PlaySound(timeout7);
     }
 
     public void PlayTimeout8()
     {
-        timeout8.Play();
+        PlaySound(timeout8);
     }
 
     public void PlayTimeout9()
     {
-        timeout9.Play();
+        PlaySound(timeout9);
     }
 }

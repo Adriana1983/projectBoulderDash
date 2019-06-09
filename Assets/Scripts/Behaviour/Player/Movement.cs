@@ -9,13 +9,11 @@ namespace Behaviour.Player
 {
     public class Movement : MonoBehaviour
     {
-        public SoundManager soundManager;
-
         public float speed = 10.0f;
         public string hitDirection;
         public string inputGot;
         public bool isHit;
-        
+
         public Vector3 lastPos;
         public Vector3 targetPos;
         public bool mustMove;
@@ -27,8 +25,6 @@ namespace Behaviour.Player
         public float time;
 
         public LayerMask layer;
-        public Tilemap dirtTileMap;
-        public Tilemap bouldersMap;
 
         //Animation direction clockwise
         enum Direction
@@ -107,22 +103,25 @@ namespace Behaviour.Player
                         case "Boulder":
                             //can't move boulders in stay in place mode
                             if (!Input.GetKey(KeyCode.LeftControl))
-                                //Call boulder hit function, decides if the player can move the boulder
+                                //call boulder hit function, decides if the player can move the boulder
                                 mustMove = hit.collider.gameObject.GetComponent<Boulder>().BoulderHit(targetDirection);
                             else
                                 mustMove = false;
                             break;
 
-                        //We hit dirt
+                        //we hit dirt
                         case "Dirt":
                             //Allow player to move
                             mustMove = true;
                             //Delete the dirt
-                            if (dirtTileMap != null)
-                            {
-                                soundManager.Play_Walk_Dirt();
-                                dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos + targetDirection), null);
-                            }
+
+                            SoundManager.Instance.PlayWalkDirt();
+                            //Get reference to tilemap
+                            var map = hit.collider.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
+                            //Delete tile
+                            if (map != null)
+                                map.SetTile(map.WorldToCell(targetPos + targetDirection), null);
+
                             break;
 
                         //We hit something else, player cannot move
@@ -138,10 +137,12 @@ namespace Behaviour.Player
                     //Check for stay in place mode, else allow player movement
                     if (!Input.GetKey(KeyCode.LeftControl))
                     {
-                        soundManager.Play_Walk_empty();
+                        if (hit.collider == null)
+                            SoundManager.Instance.PlayWalkEmpty();
+
                         targetPos += targetDirection;
                         animator.SetInteger("AnimationDirection", animationDirection);
-                        
+
                         animator.SetBool("isMoving", true);
                         isMoving = true;
                     }
