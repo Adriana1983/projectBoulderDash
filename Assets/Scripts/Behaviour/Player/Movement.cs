@@ -2,13 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Xml.Schema;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 namespace Behaviour.Player
 {
     public class Movement : MonoBehaviour
     {
+        public int score = 0;
+        private bool Finished;
+        public float timerNextScene = 5;
+        
         public float speed = 10.0f;
         public string hitDirection;
         public string inputGot;
@@ -123,7 +129,23 @@ namespace Behaviour.Player
                                 map.SetTile(map.WorldToCell(targetPos + targetDirection), null);
 
                             break;
-
+                        case "Diamond":
+                            mustMove = true;
+                            SoundManager.Instance.PlayCollectdiamond();
+                            Destroy(hit.collider.gameObject);
+                            GameObject.FindWithTag("Exitdoor").GetComponent<Exitdoor>().score += 10; 
+                            
+                            break;
+                        case "Exitdoor":
+                            mustMove = true;
+                            SoundManager.Instance.PlayFinished();
+                            Destroy(GameObject.FindWithTag("Exitdoor"));
+                            speed = 0;
+                            targetDirection = lastPos;
+                            Finished = true;
+                            
+                            //Finish sound, Pause, reset score, load next level, .
+                            break;
                         //We hit something else, player cannot move
                         default:
                             mustMove = false;
@@ -170,6 +192,16 @@ namespace Behaviour.Player
                     mustMove = false;
                 }
             }
+            
+            //check if the level has been finished
+            if (Finished == true)
+            {
+                timerNextScene -= Time.deltaTime;
+                if (timerNextScene < 0)
+                {
+                    //Change scene
+                }
+            }
         }
 
         public void Idle()
@@ -191,6 +223,11 @@ namespace Behaviour.Player
             isIdle = true;
             animator.SetBool("isMoving", isMoving);
 
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            Destroy(other.gameObject);
         }
     }
 }

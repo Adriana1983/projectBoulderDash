@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Behaviour.Objects;
+using Behaviour;
 using UnityEngine;
 
 public class MagicWall : MonoBehaviour

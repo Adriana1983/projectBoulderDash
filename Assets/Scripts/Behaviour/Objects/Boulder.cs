@@ -145,4 +145,5 @@ public class Boulder : MonoBehaviour
         GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down, Quaternion.identity);
         GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down + Vector3.right, Quaternion.identity);
     }
+    
 }
