@@ -12,6 +12,7 @@ TagManager:
   - Boulder
   - Wall
   - Diamond
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -22,10 +23,10 @@ TagManager:
   - 
   - 
   - Camera Bounds
-  - Rock
-  - Ground
+  - Bounds
+  - Dirt
   - Boulder
-  - 
+  - Wall
   - 
   - 
   - 

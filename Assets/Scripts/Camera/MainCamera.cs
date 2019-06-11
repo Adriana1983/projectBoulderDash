@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Vector3 = UnityEngine.Vector3;
 using Vector2 = UnityEngine.Vector3;
+using UnityEngine.SceneManagement;
 
 namespace Camera
 {
@@ -37,29 +38,30 @@ namespace Camera
             {
                 isLocked = !isLocked;
             }
-            
-           
-//            RaycastHit2D hitleft = Physics2D.Raycast(transform.position,  Vector2.left, -cameraX);
-//            RaycastHit2D hitright = Physics2D.Raycast(transform.position, Vector2.right + cameraBounds, cameraX);
-//            RaycastHit2D hitdown = Physics2D.Raycast(transform.position, Vector2.down + cameraBounds, -cameraY);
-//            RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector2.up + cameraBounds, cameraY);
-//            
-//            if (hitleft.collider != null && hitright.collider.CompareTag("CameraBounds") )
-//            {
-//               Debug.Log(hitleft.collider + "left");
-//            }
-//            if (hitright.collider != null && hitright.collider.CompareTag("CameraBounds"))
-//            {
-//                Debug.Log(hitright.collider + "right");
-//            }
-//            if (hitdown.collider != null && hitdown.collider.CompareTag("CameraBounds"))
-//            {
-//                Debug.Log(hitdown.collider + "down");
-//            }
-//            if (hitup.collider != null && hitup.collider.CompareTag("CameraBounds"))
-//            {
-//                Debug.Log(hitup.collider + "up");
-//            }
+            if (Input.GetKey(KeyCode.R)) SceneManager.LoadScene("MainScene");
+
+
+            //            RaycastHit2D hitleft = Physics2D.Raycast(transform.position,  Vector2.left, -cameraX);
+            //            RaycastHit2D hitright = Physics2D.Raycast(transform.position, Vector2.right + cameraBounds, cameraX);
+            //            RaycastHit2D hitdown = Physics2D.Raycast(transform.position, Vector2.down + cameraBounds, -cameraY);
+            //            RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector2.up + cameraBounds, cameraY);
+            //            
+            //            if (hitleft.collider != null && hitright.collider.CompareTag("CameraBounds") )
+            //            {
+            //               Debug.Log(hitleft.collider + "left");
+            //            }
+            //            if (hitright.collider != null && hitright.collider.CompareTag("CameraBounds"))
+            //            {
+            //                Debug.Log(hitright.collider + "right");
+            //            }
+            //            if (hitdown.collider != null && hitdown.collider.CompareTag("CameraBounds"))
+            //            {
+            //                Debug.Log(hitdown.collider + "down");
+            //            }
+            //            if (hitup.collider != null && hitup.collider.CompareTag("CameraBounds"))
+            //            {
+            //                Debug.Log(hitup.collider + "up");
+            //            }
         }
 
         void LateUpdate()
