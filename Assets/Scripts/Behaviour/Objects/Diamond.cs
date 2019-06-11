@@ -11,6 +11,7 @@ public class Diamond : MonoBehaviour
     public bool Falling;
     public bool LastpositionFalling;
     public bool activatedWall;
+    public int score;
 
     void Update()
     {
@@ -91,6 +92,15 @@ public class Diamond : MonoBehaviour
             }
 
             Timer = 0.15f;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.collider.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+            score = score + 10;
         }
     }
 }
