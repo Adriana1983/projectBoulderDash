@@ -133,5 +133,5 @@ MonoBehaviour:
     m_Bits: 4294967295
   dirtTileMap: {fileID: 0}
   nextGrow: 0
-  growSpeed: 1
+  growSpeed: 0.2
   allowedDirections: []

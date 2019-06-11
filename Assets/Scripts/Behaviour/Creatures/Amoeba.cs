@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Numerics;
 using Behaviour.Objects;
 using UnityEngine;
@@ -45,10 +46,10 @@ namespace Behaviour.Creatures
             amoebaCount = GameObject.FindGameObjectsWithTag("Amoeba").Length;
             hitPos = targetPos;
             allowedDirections = new List<Vector3>();
-            RaycastHit2D left = Physics2D.Raycast(transform.position, Vector3.left, 0.5f);
-            RaycastHit2D right = Physics2D.Raycast(transform.position, Vector3.right, 0.5f);
-            RaycastHit2D down = Physics2D.Raycast(transform.position, Vector3.down, 0.5f);
-            RaycastHit2D up = Physics2D.Raycast(transform.position, Vector3.up, 0.5f);
+            RaycastHit2D left = Physics2D.Raycast(transform.position, Vector3.left, 1);
+            RaycastHit2D right = Physics2D.Raycast(transform.position, Vector3.right, 1);
+            RaycastHit2D down = Physics2D.Raycast(transform.position, Vector3.down, 1);
+            RaycastHit2D up = Physics2D.Raycast(transform.position, Vector3.up, 1);
             
             if (left.collider == null || left.collider.CompareTag("Dirt"))
             {
@@ -97,7 +98,6 @@ namespace Behaviour.Creatures
                         //What did we hit?
                         switch (hit.collider.gameObject.tag)
                         {
-                            //We hit dirt
                             case "Dirt":
                                 //Allow amoeba to grow
                                 mustGrow = true;
@@ -107,7 +107,7 @@ namespace Behaviour.Creatures
                                 break;
                             case "Firefly":
                                 break;
-                            //We hit something else, player cannot move
+                            //We hit something else, amoeba cannot grow
                             default:
                                 mustGrow = false;
                                 break;
@@ -144,6 +144,11 @@ namespace Behaviour.Creatures
                 nextGrow += growSpeed;
             }
            
+        }
+
+        private void FixedUpdate()
+        {
+            
         }
 
         private void LateUpdate()
