@@ -10,13 +10,13 @@ public class MagicWall : MonoBehaviour
     public GameObject Boulder;
     public GameObject Diamond;
     public bool activated;
-    private float activeDuration = 15f;
+    private float activeDuration = 30f;
     private float Timer = 0.15f;
     private SpriteRenderer wallRenderer;
     
     private void Update()
     {
-        //Als er een boulder een Magic wall heeft geactiveerd doe dit
+        //Als er een boulder of diamond een Magic wall heeft geactiveerd doe dit
         if (activated)
         {
             //Zoekt alle andere magic walls en zet hun variable activated naar true
