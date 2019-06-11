@@ -137,13 +137,17 @@ namespace Behaviour.Player
                             
                             break;
                         case "Exitdoor":
-                            mustMove = true;
+                            
+                            mustMove = false;
+                            if (GameObject.FindWithTag("Exitdoor").GetComponent<Exitdoor>().score >= 10)
+                            {
+                                mustMove = true;
                             SoundManager.Instance.PlayFinished();
                             Destroy(GameObject.FindWithTag("Exitdoor"));
                             speed = 0;
                             targetDirection = lastPos;
                             Finished = true;
-                            
+                        }
                             //Finish sound, Pause, reset score, load next level, .
                             break;
                         //We hit something else, player cannot move
