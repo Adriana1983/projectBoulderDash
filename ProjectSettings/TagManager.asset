@@ -12,6 +12,7 @@ TagManager:
   - Boulder
   - Wall
   - Diamond
+  - Amoeba
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - Rock
   - Ground
   - Boulder
-  - 
+  - Amoeba
   - 
   - 
   - 
