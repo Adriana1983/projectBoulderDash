@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Numerics;
 using Behaviour.Objects;
+using Helper_Scripts;
+using JetBrains.Annotations;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -29,6 +31,7 @@ namespace Behaviour.Creatures
         private GrowState state;
         private Vector2Int position;
         private List<Vector2Int> growPostion;
+        private int growCycle;
         
         public AmoebaCell(TileBase amoeba, TileBase amoebaPlaceholder, Vector2Int position, GrowState state)
         {
@@ -36,6 +39,7 @@ namespace Behaviour.Creatures
             this.amoebaPlaceholder = amoebaPlaceholder;
             this.state = state;
             this.position = position;
+            growCycle = 0;
         }
         public TileBase Amoeba
         {
@@ -65,58 +69,62 @@ namespace Behaviour.Creatures
             get => growPostion;
             set => growPostion = value;
         }
-
+        
+        public int GrowCycle
+        {
+            get => growCycle;
+            set => growCycle = value;
+        }
     }
     
     public class Amoeba : MonoBehaviour
     {
-        public bool isHit;
-
+        public GridInfoRetriever gridInfo;
+        
         public Vector3 targetPos;
-        private Vector3 hitPos;
-        private Vector3 previous;
         public bool mustGrow;
         public bool isGrowing;
         public int maxSize;
         public int amoebaCount;
 
         public LayerMask layer;
-        public Tilemap dirtTileMap;
         public Tilemap amoebaTilemap;
         public float nextGrow;
         public float growSpeed;
 
         private List<Vector3> allowedDirections;
         public List<AmoebaCell> amoebaCollection;
-        public List<Vector2Int> motherCells;
+        public List<Vector2Int> growDirections;
+       
 
         public BoundsInt bounds;
+        public TileBase[] amoebaTiles;
         public TileBase[] allTiles;
-        public Dictionary<Vector2Int, TileBase> neighbourTiles;
+        public Dictionary<Vector2Int, string> tiles;
+        public Dictionary<Vector2Int, string> neighbourTiles;
 
         private void Start()
         {
+            Tilemap[] tilemaps = FindObjectsOfType<Tilemap>();
             targetPos = transform.position;
-            previous = targetPos;
             isGrowing = false;
             mustGrow = false;
             amoebaCollection = new List<AmoebaCell>();
+            growDirections = new List<Vector2Int>();
+            tiles = new Dictionary<Vector2Int, string>();
             amoebaTilemap = gameObject.GetComponent<Tilemap>();
-            neighbourTiles = new Dictionary<Vector2Int, TileBase>();
+            neighbourTiles = new Dictionary<Vector2Int, string>();
+            // get all tiles
+            tiles = gridInfo.GetTilemaps(tilemaps);
             bounds = amoebaTilemap.cellBounds;
-            allTiles = amoebaTilemap.GetTilesBlock(bounds);
+            amoebaTiles = amoebaTilemap.GetTilesBlock(bounds);
             GetMotherCells();
-            foreach (var amoeba in amoebaCollection)
-            {
-                motherCells.Add(amoeba.Position);
-            }
             UpdateGrowLocation();
         }
 
         private void Update()
         {
             amoebaCount = amoebaCollection.Count;
-            hitPos = targetPos;
 
 
             // limit grow speed by looking at time
@@ -208,7 +216,7 @@ namespace Behaviour.Creatures
         {
             for (int x = 0; x < bounds.size.x; x++) {
                 for (int y = 0; y < bounds.size.y; y++) {
-                    TileBase tile = allTiles[x + y * bounds.size.x];
+                    TileBase tile = amoebaTiles[x + y * bounds.size.x];
                     if (tile != null)
                     {
                         amoebaCollection.Add(
@@ -226,6 +234,7 @@ namespace Behaviour.Creatures
 
         public void UpdateGrowLocation()
         {
+            growDirections.Clear();
             foreach (var amoebaCell in amoebaCollection)
             {
                 Vector2Int curentPos = amoebaCell.Position;
@@ -234,19 +243,11 @@ namespace Behaviour.Creatures
                 {
                     foreach (var tile in neighbourTiles)
                     {
-                        string name;
                         if (tile.Value == null)
                         {
-                            name = "empty space";
+                            // store the available locations as Vector2
+                            growDirections.Add(tile.Key);
                         }
-                        else
-                        {
-                            
-                            name = tile.Value.name;
-                        }
-                        
-                        Debug.Log("Amoeba at " + curentPos + " has neighbour " + name + " at " + tile.Key);
-               
                     }
                 }
             }
@@ -254,7 +255,7 @@ namespace Behaviour.Creatures
 
         public TileBase GetTile(int x, int y)
         {
-            return allTiles[x + y * bounds.size.x];
+            return amoebaTiles[x + y * bounds.size.x];
         }
 
         public void GetNeighbourTiles(Vector2Int position)
@@ -266,19 +267,41 @@ namespace Behaviour.Creatures
                 {
                     if (x != 0 || y != 0)
                     {
-                        Vector3Int tilePosition = new Vector3Int(position.x + x, position.y + y, 0);
-                        neighbourTiles.Add(new Vector2Int(tilePosition.x, tilePosition.y), amoebaTilemap.GetTile(tilePosition));
+                       Vector2Int tilePosition = new Vector2Int(position.x + x, position.y + y);
+                       neighbourTiles.Add(new Vector2Int(tilePosition.x, tilePosition.y), tiles[tilePosition]);
+                       Debug.Log(tilePosition + " has tile" + tiles[tilePosition]);
                     }
                 }
             }
         }
 
+        public float GetGrowSpeed(GrowState state)
+        {
+            float growingSpeed = 0;
+            var random = new Random();
+            
+            switch (state)
+            {
+                case GrowState.Sleeping:
+                    growingSpeed = 0;
+                    break;
+                case GrowState.Slow:
+                    growingSpeed = random.Next(0, 24);
+                    break;
+                case GrowState.Fast:
+                    growingSpeed = random.Next(0, 4);
+                    break;
+            }
 
-//        public Vector2 GetRanomGrowPosition()
+            return growingSpeed;
+        }
+
+
+//        public Vector2 GetRandomGrowDirection()
 //        {
 //            var random = new Random();
 //            int index = random.Next(growPostion.Count);
 //            return growPostion[index];
-//        }
+        //}
     }
 }

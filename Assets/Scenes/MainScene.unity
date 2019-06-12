@@ -2561,6 +2561,8 @@ GameObject:
   - component: {fileID: 1442926212}
   - component: {fileID: 1442926211}
   - component: {fileID: 1442926214}
+  - component: {fileID: 1442926216}
+  - component: {fileID: 1442926215}
   m_Layer: 12
   m_Name: Amoeba
   m_TagString: Amoeba
@@ -2594,7 +2596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d80ccfcd44147de47afb8a6bbdc02c09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isHit: 0
+  gridInfo: {fileID: 2123787320}
   targetPos: {x: 0, y: 0, z: 0}
   mustGrow: 0
   isGrowing: 0
@@ -2603,14 +2605,14 @@ MonoBehaviour:
   layer:
     serializedVersion: 2
     m_Bits: 0
-  dirtTileMap: {fileID: 1845154289}
   amoebaTilemap: {fileID: 1442926213}
   nextGrow: 0
   growSpeed: 3
-  motherCells: []
+  growDirections: []
   bounds:
     m_Position: {x: 0, y: 0, z: 0}
     m_Size: {x: 0, y: 0, z: 0}
+  amoebaTiles: []
   allTiles: []
 --- !u!483693784 &1442926212
 TilemapRenderer:
@@ -2724,7 +2726,7 @@ Tilemap:
       - {fileID: 824522108288588477, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: 4805673535175263925, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: -6770824690191803570, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
-      m_AnimationSpeed: 3.3238754
+      m_AnimationSpeed: 2.9012308
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 18, y: -1, z: 0}
@@ -2738,7 +2740,7 @@ Tilemap:
       - {fileID: 824522108288588477, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: 4805673535175263925, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: -6770824690191803570, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
-      m_AnimationSpeed: 2.9396262
+      m_AnimationSpeed: 3.241394
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 19, y: -1, z: 0}
@@ -2752,7 +2754,7 @@ Tilemap:
       - {fileID: 824522108288588477, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: 4805673535175263925, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: -6770824690191803570, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
-      m_AnimationSpeed: 4.205866
+      m_AnimationSpeed: 2.1813388
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 19, y: 0, z: 0}
@@ -2766,7 +2768,7 @@ Tilemap:
       - {fileID: 824522108288588477, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: 4805673535175263925, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: -6770824690191803570, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
-      m_AnimationSpeed: 2.1841693
+      m_AnimationSpeed: 2.75813
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 19, y: 1, z: 0}
@@ -2780,7 +2782,7 @@ Tilemap:
       - {fileID: 824522108288588477, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: 4805673535175263925, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: -6770824690191803570, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
-      m_AnimationSpeed: 4.2605247
+      m_AnimationSpeed: 2.7204635
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   m_TileAssetArray:
@@ -2851,10 +2853,55 @@ TilemapCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!66 &1442926215
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442926209}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths:
+  - m_Collider: {fileID: 1442926214}
+    m_ColliderPaths: []
+  m_CompositePaths:
+    m_Paths: []
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.000005
+--- !u!50 &1442926216
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442926209}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1722001162
 GameObject:
   m_ObjectHideFlags: 0
@@ -21958,6 +22005,7 @@ GameObject:
   - component: {fileID: 2123787319}
   - component: {fileID: 2123787317}
   - component: {fileID: 2123787318}
+  - component: {fileID: 2123787320}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -22025,3 +22073,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2123787320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123787316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f858ddf293b46a849988816bcc2fdf0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bounds:
+    m_Position: {x: 0, y: 0, z: 0}
+    m_Size: {x: 0, y: 0, z: 0}
+  allTiles: []
