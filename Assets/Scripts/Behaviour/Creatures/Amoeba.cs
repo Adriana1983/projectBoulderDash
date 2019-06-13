@@ -95,29 +95,24 @@ namespace Behaviour.Creatures
         private List<Vector3> allowedDirections;
         public List<AmoebaCell> amoebaCollection;
         public List<Vector2Int> growDirections;
-       
-
-        public BoundsInt bounds;
-        public TileBase[] amoebaTiles;
-        public TileBase[] allTiles;
         public Dictionary<Vector2Int, string> tiles;
         public Dictionary<Vector2Int, string> neighbourTiles;
 
         private void Start()
         {
             Tilemap[] tilemaps = FindObjectsOfType<Tilemap>();
+            GameObject[] gameObjects =  FindObjectsOfType<GameObject>() ;
             targetPos = transform.position;
             isGrowing = false;
             mustGrow = false;
             amoebaCollection = new List<AmoebaCell>();
             growDirections = new List<Vector2Int>();
             tiles = new Dictionary<Vector2Int, string>();
+           
             amoebaTilemap = gameObject.GetComponent<Tilemap>();
             neighbourTiles = new Dictionary<Vector2Int, string>();
             // get all tiles
-            tiles = gridInfo.GetTilemaps(tilemaps);
-            bounds = amoebaTilemap.cellBounds;
-            amoebaTiles = amoebaTilemap.GetTilesBlock(bounds);
+            tiles = gridInfo.GetTilemaps(tilemaps, gameObjects);
             GetMotherCells();
             UpdateGrowLocation();
         }
@@ -214,17 +209,20 @@ namespace Behaviour.Creatures
         // iterate through all tiles to get amoeba mother cells
         public void GetMotherCells()
         {
-            for (int x = 0; x < bounds.size.x; x++) {
-                for (int y = 0; y < bounds.size.y; y++) {
-                    TileBase tile = amoebaTiles[x + y * bounds.size.x];
-                    if (tile != null)
+            for (int n = amoebaTilemap.cellBounds.xMin; n < amoebaTilemap.cellBounds.xMax; n++)
+            {
+                for (int p = amoebaTilemap.cellBounds.yMin; p < amoebaTilemap.cellBounds.yMax; p++)
+                {
+                    Vector3Int localPlace = new Vector3Int(n, p, 0);
+                    Vector2Int location = new Vector2Int(localPlace.x, localPlace.y);
+                       
+                    if (amoebaTilemap.HasTile(localPlace))
                     {
                         amoebaCollection.Add(
                             new AmoebaCell(
-                                tile, 
+                                amoebaTilemap.GetTile(localPlace), 
                                 null,
-                                // y - 3, cause it offsets the y for some reason
-                                new Vector2Int(x, y - 3),
+                                location,
                                 GrowState.Sleeping)
                         ); 
                     }
@@ -243,7 +241,7 @@ namespace Behaviour.Creatures
                 {
                     foreach (var tile in neighbourTiles)
                     {
-                        if (tile.Value == null)
+                        if (tile.Value == "Dirt" || tile.Value == "Void")
                         {
                             // store the available locations as Vector2
                             growDirections.Add(tile.Key);
@@ -253,26 +251,34 @@ namespace Behaviour.Creatures
             }
         }
 
-        public TileBase GetTile(int x, int y)
-        {
-            return amoebaTiles[x + y * bounds.size.x];
-        }
 
         public void GetNeighbourTiles(Vector2Int position)
         {
             neighbourTiles.Clear();
-            for (int y = 1; y >= -1; y--)
+            
+            string tileName;
+            Vector2Int[] directions = 
             {
-                for (int x = -1; x <= 1; x++)
+                Vector2Int.down,
+                Vector2Int.up,
+                Vector2Int.right,
+                Vector2Int.left
+            };
+            foreach (var direction in directions)
+            {
+                Vector2Int tilePosition = new Vector2Int(position.x + direction.x, position.y + direction.y);
+                try
                 {
-                    if (x != 0 || y != 0)
-                    {
-                       Vector2Int tilePosition = new Vector2Int(position.x + x, position.y + y);
-                       neighbourTiles.Add(new Vector2Int(tilePosition.x, tilePosition.y), tiles[tilePosition]);
-                       Debug.Log(tilePosition + " has tile" + tiles[tilePosition]);
-                    }
+                    tileName = tiles[tilePosition];
+                           
                 }
+                catch (KeyNotFoundException)
+                {
+                    tileName = "Void";
+                }
+                neighbourTiles.Add(new Vector2Int(tilePosition.x, tilePosition.y), tileName);
             }
+            
         }
 
         public float GetGrowSpeed(GrowState state)

@@ -7,29 +7,47 @@ namespace Helper_Scripts
 {
     public class GridInfoRetriever: MonoBehaviour
     {
-        public BoundsInt bounds;
-        public TileBase[] allTiles;
-        
-        public Dictionary <Vector2Int, string> GetTilemaps(Tilemap[] tilemaps)
+        public Dictionary <Vector2Int, string> GetTilemaps(Tilemap[] tilemaps, GameObject[] gameObjects)
         {
-           
             Dictionary <Vector2Int, string> tiles = new Dictionary<Vector2Int, string>();
-            
+    
             foreach (Tilemap tilemap in tilemaps)
             {
-                bounds = tilemap.cellBounds;
-                allTiles = tilemap.GetTilesBlock(bounds);
-                
-                for (int x = 0; x < bounds.size.x; x++) {
-                    for (int y = 0; y < bounds.size.y; y++) {
-                        TileBase tile = allTiles[x + y * bounds.size.x];
-                        tiles[new Vector2Int(x, y - 3)] =  "Void";
-                        if (tile != null)
+                if (tilemap.gameObject.CompareTag("Boulder"))
+                {
+                    continue;
+                }
+                for (int n = tilemap.cellBounds.xMin; n < tilemap.cellBounds.xMax; n++)
+                {
+                    for (int p = tilemap.cellBounds.yMin; p < tilemap.cellBounds.yMax; p++)
+                    {
+                        Vector3Int localPlace = new Vector3Int(n, p, 0);
+                        Vector2Int location = new Vector2Int(localPlace.x, localPlace.y);
+                       
+                        if (tilemap.HasTile(localPlace))
                         {
-                            // y - 3, cause it offsets the y for some reason
-                            tiles[new Vector2Int(x, y - 3)] =  tile.name;
+                            tiles[location] =  tilemap.GetTile(localPlace).name.Replace("OriginalTileset_","");
                         }
                     }
+                }
+            }
+            foreach (var go in gameObjects)
+            {
+                Vector3 location;
+                switch (go.tag)
+                {
+                    // get the gameobjects that are not on tilemaps
+                    // todo: Add fireflies and butterflies here
+                    case "Player":
+                        //get location on grid
+                        location = tilemaps[0].WorldToCell(go.transform.position);
+                        tiles[new Vector2Int((int)location.x, (int)location.y)] = "Player";
+                        break;
+                    case "Boulder":
+                        //get location on grid
+                        location = tilemaps[0].WorldToCell(go.transform.position);
+                        tiles[new Vector2Int((int)location.x, (int)location.y)] = "Boulder";
+                        break;
                 }
             }
             return tiles;
