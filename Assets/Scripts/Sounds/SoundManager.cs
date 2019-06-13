@@ -27,6 +27,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+
     private AudioSource sfxSource;
 
     public AudioClip bdmusic; //opening tune
@@ -81,6 +82,19 @@ public class SoundManager : MonoBehaviour
     public void PlayBDmusic()
     {
         PlaySound(bdmusic);
+    }
+
+    public static AudioClip PlayBDmusicLoop
+    {
+        get
+        {
+            instance = FindObjectOfType<SoundManager>();
+            return instance.bdmusic;
+        }
+        set
+        {
+            instance.bdmusic = value;
+        }
     }
 
     public void PlayCover()

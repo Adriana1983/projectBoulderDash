@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Boulder: {fileID: 4472148672978847059, guid: 1e0b2ee316303f748b67923ca64ea3ef, type: 3}
+  Diamond: {fileID: 2234496892397632554, guid: cb5fda802464f2443b4e7b50dba1f9c4, type: 3}
 --- !u!212 &3980626641629480046
 SpriteRenderer:
   m_ObjectHideFlags: 0
