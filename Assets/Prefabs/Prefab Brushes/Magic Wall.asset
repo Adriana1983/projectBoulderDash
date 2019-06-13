@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d5751a2c961df945a34295ccf5e576d, type: 3}
-  m_Name: BoulderBrush
+  m_Name: Magic Wall
   m_EditorClassIdentifier: 
   m_Cells:
   - m_Tile: {fileID: 0}
@@ -34,7 +34,6 @@ MonoBehaviour:
     m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Size: {x: 1, y: 1, z: 1}
   m_Pivot: {x: 0, y: 0, z: 0}
-  m_Prefabs:
-  - {fileID: 4928018769824077841, guid: 4f97d299174e6d64f8b22839d7d3813e, type: 3}
+  m_Prefabs: []
   m_PerlinScale: 0.5
   m_Z: 0
