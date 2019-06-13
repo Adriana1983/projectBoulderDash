@@ -81,7 +81,7 @@ public class Boulder : MonoBehaviour
                         if (hit_left.collider == null && hit_right.collider == null && left.collider == null & right.collider == null)
                         {
                             //random left or right
-                            if (random.Next(0, 1) == 0)
+                            if (random.Next(-1, 1) == 0)
                             {
                                 transform.position = transform.position + Vector3.left;
                             }
