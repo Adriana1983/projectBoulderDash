@@ -38,7 +38,7 @@ namespace Camera
             {
                 isLocked = !isLocked;
             }
-            if (Input.GetKey(KeyCode.R)) SceneManager.LoadScene("MainScene");
+            if (Input.GetKey(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
 
             //            RaycastHit2D hitleft = Physics2D.Raycast(transform.position,  Vector2.left, -cameraX);

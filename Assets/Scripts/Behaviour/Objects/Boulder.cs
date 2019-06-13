@@ -13,6 +13,7 @@ public class Boulder : MonoBehaviour
 
     public GameObject explosion;
 
+    //Return bool decides if rockford is allowed to move in the movement script
     public bool BoulderHit(Vector3 targetDirection)
     {
         //if (moving || random.Next(0, 100) > 90)
@@ -25,10 +26,17 @@ public class Boulder : MonoBehaviour
         //    return false;
         //}
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, targetDirection, 1);
-        if (hit.collider != null)
+        //Rockford can't move boulders up or down
+        if (targetDirection == Vector3.up || targetDirection == Vector3.down)
             return false;
 
+        //Check if there is something behind the boulder in the direction we want to push
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, targetDirection, 1);
+        if (hit.collider != null)
+            //There is something in the way, rockford cannot push this boulder
+            return false;
+
+        //There was nothing, so move the boulder to the empty square
         SoundManager.Instance.PlayBox_push();
         transform.position += targetDirection;
         return true;
@@ -144,5 +152,7 @@ public class Boulder : MonoBehaviour
         GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down + Vector3.left, Quaternion.identity);
         GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down, Quaternion.identity);
         GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down + Vector3.right, Quaternion.identity);
+
+        SoundManager.Instance.PlayExplosion();
     }
 }

@@ -25,6 +25,7 @@ namespace Behaviour.Player
         public float time;
 
         public LayerMask layer;
+        public BoxCollider2D ghost;
 
         //Animation direction clockwise
         enum Direction
@@ -42,6 +43,11 @@ namespace Behaviour.Player
             isMoving = false;
             mustMove = false;
             hitDirection = "";
+
+            //Added ghost collider to prefent boulders from falling while Rockford is not yet in target position (this couldn't be fixed with a LateUpdate!)
+            //Remove Rockford as parent from ghost collider to have it work as a gameobject but still have it appear in the direction of Rockford's movement
+            ghost.gameObject.transform.parent = null;
+            ghost.enabled = false;
         }
 
         private void Update()
@@ -141,6 +147,9 @@ namespace Behaviour.Player
                             SoundManager.Instance.PlayWalkEmpty();
 
                         targetPos += targetDirection;
+                        ghost.transform.position = targetPos;
+                        ghost.enabled = true;
+
                         animator.SetInteger("AnimationDirection", animationDirection);
 
                         animator.SetBool("isMoving", true);
@@ -166,6 +175,7 @@ namespace Behaviour.Player
                 //Wait for movement to finish
                 if (transform.position == targetPos)
                 {
+                    ghost.enabled = false;
                     isMoving = false;
                     mustMove = false;
                 }
