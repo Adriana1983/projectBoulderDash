@@ -26,7 +26,9 @@ public class CaveLoader : MonoBehaviour
     enum Prefabs
     {
         Boulder = 0,
-        SpawnRockford = 1
+        SpawnRockford = 1,
+        Diamond = 2,
+        MagicWall = 3
     }
 
 
@@ -43,7 +45,7 @@ public class CaveLoader : MonoBehaviour
     void Awake()
     {
         //loading text file and separating by breaklines
-        TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/CaveI-1");
+        TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/CaveH-1");
         List<string> caveDataList = caveData.text.Trim().Split('\n').Reverse().ToList();
 
         Height = caveDataList.Count;
@@ -70,12 +72,19 @@ public class CaveLoader : MonoBehaviour
 
                     #region Prefabs
                     case 'r':
-                        var b = GameObject.Instantiate(GetPrefab(Prefabs.Boulder), new Vector3(x+0.5f, y + 0.5f, 0), Quaternion.identity);
+                        var b = GameObject.Instantiate(GetPrefab(Prefabs.Boulder), new Vector3(x + 0.5f, y + 0.5f, 0), Quaternion.identity);
                         b.transform.parent = Boulders.transform;
                         break;
 
                     case 'X':
                         GameObject.Instantiate(GetPrefab(Prefabs.SpawnRockford), new Vector3(x + 0.5f, y + 0.5f, 0), Quaternion.identity);
+                        break;
+
+                    case 'd':
+                        GameObject.Instantiate(GetPrefab(Prefabs.Diamond), new Vector3(x + 0.5f, y + 0.5f, 0), Quaternion.identity);
+                        break;
+                    case 'm':
+                        GameObject.Instantiate(GetPrefab(Prefabs.MagicWall), new Vector3(x + 0.5f, y + 0.5f, 0), Quaternion.identity);
                         break;
                         #endregion
                 }

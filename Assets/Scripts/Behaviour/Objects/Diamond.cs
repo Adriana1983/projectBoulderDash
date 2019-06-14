@@ -42,49 +42,49 @@ public class Diamond : MonoBehaviour
                         break;
                     case "Diamond":
                     case "Boulder":
-                            if (hitDown.collider.CompareTag("Boulder") &&
-                                hitDown.collider.gameObject.GetComponent<Boulder>().Falling) break;
-                            if (hitDown.collider.CompareTag("Diamond") &&
-                                hitDown.collider.gameObject.GetComponent<Diamond>().Falling) break;
+                        if (hitDown.collider.CompareTag("Boulder") &&
+                            hitDown.collider.gameObject.GetComponent<Boulder>().Falling) break;
+                        if (hitDown.collider.CompareTag("Diamond") &&
+                            hitDown.collider.gameObject.GetComponent<Diamond>().Falling) break;
 
-                            RaycastHit2D hitColliderLeft =
-                                Physics2D.Raycast(hitDown.collider.transform.position, Vector2.left, 1);
-                            RaycastHit2D hitColliderRight =
-                                Physics2D.Raycast(hitDown.collider.transform.position, Vector2.right, 1);
+                        RaycastHit2D hitColliderLeft =
+                            Physics2D.Raycast(hitDown.collider.transform.position, Vector2.left, 1);
+                        RaycastHit2D hitColliderRight =
+                            Physics2D.Raycast(hitDown.collider.transform.position, Vector2.right, 1);
 
-                            RaycastHit2D Left = Physics2D.Raycast(transform.position, Vector2.left, 1);
-                            RaycastHit2D Right = Physics2D.Raycast(transform.position, Vector2.right, 1);
+                        RaycastHit2D Left = Physics2D.Raycast(transform.position, Vector2.left, 1);
+                        RaycastHit2D Right = Physics2D.Raycast(transform.position, Vector2.right, 1);
 
-                            if (hitColliderLeft.collider == null && hitColliderRight.collider == null &&
-                                Left.collider == null && Right.collider)
-                            {
-                                if (random.Next(0, 1) == 0)
-                                {
-                                    transform.position += Vector3.right;
-                                }
-                                else
-                                {
-                                    transform.position += Vector3.left;
-                                }
-                            }
-                            else if (Left.collider == null && hitColliderLeft.collider == null)
-                            {
-                                transform.position += Vector3.left;
-                            }
-                            else if (Right.collider == null && hitColliderRight.collider == null)
+                        if (hitColliderLeft.collider == null && hitColliderRight.collider == null &&
+                            Left.collider == null && Right.collider)
+                        {
+                            if (random.Next(0, 1) == 0)
                             {
                                 transform.position += Vector3.right;
                             }
+                            else
+                            {
+                                transform.position += Vector3.left;
+                            }
+                        }
+                        else if (Left.collider == null && hitColliderLeft.collider == null)
+                        {
+                            transform.position += Vector3.left;
+                        }
+                        else if (Right.collider == null && hitColliderRight.collider == null)
+                        {
+                            transform.position += Vector3.right;
+                        }
 
 
                         break;
-                case "Player":
-                if (Falling)
-                {
-                    //Player death
-                }
+                    case "Player":
+                        if (Falling)
+                        {
+                            //Player death
+                        }
 
-                break;
+                        break;
                 }
 
                 LastpositionFalling = Falling;
@@ -92,15 +92,6 @@ public class Diamond : MonoBehaviour
             }
 
             Timer = 0.15f;
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if (col.collider.CompareTag("Player"))
-        {
-            Destroy(gameObject);
-            score = score + 10;
         }
     }
 }

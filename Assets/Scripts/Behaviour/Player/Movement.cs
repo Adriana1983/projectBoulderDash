@@ -27,6 +27,8 @@ namespace Behaviour.Player
         public LayerMask layer;
         public BoxCollider2D ghost;
 
+        public int score;
+
         //Animation direction clockwise
         enum Direction
         {
@@ -117,17 +119,30 @@ namespace Behaviour.Player
 
                         //we hit dirt
                         case "Dirt":
-                            //Allow player to move
-                            mustMove = true;
-                            //Delete the dirt
+                            {
+                                //Allow player to move
+                                mustMove = true;
+                                //Delete the dirt
 
-                            SoundManager.Instance.PlayWalkDirt();
-                            //Get reference to tilemap
-                            var map = hit.collider.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
-                            //Delete tile
-                            if (map != null)
-                                map.SetTile(map.WorldToCell(targetPos + targetDirection), null);
+                                SoundManager.Instance.PlayWalkDirt();
+                                //Get reference to tilemap
+                                var map = hit.collider.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
+                                //Delete tile
+                                if (map != null)
+                                    map.SetTile(map.WorldToCell(targetPos + targetDirection), null);
+                            }
+                            break;
 
+                        case "Diamond":
+                            {
+                                //Allow player to move
+                                mustMove = true;
+                                //Delete the diamond
+
+                                SoundManager.Instance.PlayCollectdiamond();
+                                Destroy(hit.collider.gameObject);
+                                score += 10;
+                            }
                             break;
 
                         //We hit something else, player cannot move

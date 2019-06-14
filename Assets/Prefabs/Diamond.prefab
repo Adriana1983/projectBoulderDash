@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7518183433384529}
   - component: {fileID: 7849602288092946887}
   - component: {fileID: 3113701147773592888}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Diamond
   m_TagString: Diamond
   m_Icon: {fileID: 0}
@@ -122,3 +122,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Falling: 0
+  LastpositionFalling: 0
+  activatedWall: 0
+  score: 0

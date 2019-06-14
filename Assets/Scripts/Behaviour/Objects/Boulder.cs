@@ -13,6 +13,10 @@ public class Boulder : MonoBehaviour
 
     public GameObject explosion;
 
+    //Magic wall variables
+    public bool activatedWall;
+    public bool LastpositionFalling;
+
     //Return bool decides if rockford is allowed to move in the movement script
     public bool BoulderHit(Vector3 targetDirection)
     {
@@ -62,6 +66,16 @@ public class Boulder : MonoBehaviour
                 //there is something beneath this boulder
                 switch (hit.collider.tag)
                 {
+                    case "MagicWall":
+                        if (LastpositionFalling)
+                        {
+                            if (activatedWall == false)
+                            {
+                                hit.collider.gameObject.GetComponent<MagicWall>().activated = true;
+                                activatedWall = true;
+                            }
+                        }
+                        break;
                     case "Dirt":
                         if (Falling)
                             SoundManager.Instance.PlayBoulder();
@@ -131,6 +145,7 @@ public class Boulder : MonoBehaviour
                     default:
                         break;
                 }
+                LastpositionFalling = Falling;
                 Falling = false;
             }
 

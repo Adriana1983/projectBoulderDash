@@ -5,18 +5,64 @@ using UnityEngine.Tilemaps;
 
 public class Firefly_behavior : MonoBehaviour
 {
+<<<<<<< HEAD
+    bool isMoving = false;
+=======
+>>>>>>> origin/Magic-Mike
     public Vector3 targetPos;
     public float speed;
 
     // Start is called before the first frame update
     void Start()
     {
+<<<<<<< HEAD
+        speed = 10.0f;
+=======
          speed = 10.0f;
+>>>>>>> origin/Magic-Mike
     }
 
     // Update is called once per frame
     void Update()
     {
+<<<<<<< HEAD
+        if (transform.position == targetPos)
+        {
+            isMoving = false;
+        }
+
+        if (isMoving)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+        }
+        else
+        {
+            RaycastHit2D hitleft = Physics2D.Raycast(transform.position, Vector3.left, 0.5f);
+            RaycastHit2D hitright = Physics2D.Raycast(transform.position, Vector3.right, 0.5f);
+            RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector3.up, 0.5f);
+            RaycastHit2D hitdown = Physics2D.Raycast(transform.position, Vector3.down, 0.5f);
+
+            if (hitup.collider != null && hitleft.collider == null)
+            {
+                targetPos = transform.position + Vector3.left;
+            }
+            else if (hitleft.collider != null && hitdown.collider == null)
+            {
+                targetPos = transform.position + Vector3.down;
+            }
+            else if (hitdown.collider != null && hitright.collider == null)
+            {
+                targetPos = transform.position + Vector3.right;
+            }
+            else if (hitright.collider != null && hitup.collider == null)
+            {
+                targetPos = transform.position + Vector3.up;
+            }
+
+            isMoving = true;
+        }
+
+=======
         RaycastHit2D hitleft = Physics2D.Raycast(transform.position, Vector3.left, 0.5f);
         RaycastHit2D hitright = Physics2D.Raycast(transform.position, Vector3.right, 0.5f);
         RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector3.up, 0.5f);
@@ -38,5 +84,6 @@ public class Firefly_behavior : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.up, speed * Time.deltaTime);
         }
+>>>>>>> origin/Magic-Mike
     }
 }
