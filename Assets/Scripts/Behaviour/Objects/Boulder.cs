@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Behaviour.Objects;
 using UnityEngine;
+using Behaviour.Objects;
 using Random = System.Random;
 
 public class Boulder : MonoBehaviour
