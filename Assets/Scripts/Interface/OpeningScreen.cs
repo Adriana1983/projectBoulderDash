@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Windows;
 
-public class InteractiveText : MonoBehaviour
+public class OpeningScreen : MonoBehaviour
 {
     private int selectedOption = 1;
     private AudioClip clip;
@@ -38,7 +38,7 @@ public class InteractiveText : MonoBehaviour
             SoundManager.Instance.PlayBDmusic();
             clipPlaying = true;
             clipTimer = clip.length;
-
+            
         }
         
         if (clipPlaying)
@@ -173,6 +173,7 @@ public class InteractiveText : MonoBehaviour
                 SoundManager.Instance.PlayCollectdiamond();
                 //Settings gebruiken om het juiste level te laden.
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                
             }
 
             blinkTimer += Time.deltaTime;
