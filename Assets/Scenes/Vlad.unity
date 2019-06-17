@@ -120,8 +120,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
-<<<<<<< HEAD
-=======
 --- !u!1001 &135263584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -391,7 +389,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb0ae78d6cb28ab4ea8292676cee680b, type: 3}
->>>>>>> origin/Magic-Mike
 --- !u!1 &590331749
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,8 +542,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
-<<<<<<< HEAD
-=======
 --- !u!1001 &626869540
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -697,7 +692,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb0ae78d6cb28ab4ea8292676cee680b, type: 3}
->>>>>>> origin/Magic-Mike
 --- !u!1 &769996592
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,9 +724,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-<<<<<<< HEAD
-  m_Children: []
-=======
   m_Children:
   - {fileID: 420029846}
   - {fileID: 497488372}
@@ -752,7 +743,6 @@ Transform:
   - {fileID: 977920997}
   - {fileID: 1527165246}
   - {fileID: 1253208545}
->>>>>>> origin/Magic-Mike
   m_Father: {fileID: 1453282223}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14566,11 +14556,7 @@ Tilemap:
       - {fileID: 824522108288588477, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: 4805673535175263925, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: -6770824690191803570, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
-<<<<<<< HEAD
-      m_AnimationSpeed: 5
-=======
       m_AnimationSpeed: 5.0000005
->>>>>>> origin/Magic-Mike
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 21, y: 3, z: 0}
@@ -14598,11 +14584,7 @@ Tilemap:
       - {fileID: 824522108288588477, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: 4805673535175263925, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
       - {fileID: -6770824690191803570, guid: 20eb5f65c52eea745adf87f8d5740470, type: 3}
-<<<<<<< HEAD
-      m_AnimationSpeed: 5
-=======
       m_AnimationSpeed: 5.0000005
->>>>>>> origin/Magic-Mike
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 19, y: 4, z: 0}
@@ -14722,8 +14704,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
-<<<<<<< HEAD
-=======
 --- !u!1001 &851206098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15081,7 +15061,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb0ae78d6cb28ab4ea8292676cee680b, type: 3}
->>>>>>> origin/Magic-Mike
 --- !u!1 &1028972095
 GameObject:
   m_ObjectHideFlags: 0
@@ -21867,8 +21846,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
-<<<<<<< HEAD
-=======
 --- !u!4 &1041444106 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2007398031164448163, guid: fb0ae78d6cb28ab4ea8292676cee680b,
@@ -22094,7 +22071,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 877947313}
   m_PrefabAsset: {fileID: 0}
->>>>>>> origin/Magic-Mike
 --- !u!1 &1453282220
 GameObject:
   m_ObjectHideFlags: 0
@@ -22107,11 +22083,7 @@ GameObject:
   - component: {fileID: 1453282222}
   - component: {fileID: 1453282221}
   m_Layer: 0
-<<<<<<< HEAD
-  m_Name: Grid (1)
-=======
   m_Name: Grid
->>>>>>> origin/Magic-Mike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22175,8 +22147,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
-<<<<<<< HEAD
-=======
 --- !u!4 &1527165246 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2007398031164448163, guid: fb0ae78d6cb28ab4ea8292676cee680b,
@@ -22264,7 +22234,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1122215427}
   m_PrefabAsset: {fileID: 0}
->>>>>>> origin/Magic-Mike
 --- !u!1 &1624356372
 GameObject:
   m_ObjectHideFlags: 0
@@ -22278,11 +22247,7 @@ GameObject:
   - component: {fileID: 1624356374}
   - component: {fileID: 1624356373}
   m_Layer: 8
-<<<<<<< HEAD
-  m_Name: Main Camera (1)
-=======
   m_Name: Main Camera
->>>>>>> origin/Magic-Mike
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22370,8 +22335,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
-=======
 --- !u!1001 &1632769406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22666,4 +22629,3 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 135263584}
   m_PrefabAsset: {fileID: 0}
->>>>>>> origin/Magic-Mike

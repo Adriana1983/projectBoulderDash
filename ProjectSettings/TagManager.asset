@@ -13,7 +13,7 @@ TagManager:
   - Wall
   - Diamond
   - Door
-  - Undefined
+  - Amoeba
   - MagicWall
   layers:
   - Default
@@ -29,7 +29,7 @@ TagManager:
   - Dirt
   - Boulder
   - Wall
-  - 
+  - Amoeba
   - 
   - 
   - 
