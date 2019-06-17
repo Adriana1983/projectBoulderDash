@@ -67,7 +67,7 @@ public class Boulder : MonoBehaviour
                 switch (hit.collider.tag)
                 {
                     case "MagicWall":
-                        if (LastpositionFalling)
+                        if (LastpositionFalling || Falling)
                         {
                             if (activatedWall == false)
                             {

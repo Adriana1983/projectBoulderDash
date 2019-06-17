@@ -10,7 +10,7 @@ public class MagicWall : MonoBehaviour
     public GameObject Boulder;
     public GameObject Diamond;
     public bool activated;
-    private float activeDuration = 15f;
+    private float activeDuration;
     private float Timer = 0.15f;
     private SpriteRenderer wallRenderer;
     
@@ -27,6 +27,7 @@ public class MagicWall : MonoBehaviour
             //Verandert sprite naar Magic wall moet worden verplaatst met animaties
             wallRenderer= GetComponent<SpriteRenderer>(); 
             wallRenderer.sprite = magicWallSprite;
+            activeDuration = 0.15f;
             
             //Start countdown van de duration
             if (activeDuration >= 0)
@@ -62,7 +63,7 @@ public class MagicWall : MonoBehaviour
                             break;
                         case "Boulder":
                             //activated = true;
-                            if (hitup.collider.gameObject.GetComponent<Boulder>().LastpositionFalling)
+                            if (hitup.collider.gameObject.GetComponent<Boulder>().LastpositionFalling || hitup.collider.gameObject.GetComponent<Boulder>().Falling)
                             {
                                 Destroy(hitup.collider.gameObject);
                                 Instantiate(Diamond,
