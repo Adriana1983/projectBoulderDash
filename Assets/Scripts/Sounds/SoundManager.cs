@@ -33,6 +33,9 @@ public class SoundManager : MonoBehaviour
     public AudioClip cover; //building up cave/intermission
     public AudioClip crack; //Rockford appears in cave - he's immediately able to move - cave timer starts running -- opening exit
     public AudioClip finished; //upon completing cave/intermission remaining seconds turn in to score
+    
+    // soulslike death sounds
+    public AudioClip death;
 
     public AudioClip amoeba; //when amoeba grows
     public AudioClip explosion; //all explosions
@@ -83,6 +86,11 @@ public class SoundManager : MonoBehaviour
         PlaySound(bdmusic);
     }
 
+    public void PlayDeathSound()
+    {
+        PlaySound(death);
+    }
+    
     public void PlayCover()
     {
         PlaySound(cover);

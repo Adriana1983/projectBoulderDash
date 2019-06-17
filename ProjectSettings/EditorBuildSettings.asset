@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Vlad.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: 751d55671ae9a8b4aaa5a7dad13a07ee
+  - enabled: 1
+    path: Assets/Death.unity
+    guid: a91700167ee96c3439e041fc5cc03d2a
   m_configObjects: {}
