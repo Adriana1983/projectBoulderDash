@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Behaviour.Objects;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -13,6 +12,7 @@ namespace Behaviour.Player
         public SoundManager soundManager;
 
         public float speed = 10.0f;
+        public string hitDirection;
         public string inputGot;
         public bool isHit;
         
@@ -28,6 +28,7 @@ namespace Behaviour.Player
 
         public LayerMask layer;
         public Tilemap dirtTileMap;
+        public Tilemap bouldersMap;
 
         //Animation direction clockwise
         enum Direction
@@ -44,6 +45,7 @@ namespace Behaviour.Player
             targetPos = transform.position;
             isMoving = false;
             mustMove = false;
+            hitDirection = "";
         }
 
         private void Update()
@@ -122,9 +124,9 @@ namespace Behaviour.Player
                                 dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos + targetDirection), null);
                             }
                             break;
+
                         //We hit something else, player cannot move
                         default:
-                            Debug.Log(hit.collider.tag);
                             mustMove = false;
                             break;
                     }
