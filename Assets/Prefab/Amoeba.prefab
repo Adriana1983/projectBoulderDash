@@ -121,16 +121,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d80ccfcd44147de47afb8a6bbdc02c09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridInfo: {fileID: 0}
+  hitDirection: 
+  isHit: 0
+  targetPos: {x: 0, y: 0, z: 0}
   mustGrow: 0
   isGrowing: 0
   maxSize: 200
   amoebaCount: 0
-  amoebaTilemap: {fileID: 0}
-  dirtTilemap: {fileID: 0}
-  boulderTilemap: {fileID: 0}
-  diamondTilemap: {fileID: 0}
-  diamond: {fileID: 2007398031164448160, guid: fb0ae78d6cb28ab4ea8292676cee680b, type: 3}
-  boulder: {fileID: 4360805507775418669, guid: 1e0b2ee316303f748b67923ca64ea3ef, type: 3}
-  defaultState: 0
-  isDormant: 0
+  layer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  dirtTileMap: {fileID: 0}
+  nextGrow: 0
+  growSpeed: 0.2
+  allowedDirections: []

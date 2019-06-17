@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Behaviour.Objects;
-using Camera;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 
 namespace Behaviour.Player
@@ -28,7 +26,6 @@ namespace Behaviour.Player
         public float time;
 
         public LayerMask layer;
-        public FadeOut deathScreen;
 
         //Animation direction clockwise
         enum Direction
@@ -40,28 +37,13 @@ namespace Behaviour.Player
             Left = 4
         }
 
-        public void Awake()
-        {
-            deathScreen = GameObject.Find("Canvas").GetComponentInChildren<FadeOut>();
-            deathScreen.Execute();
-
-        }
-
         private void Start()
         {
             targetPos = transform.position;
             isMoving = false;
             mustMove = false;
             hitDirection = "";
-            // todo: move this someplace else
         }
-
-        public void OnDestroy()
-        {
-            deathScreen.gameObject.SetActive(true);
-            SoundManager.Instance.PlayDeathSound();
-        }
-        
 
         private void Update()
         {
