@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using Behaviour.Player;
+using Camera;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
 
@@ -11,6 +14,7 @@ namespace Behaviour.Objects
         Random random = new Random();
         public bool Falling;
         bool moving = false;
+        
 
         public GameObject explosion;
 
@@ -108,9 +112,6 @@ namespace Behaviour.Objects
                                 //player dies
                                 DrawExplosion(hit);
                                 Destroy(hit.collider.gameObject);
-                                Initiate.Fade("Death", Color.black, 2.0f);
-                                //SceneManager.LoadScene("Death", LoadSceneMode.Additive);
-                                //SoundManager.Instance.PlayDeathSound();
                             }
                             break;
 

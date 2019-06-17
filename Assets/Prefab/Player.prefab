@@ -110,6 +110,8 @@ MonoBehaviour:
   layer:
     serializedVersion: 2
     m_Bits: 15872
+  deathScreen: {fileID: 3678130984562626566, guid: 186cac068e3a26b43af0dafa8982bbfc,
+    type: 3}
 --- !u!95 &1151457489614880409
 Animator:
   serializedVersion: 3
