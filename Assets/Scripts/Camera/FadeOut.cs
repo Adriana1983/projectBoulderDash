@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Behaviour.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,24 +11,34 @@ namespace Camera
     {
         #region FIELDS
         public Image fadeOutUIImage;
-        public float fadeSpeed = 0.8f; 
+        public float fadeSpeed = 0.8f;
+
+
         public enum FadeDirection
         {
             In, //Alpha = 1
             Out // Alpha = 0
         }
+
         #endregion
         #region MONOBHEAVIOR
-        void OnEnable()
+//
+//        public void Start()
+//        {
+//            gameObject.SetActive(false);
+//        }
+
+        public void Execute()
         {
-            StartCoroutine(Fade(FadeDirection.Out));
+            StartCoroutine(Fade(FadeDirection.In));
         }
+
         #endregion
         #region FADE
         private IEnumerator Fade(FadeDirection fadeDirection) 
         {
-            float alpha = (fadeDirection == FadeDirection.Out)? 1 : 0;
-            float fadeEndValue = (fadeDirection == FadeDirection.Out)? 0 : 1;
+            float alpha = (fadeDirection == FadeDirection.Out)? 0.95f : 0;
+            float fadeEndValue = (fadeDirection == FadeDirection.Out)? 0 : 0.95f;
             if (fadeDirection == FadeDirection.Out) {
                 while (alpha >= fadeEndValue)
                 {
