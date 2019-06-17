@@ -4,10 +4,10 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - wallSprite: {instanceID: 0}
-  - magicWallSprite: {instanceID: 0}
-  - Boulder: {fileID: 4928018769824077841, guid: 4f97d299174e6d64f8b22839d7d3813e,
+  - wallSprite: {fileID: 3815593721904376672, guid: ee9737bd621734a4e81cd1d15b7c87ac,
       type: 3}
+  - magicWallSprite: {instanceID: 0}
+  - Boulder: {instanceID: 0}
   - Diamond: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}

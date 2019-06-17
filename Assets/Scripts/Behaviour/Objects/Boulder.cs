@@ -67,12 +67,12 @@ public class Boulder : MonoBehaviour
                 switch (hit.collider.tag)
                 {
                     case "MagicWall":
-                        if (LastpositionFalling)
+                        if (Falling)
                         {
-                            if (activatedWall == false)
+                            if (hit.collider.gameObject.GetComponent<MagicWall>().activated == false)
                             {
                                 hit.collider.gameObject.GetComponent<MagicWall>().activated = true;
-                                activatedWall = true;
+                                //activatedWall = true;
                             }
                         }
                         break;

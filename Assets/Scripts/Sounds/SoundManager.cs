@@ -74,8 +74,8 @@ public class SoundManager : MonoBehaviour
     {
         if (clip != null)
             sfxSource.PlayOneShot(clip);
-        else
-            Debug.Log("Audio clip is null");
+        //else
+            //Debug.Log("Audio clip is null");
     }
 
     public void PlayBDmusic()

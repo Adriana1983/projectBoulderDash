@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d6a5dbc070e0f4792bacbb6315988a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallSprite: {fileID: 3815593721904376672, guid: ee9737bd621734a4e81cd1d15b7c87ac,
+  wallSprite: {fileID: -4306768063022953764, guid: ee9737bd621734a4e81cd1d15b7c87ac,
     type: 3}
   magicWallSprite: {fileID: -4306768063022953764, guid: ee9737bd621734a4e81cd1d15b7c87ac,
     type: 3}
