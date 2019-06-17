@@ -34,6 +34,10 @@ namespace Helper_Scripts
             foreach (var go in gameObjects)
             {
                 Vector3 location;
+                if (go == null)
+                {
+                    continue;
+                }
                 switch (go.tag)
                 {
                     // get the gameobjects that are not on tilemaps

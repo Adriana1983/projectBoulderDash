@@ -188,7 +188,6 @@ namespace Behaviour.Creatures
             AmoebaCell amoeba = GetRandomAmoebaToGrow();
             
             float growSpeed = GetGrowSpeed(amoeba.State);
-            Debug.Log("Corutine started for " + growSpeed + " seconds");
             switch (amoeba.State)
             {
                 case GrowState.Fast:
