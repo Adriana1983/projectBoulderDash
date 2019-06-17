@@ -30,8 +30,9 @@ namespace Behaviour.Creatures
         private TileBase amoebaPlaceholder;
         private GrowState state;
         private Vector2Int position;
-        private List<Vector2Int> growPostion;
+        private List<Vector2Int> growDirection;
         private int growCycle;
+        
         
         public AmoebaCell(TileBase amoeba, TileBase amoebaPlaceholder, Vector2Int position, GrowState state)
         {
@@ -40,6 +41,7 @@ namespace Behaviour.Creatures
             this.state = state;
             this.position = position;
             growCycle = 0;
+            growDirection = new List<Vector2Int>();
         }
         public TileBase Amoeba
         {
@@ -64,10 +66,10 @@ namespace Behaviour.Creatures
             get => position;
             set => position = value;
         }
-        public List<Vector2Int> GrowPostion
+        public List<Vector2Int> GrowDirection
         {
-            get => growPostion;
-            set => growPostion = value;
+            get => growDirection;
+            set => growDirection = value;
         }
         
         public int GrowCycle
@@ -80,40 +82,46 @@ namespace Behaviour.Creatures
     public class Amoeba : MonoBehaviour
     {
         public GridInfoRetriever gridInfo;
-        
-        public Vector3 targetPos;
         public bool mustGrow;
         public bool isGrowing;
         public int maxSize;
         public int amoebaCount;
 
-        public LayerMask layer;
         public Tilemap amoebaTilemap;
-        public float nextGrow;
-        public float growSpeed;
-
+        public Tilemap dirtTilemap;
+        public Tilemap boulderTilemap;
+        public Tilemap diamondTilemap;
+        public GameObject diamond;
+        public GameObject boulder;
+        
+        public GrowState defaultState;
+        public bool isDormant;
         private List<Vector3> allowedDirections;
         public List<AmoebaCell> amoebaCollection;
-        public List<Vector2Int> growDirections;
         public Dictionary<Vector2Int, string> tiles;
         public Dictionary<Vector2Int, string> neighbourTiles;
+        public Random random;
+
+        private Tilemap[] tilemaps;
+        private GameObject[] gameObjects;
 
         private void Start()
         {
-            Tilemap[] tilemaps = FindObjectsOfType<Tilemap>();
-            GameObject[] gameObjects =  FindObjectsOfType<GameObject>() ;
-            targetPos = transform.position;
+            tilemaps = FindObjectsOfType<Tilemap>();
+            gameObjects =  FindObjectsOfType<GameObject>() ;
             isGrowing = false;
             mustGrow = false;
             amoebaCollection = new List<AmoebaCell>();
-            growDirections = new List<Vector2Int>();
             tiles = new Dictionary<Vector2Int, string>();
            
             amoebaTilemap = gameObject.GetComponent<Tilemap>();
             neighbourTiles = new Dictionary<Vector2Int, string>();
-            // get all tiles
-            tiles = gridInfo.GetTilemaps(tilemaps, gameObjects);
-            GetMotherCells();
+            
+            random = new Random();
+            random = new Random(random.Next());
+            
+            UpdateGridInfo();
+            GetAmoebaCells();
             UpdateGrowLocation();
         }
 
@@ -121,93 +129,133 @@ namespace Behaviour.Creatures
         {
             amoebaCount = amoebaCollection.Count;
 
-
-            // limit grow speed by looking at time
-            // this script fires every "growSpeed" seconds
-            if (Time.time > nextGrow)
+            // if amoeba exceeds the maximum grow size, turn it to boulders
+            if (amoebaCount >= maxSize)
             {
-             
-//                if (allowedDirections.Count == 0)
-//                {
-//                    mustGrow = false;
-//                }
-//                else
-//                {
-//                    // get random direction to grow for amoeba;
-//                    var random = new Random();
-//                    int index = random.Next(allowedDirections.Count);
-//                    Vector3 direction = allowedDirections[index];
-//                    hitPos += direction;
-//                    
-//                    //Check for collision in requested player direction
-//                    RaycastHit2D hit = Physics2D.Raycast(transform.position, hitPos, 1, layer);
-//                    Debug.DrawRay(previous, direction, Color.red);
-//                    //Did we hit anything?
-//                    if (hit.collider != null)
-//                    {
-//                        //What did we hit?
-//                        switch (hit.collider.gameObject.tag)
-//                        {
-//                            case "Dirt":
-//                                //Allow amoeba to grow
-//                                mustGrow = true;
-//                                targetPos = hitPos;
-//                                break;
-//                            case "Butterfly":
-//                                break;
-//                            case "Firefly":
-//                                break;
-//                            //We hit something else, amoeba cannot grow
-//                            default:
-//                                mustGrow = false;
-//                                break;
-//                        }
-//                    }
-//                    else
-//                    {
-//                        targetPos = hitPos;
-//                        mustGrow = true;
-//                    }
-//                    
-//                    // Can amoeba grow?
-//                    if (mustGrow)
-//                    {
-//                        // Dont allow amoebas to grow more than this
-//                        if (amoebaCount < maxSize)
-//                        {
-//                            // if the position has changed
-//                            if (targetPos != previous)
-//                            {
-//                                Instantiate(GameObject.Find("Amoeba"), targetPos, new Quaternion(0, 0, 0, 0));
-//                                //Delete the dirt
-//                                if (dirtTileMap != null)
-//                                {
-//                                    dirtTileMap.SetTile(dirtTileMap.WorldToCell(targetPos), null);
-//                                }
-//                                isGrowing = true;
-//                                // save the new position for next frame
-//                                previous = targetPos;
-//                            }
-//                        }
-//                    }
-//                }
-                nextGrow += growSpeed;
+                //turn every tile into Boulder GameObject
+                foreach (var amoebaCell in amoebaCollection)
+                {
+                    amoebaTilemap.SetTile(ConvertToVector3(amoebaCell.Position), null);
+                    TurnToBoulder(ConvertToVector3(amoebaCell.Position));
+                }
+                // destroy the script
+                Destroy(GetComponent<Amoeba>());
             }
-
+            // if amoeba can't grow but is not max size, turn it to diamonds
+            else if (amoebaCount < maxSize && isDormant)
+            {
+                //turn every tile into Crystal GameObject
+                foreach (var amoebaCell in amoebaCollection)
+                {
+                    amoebaTilemap.SetTile(ConvertToVector3(amoebaCell.Position), null);
+                    TurnToDiamond(ConvertToVector3(amoebaCell.Position));
+                }
+                // destroy the script
+                Destroy(GetComponent<Amoeba>());
+            }
+            else
+            {
+                if (isGrowing == false)
+                {
+                    isGrowing = true;
+                    StartCoroutine("Grow");
+                }
+            }
         }
 
-        private void FixedUpdate()
+        public void TurnToBoulder(Vector3Int location)
         {
-            
-        }
-
-        private void LateUpdate()
-        {
-          
+            Vector3 localPlace = boulderTilemap.GetCellCenterWorld(location);
+            Instantiate(boulder, localPlace, Quaternion.identity);
+            boulder.layer = LayerMask.NameToLayer("Boulder");
         }
         
-        // iterate through all tiles to get amoeba mother cells
-        public void GetMotherCells()
+        public void TurnToDiamond(Vector3Int location)
+        {
+            Vector3 localPlace =  boulderTilemap.GetCellCenterWorld(location);
+            Instantiate(diamond, localPlace, Quaternion.identity);
+            diamond.layer = LayerMask.NameToLayer("Diamond");
+        }
+        
+        // Initiate growth of amoeba, this function is called every x seconds depending on the growSpeed
+        public IEnumerator Grow()
+        {
+            // update the grid info
+            UpdateGridInfo();
+            // get allowed directions to grow
+            UpdateGrowLocation();
+            // select a random amoeba cell to grow
+            AmoebaCell amoeba = GetRandomAmoebaToGrow();
+            
+            float growSpeed = GetGrowSpeed(amoeba.State);
+            Debug.Log("Corutine started for " + growSpeed + " seconds");
+            switch (amoeba.State)
+            {
+                case GrowState.Fast:
+                    if (growSpeed > 0)
+                    {
+                        mustGrow = true;
+                    }
+                    else
+                    {
+                        mustGrow = false;
+                    }
+                    break;
+                case GrowState.Slow:
+                    if (growSpeed < 4)
+                    {
+                        mustGrow = true;
+                    }
+                    else
+                    {
+                        mustGrow = false;
+                    }
+
+                    growSpeed /= 4;
+                    break;
+            }
+            // the position of the tile amoeba will grow to 
+            Vector3Int direction = ConvertToVector3(amoeba.GrowDirection.First());
+            
+            if (mustGrow)
+            {
+                Debug.Log("Amoeba has grown on "+ direction);
+                // create a new amoeba and add it to the list
+                amoebaCollection.Add(
+                    new AmoebaCell(
+                        amoeba.Amoeba,
+                        null,
+                        amoeba.GrowDirection.First(),
+                        defaultState
+                    )
+                );
+                //todo: might wanna place an amoeba placeholder first, not sure if this is needed
+                // delete dirt if needed
+                dirtTilemap.SetTile(direction, null);
+                // place that amoeba on the scene
+                amoebaTilemap.SetTile(direction, amoeba.Amoeba);
+            
+                //todo: all animations and other scripts go here
+                //==== Put your other useless stuff here ====//
+                
+                // check if the tile is set
+                if (amoebaTilemap.HasTile(direction))
+                {
+                    mustGrow = false;
+                }
+               
+            }
+            
+            //waits for growSpeed amount of seconds till next grow
+            yield return new WaitForSeconds(growSpeed);
+            if (!mustGrow)
+            {
+                isGrowing = false;
+            }
+        }
+
+        // iterate through all tiles to get amoeba mother cells on start
+        public void GetAmoebaCells()
         {
             for (int n = amoebaTilemap.cellBounds.xMin; n < amoebaTilemap.cellBounds.xMax; n++)
             {
@@ -223,20 +271,25 @@ namespace Behaviour.Creatures
                                 amoebaTilemap.GetTile(localPlace), 
                                 null,
                                 location,
-                                GrowState.Sleeping)
+                                defaultState)
                         ); 
                     }
                 }
             }
         }
 
+        // Get all directions amoeba is allowed to grow
         public void UpdateGrowLocation()
         {
-            growDirections.Clear();
+            isDormant = false;
+            // goes ++ if there is a direction to grow
+            int iterator = 0;
             foreach (var amoebaCell in amoebaCollection)
             {
+                List<Vector2Int> growDirection = new List<Vector2Int>();
                 Vector2Int curentPos = amoebaCell.Position;
-                GetNeighbourTiles(curentPos);
+                GetAllowedNeighbourTiles(curentPos);
+
                 if (neighbourTiles != null)
                 {
                     foreach (var tile in neighbourTiles)
@@ -244,15 +297,50 @@ namespace Behaviour.Creatures
                         if (tile.Value == "Dirt" || tile.Value == "Void")
                         {
                             // store the available locations as Vector2
-                            growDirections.Add(tile.Key);
+                            growDirection.Add(tile.Key);
+                            // add +1 to the iterator, this means amoeba can grow 
+                            iterator++;
                         }
+                    }
+                    
+                    amoebaCell.GrowDirection.Clear();
+                    amoebaCell.GrowDirection.AddRange(growDirection);
+                
+                    switch (amoebaCell.GrowDirection.Count)
+                    {
+                        case 1:
+                            amoebaCell.GrowCycle = 3;
+                            break;
+                        case 2:
+                            amoebaCell.GrowCycle = 2;
+                            break;
+                        case 3:
+                            amoebaCell.GrowCycle = 1;
+                            break;
+                        case 4:
+                            // 4 directions, set cycle to 0
+                            amoebaCell.GrowCycle = 0;
+                            break;
+                        case 0:
+                            // amoeba can't grow , set cycle to 4 and put it to sleep
+                            amoebaCell.GrowCycle = 4;
+                            amoebaCell.State = GrowState.Sleeping;
+                            break;
                     }
                 }
             }
+
+            if (iterator == 0)
+            {
+                // if isDormant is true that means amoeba can't grow anymore
+                isDormant = true;
+            }
+           
         }
 
 
-        public void GetNeighbourTiles(Vector2Int position)
+        // get neighbour tiles for each amoeba
+        public void GetAllowedNeighbourTiles(Vector2Int position)
         {
             neighbourTiles.Clear();
             
@@ -281,33 +369,70 @@ namespace Behaviour.Creatures
             
         }
 
+        // determines grow speed in seconds depending on the amoeba state, a random float chosen between some predetermined values
         public float GetGrowSpeed(GrowState state)
         {
-            float growingSpeed = 0;
-            var random = new Random();
+            float growingSpeed;
             
             switch (state)
             {
-                case GrowState.Sleeping:
-                    growingSpeed = 0;
-                    break;
                 case GrowState.Slow:
-                    growingSpeed = random.Next(0, 24);
+                    // if < 4
+                    growingSpeed = (random.Next(0, 128) + random.Next(0, 128)) % 128;
                     break;
                 case GrowState.Fast:
-                    growingSpeed = random.Next(0, 4);
+                    // if > 1
+                    growingSpeed = (random.Next(0, 4) + random.Next(0, 4)) % 4;
+                    break;
+                default:
+                    growingSpeed = 0;
                     break;
             }
-
+            // set this to desired value for testing purposes
             return growingSpeed;
         }
 
 
-//        public Vector2 GetRandomGrowDirection()
-//        {
-//            var random = new Random();
-//            int index = random.Next(growPostion.Count);
-//            return growPostion[index];
-        //}
+        
+        // select a random amoeba and a random direction
+        public AmoebaCell GetRandomAmoebaToGrow()
+        {
+            int index;
+           
+            // filter sleeping cells
+            IEnumerable<AmoebaCell> filteringQuery =
+                from cell in amoebaCollection
+                where cell.State != GrowState.Sleeping
+                select cell;
+            
+            List<AmoebaCell> allowedToGrowCells = new List<AmoebaCell>();
+            // get all directions in which amoeba can grow
+            foreach (var cell in filteringQuery)
+            {
+                allowedToGrowCells.Add(cell);
+            }
+            
+            AmoebaCell amoeba;
+            // select a random amoeba
+            index = (random.Next(allowedToGrowCells.Count) + random.Next(allowedToGrowCells.Count)) % allowedToGrowCells.Count;
+            amoeba = allowedToGrowCells[index];
+            int index2 = random.Next(amoeba.GrowDirection.Count);
+            Vector2Int direction = amoeba.GrowDirection[index2];
+            amoeba.GrowDirection.Clear();
+            amoeba.GrowDirection.Add(direction);
+            return amoeba;
+        }
+
+        // updates all tile information on teh grid
+        public void UpdateGridInfo()
+        {
+            tiles = gridInfo.GetTilemaps(tilemaps, gameObjects);
+        }
+
+        public Vector3Int ConvertToVector3(Vector2Int v2)
+        {
+            return new Vector3Int(v2.x, v2.y, 0);
+        }
+        
     }
 }
