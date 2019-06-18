@@ -108,9 +108,6 @@ namespace Behaviour.Objects
                                 //player dies
                                 DrawExplosion(hit);
                                 Destroy(hit.collider.gameObject);
-                                Initiate.Fade("Death", Color.black, 1.4f);
-                                //SceneManager.LoadScene("Death", LoadSceneMode.Additive);
-                                //SoundManager.Instance.PlayDeathSound();
                             }
                             break;
 

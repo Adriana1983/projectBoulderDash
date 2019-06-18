@@ -18,17 +18,7 @@ namespace Camera
         {
             if (UnityEngine.Camera.main != null)
             {
-                float lerp = Mathf.PingPong(Time.time, duration) / duration;
                 
-                foreach (var tilemap in GetComponents<TilemapRenderer>())
-                {
-                    tilemap.material.Lerp(material1, material2, lerp);
-                }
-
-                foreach (var sprite in GetComponents<SpriteRenderer>())
-                {
-                    sprite.material.Lerp(material1, material2, lerp);
-                }
             }
         }
         

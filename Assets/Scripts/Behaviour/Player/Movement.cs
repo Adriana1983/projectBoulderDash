@@ -43,8 +43,6 @@ namespace Behaviour.Player
         public void Awake()
         {
             deathScreen = GameObject.Find("Canvas").GetComponentInChildren<FadeOut>();
-            deathScreen.Execute();
-
         }
 
         private void Start()
@@ -58,7 +56,7 @@ namespace Behaviour.Player
 
         public void OnDestroy()
         {
-            deathScreen.gameObject.SetActive(true);
+            deathScreen.isActive = true;
             SoundManager.Instance.PlayDeathSound();
         }
         

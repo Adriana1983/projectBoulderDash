@@ -3,6 +3,7 @@ using System.Collections;
 using Behaviour.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 namespace Camera
@@ -12,8 +13,8 @@ namespace Camera
         #region FIELDS
         public Image fadeOutUIImage;
         public float fadeSpeed = 0.8f;
-
-
+        public bool isActive;
+        
         public enum FadeDirection
         {
             In, //Alpha = 1
@@ -23,14 +24,18 @@ namespace Camera
         #endregion
         #region MONOBHEAVIOR
 //
-//        public void Start()
-//        {
-//            gameObject.SetActive(false);
-//        }
-
-        public void Execute()
+        public void Start()
         {
-            StartCoroutine(Fade(FadeDirection.In));
+            isActive = false;
+        }
+
+        public void Update()
+        {
+            if (isActive)
+            {
+                StartCoroutine(Fade(FadeDirection.In));
+                
+            }
         }
 
         #endregion
@@ -39,6 +44,7 @@ namespace Camera
         {
             float alpha = (fadeDirection == FadeDirection.Out)? 0.95f : 0;
             float fadeEndValue = (fadeDirection == FadeDirection.Out)? 0 : 0.95f;
+       
             if (fadeDirection == FadeDirection.Out) {
                 while (alpha >= fadeEndValue)
                 {
@@ -50,6 +56,7 @@ namespace Camera
                 fadeOutUIImage.enabled = true; 
                 while (alpha <= fadeEndValue)
                 {
+                    
                     SetColorImage (ref alpha, fadeDirection);
                     yield return null;
                 }
