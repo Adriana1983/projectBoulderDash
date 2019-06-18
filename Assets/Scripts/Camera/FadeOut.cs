@@ -44,7 +44,6 @@ namespace Camera
         {
             float alpha = (fadeDirection == FadeDirection.Out)? 0.95f : 0;
             float fadeEndValue = (fadeDirection == FadeDirection.Out)? 0 : 0.95f;
-       
             if (fadeDirection == FadeDirection.Out) {
                 while (alpha >= fadeEndValue)
                 {
@@ -54,9 +53,10 @@ namespace Camera
                 fadeOutUIImage.enabled = false; 
             } else {
                 fadeOutUIImage.enabled = true; 
+                SoundManager.Instance.PlayDeathSound();
                 while (alpha <= fadeEndValue)
                 {
-                    
+                   
                     SetColorImage (ref alpha, fadeDirection);
                     yield return null;
                 }

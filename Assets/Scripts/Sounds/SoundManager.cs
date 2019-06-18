@@ -27,6 +27,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public float volume;
     private AudioSource sfxSource;
 
     public AudioClip bdmusic; //opening tune
@@ -62,15 +63,20 @@ public class SoundManager : MonoBehaviour
     public AudioClip timeout7; //3 sec remaining befor "out of time"
     public AudioClip timeout8; //2 sec remaining befor "out of time"
     public AudioClip timeout9; //1 sec remaining befor "out of time"
-
+    public AudioSource[] audios;
+       
 
 
     // Start is called before the first frame update
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
-
+        audios = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
         sfxSource = this.gameObject.AddComponent<AudioSource>();
+        foreach (AudioSource aud in audios)
+        {
+            aud.volume = volume;
+        }
     }
 
     public void PlaySound(AudioClip clip)
@@ -88,6 +94,15 @@ public class SoundManager : MonoBehaviour
 
     public void PlayDeathSound()
     {
+        
+        foreach (AudioSource aud in audios)
+        {
+            aud.volume = volume/2.2f;
+            if (aud.name == "ds")
+            {
+                aud.volume = 1f;
+            }
+        }
         PlaySound(death);
     }
     

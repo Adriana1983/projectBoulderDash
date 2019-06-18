@@ -57,7 +57,6 @@ namespace Behaviour.Player
         public void OnDestroy()
         {
             deathScreen.isActive = true;
-            SoundManager.Instance.PlayDeathSound();
         }
         
 

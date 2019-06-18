@@ -26,9 +26,10 @@ namespace Camera
         void Start()
         {
             startingPosition = transform.position;
-            cameraX = OrthographicBounds(GetComponent<UnityEngine.Camera>()).x;
-            cameraY = OrthographicBounds(GetComponent<UnityEngine.Camera>()).y;
-            cameraBounds = OrthographicBounds(GetComponent<UnityEngine.Camera>());
+//            cameraX = OrthographicBounds(GetComponent<UnityEngine.Camera>()).x;
+//            cameraY = OrthographicBounds(GetComponent<UnityEngine.Camera>()).y;
+//            cameraBounds = OrthographicBounds(GetComponent<UnityEngine.Camera>());
+            
         }
 
         void Update()
@@ -39,7 +40,8 @@ namespace Camera
                 isLocked = !isLocked;
             }
             if (Input.GetKey(KeyCode.R)) SceneManager.LoadScene("MainScene");
-
+            
+           
 
             //            RaycastHit2D hitleft = Physics2D.Raycast(transform.position,  Vector2.left, -cameraX);
             //            RaycastHit2D hitright = Physics2D.Raycast(transform.position, Vector2.right + cameraBounds, cameraX);
@@ -64,7 +66,7 @@ namespace Camera
             //            }
         }
 
-        void LateUpdate()
+        public void LateUpdate()
         {
             Vector3 point = GetComponent<UnityEngine.Camera>().WorldToViewportPoint(mainCamera.position);
             Vector3 delta = mainCamera.position - GetComponent<UnityEngine.Camera>()
@@ -74,7 +76,7 @@ namespace Camera
             if (isLocked)
             {
                 Vector3 destination =
-                        new Vector3(player.position.x + offset.x, player.position.y + offset.y, offset.z - 10) + delta;
+                    new Vector3(player.position.x + offset.x, player.position.y + offset.y, offset.z - 10) + delta;
                 transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
             }
             else
@@ -83,7 +85,7 @@ namespace Camera
                 transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
             }
         }
-        
+
         public static Vector3 OrthographicBounds(UnityEngine.Camera camera)
         {
             float screenAspect = (float)Screen.width / (float)Screen.height;
