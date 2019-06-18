@@ -3164,7 +3164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57a74c54dbebc034093bb1cf4782e44b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectedCave: 
   Bounds: {fileID: 1954530435}
   Dirt: {fileID: 1845154289}
   Boulders: {fileID: 971013228}
@@ -3176,5 +3175,5 @@ MonoBehaviour:
   Prefab:
   - {fileID: 4472148672978847059, guid: 1e0b2ee316303f748b67923ca64ea3ef, type: 3}
   - {fileID: 9210319615607237902, guid: de5dc768acfadc0469dc0bf995f1e23f, type: 3}
-  - {fileID: 2234496892397632554, guid: cb5fda802464f2443b4e7b50dba1f9c4, type: 3}
-  - {fileID: 2234496892397632554, guid: cb5fda802464f2443b4e7b50dba1f9c4, type: 3}
+  - {fileID: 2007398031164448160, guid: cb5fda802464f2443b4e7b50dba1f9c4, type: 3}
+  - {fileID: 3921607198779758255, guid: fdf162cc328117940a75fe0185aef5b2, type: 3}

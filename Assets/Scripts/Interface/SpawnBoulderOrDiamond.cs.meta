@@ -3,7 +3,11 @@ guid: 64959b41f4c8d454d86729cc4984893c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Boulder: {fileID: 4472148672978847059, guid: 1e0b2ee316303f748b67923ca64ea3ef,
+      type: 3}
+  - Diamond: {fileID: 2007398031164448160, guid: cb5fda802464f2443b4e7b50dba1f9c4,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
