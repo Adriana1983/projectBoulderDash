@@ -172,6 +172,7 @@ public class OpeningScreen : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 SoundManager.Instance.PlayCollectdiamond();
+                SoundManager.Instance.StopAllAudio();
                 //Settings for the script caveloader
                 PlayerPrefs.SetString("Cave", selectedCave);
                 PlayerPrefs.SetInt("Level", selectedCaveLevel);
@@ -210,4 +211,6 @@ public class OpeningScreen : MonoBehaviour
         }
 
     }
+
+    
 }

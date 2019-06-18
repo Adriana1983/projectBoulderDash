@@ -4,7 +4,7 @@ using System.Linq;
 using Random = System.Random;
 using UnityEngine;
 
-public class SpawnBoulderOrDiamond: MonoBehaviour
+public class SpawnBoulderOrDiamond : MonoBehaviour
 {
     public GameObject Boulder;
     public GameObject Diamond;
@@ -13,18 +13,25 @@ public class SpawnBoulderOrDiamond: MonoBehaviour
     private float spawnTimer;
     private Random random = new Random();
     private Random randomboulderofdiamond = new Random();
+    public RaycastHit2D spaceCheck;
+    private GameObject[] List;
 
+    void Start()
+    {
+        List = GameObject.FindGameObjectsWithTag("BoulderSpawner");
+    }
     void Update()
     {
         spawnTimer += Time.deltaTime;
-        if (spawnTimer > 0.2f)
+
+        if (spawnTimer > 0.3f)
         {
+            spaceCheck = Physics2D.Raycast(transform.position, Vector2.down, 1);
             GameObject newspawn = Lastspawner;
-            GameObject[] List = GameObject.FindGameObjectsWithTag("BoulderSpawner");
             random.Next(0, List.Length);
             GameObject Spawnposition = List[random.Next(0, List.Length)];
             Lastspawner = Spawnposition;
-            if (newspawn != Spawnposition || count == 0)
+            if (newspawn != Spawnposition || count == 0 && spaceCheck.collider == null)
             {
                 if (randomboulderofdiamond.Next(-1, 1) == 0)
                 {
@@ -47,4 +54,5 @@ public class SpawnBoulderOrDiamond: MonoBehaviour
             }
         }
     }
+
 }

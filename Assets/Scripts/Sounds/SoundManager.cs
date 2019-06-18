@@ -6,6 +6,7 @@ public class SoundManager : MonoBehaviour
 {
     //https://www.youtube.com/watch?v=tLyj02T51Oc
     private static SoundManager instance;
+    private AudioSource[] allAudio;
     public static SoundManager Instance
     {
         get
@@ -71,6 +72,14 @@ public class SoundManager : MonoBehaviour
         sfxSource = this.gameObject.AddComponent<AudioSource>();
     }
 
+    public void StopAllAudio()
+    {
+        allAudio = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+        foreach (var audio in allAudio)
+        {
+            audio.Stop();
+        }
+    }
     public void PlaySound(AudioClip clip)
     {
         if (clip != null)

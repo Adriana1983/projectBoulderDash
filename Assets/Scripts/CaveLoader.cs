@@ -50,14 +50,7 @@ public class CaveLoader : MonoBehaviour
         if (SelectedCave != null)
         {
             TextAsset caveData;
-            if (SelectedCave.Length == 1)
-            {
                 caveData = (TextAsset) Resources.Load("Caves/Levels/Cave" + SelectedCave + "-" + SelectedLevel);
-            }
-            else
-            {
-                caveData = (TextAsset) Resources.Load("Caves/Levels/" + SelectedCave);
-            }
             List<string> caveDataList = caveData.text.Trim().Split('\n').Reverse().ToList();
 
             Height = caveDataList.Count;
