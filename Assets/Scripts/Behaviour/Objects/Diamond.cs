@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Behaviour.Objects;
 using Random = System.Random;
 
 using UnityEngine;
 
 public class Diamond : MonoBehaviour
 {
-    private float Timer = 0.15f;
+    private float timer = 0.15f;
     Random random = new Random();
     public bool Falling;
     public bool LastpositionFalling;
@@ -15,9 +16,9 @@ public class Diamond : MonoBehaviour
 
     void Update()
     {
-        Timer -= Time.deltaTime;
+        timer -= Time.deltaTime;
 
-        if (Timer < 0)
+        if (timer < 0)
         {
             RaycastHit2D hitDown = Physics2D.Raycast(transform.position, Vector2.down, 1);
 
@@ -28,6 +29,9 @@ public class Diamond : MonoBehaviour
             }
             else
             {
+                if (Falling)
+                    SoundManager.Instance.PlayDiamondSequence();
+
                 switch (hitDown.collider.tag)
                 {
                     case "MagicWall":
@@ -40,6 +44,8 @@ public class Diamond : MonoBehaviour
                             }
                         }
                         break;
+
+                    case "Wall":
                     case "Diamond":
                     case "Boulder":
                         if (hitDown.collider.CompareTag("Boulder") &&
@@ -48,15 +54,15 @@ public class Diamond : MonoBehaviour
                             hitDown.collider.gameObject.GetComponent<Diamond>().Falling) break;
 
                         RaycastHit2D hitColliderLeft =
-                            Physics2D.Raycast(hitDown.collider.transform.position, Vector2.left, 1);
+                            Physics2D.Raycast(hitDown.point + new Vector2(0, -0.5f), Vector2.left, 1);
                         RaycastHit2D hitColliderRight =
-                            Physics2D.Raycast(hitDown.collider.transform.position, Vector2.right, 1);
+                            Physics2D.Raycast(hitDown.point + new Vector2(0, -0.5f), Vector2.right, 1);
 
                         RaycastHit2D Left = Physics2D.Raycast(transform.position, Vector2.left, 1);
                         RaycastHit2D Right = Physics2D.Raycast(transform.position, Vector2.right, 1);
 
                         if (hitColliderLeft.collider == null && hitColliderRight.collider == null &&
-                            Left.collider == null && Right.collider)
+                            Left.collider == null && Right.collider == null)
                         {
                             if (random.Next(0, 1) == 0)
                             {
@@ -91,7 +97,7 @@ public class Diamond : MonoBehaviour
                 Falling = false;
             }
 
-            Timer = 0.15f;
+            timer = 0.15f;
         }
     }
 }

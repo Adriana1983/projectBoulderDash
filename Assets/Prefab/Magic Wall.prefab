@@ -100,7 +100,7 @@ MonoBehaviour:
   magicWallSprite: {fileID: -4306768063022953764, guid: ee9737bd621734a4e81cd1d15b7c87ac,
     type: 3}
   Boulder: {fileID: 4472148672978847059, guid: 1e0b2ee316303f748b67923ca64ea3ef, type: 3}
-  Diamond: {fileID: 3307045083705134715, guid: 690c40b3b641e8e4b934d0b9cf0403ca, type: 3}
+  Diamond: {fileID: 2007398031164448160, guid: fb0ae78d6cb28ab4ea8292676cee680b, type: 3}
   activated: 0
 --- !u!61 &861039773488812780
 BoxCollider2D:

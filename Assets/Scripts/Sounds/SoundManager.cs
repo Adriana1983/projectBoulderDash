@@ -133,6 +133,34 @@ public class SoundManager : MonoBehaviour
         PlaySound(collectdiamond);
     }
 
+    int dcount = 1;
+    public void PlayDiamondSequence()
+    {
+        switch(dcount)
+        {
+            case 1:
+                PlayDiamond1();
+                break;
+            case 2:
+                PlayDiamond2();
+                break;
+            case 3:
+                PlayDiamond3();
+                break;
+            case 4:
+                PlayDiamond4();
+                break;
+            case 5:
+                PlayDiamond5();
+                break;
+            case 6:
+                PlayDiamond6();
+                break;
+        }
+        dcount++;
+        if (dcount == 7) dcount = 1;
+    }
+
     public void PlayDiamond1()
     {
         PlaySound(diamond1);
