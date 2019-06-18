@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
+using Camera;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -25,7 +26,7 @@ public class OpeningScreen : MonoBehaviour
     void Start()
     {
         //Lijst van caves zodat je makkelijk nieuwe kan toevoegen
-        cavelist.InsertRange(cavelist.Count, new string[] {"A", "B", "C"});
+        cavelist.InsertRange(cavelist.Count, new string[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"});
         clip = SoundManager.PlayBDmusicLoop;
         
     }
@@ -37,8 +38,7 @@ public class OpeningScreen : MonoBehaviour
         {
             SoundManager.Instance.PlayBDmusic();
             clipPlaying = true;
-            clipTimer = clip.length;
-            
+            clipTimer = clip.length;            
         }
         
         if (clipPlaying)
@@ -50,6 +50,7 @@ public class OpeningScreen : MonoBehaviour
                 clipPlaying = false;
             }
         }
+        
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (selectedOption == 4)
@@ -58,6 +59,7 @@ public class OpeningScreen : MonoBehaviour
             }
             selectedOption += 1;
         }
+        
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             if (selectedOption == 1)
@@ -123,7 +125,6 @@ public class OpeningScreen : MonoBehaviour
             }
 
             selectedCave = cavelist[selectedCaveNumber];
-            print(selectedCaveNumber);
             GameObject.Find("Cave").transform.Find("CaveLevel").GetComponent<Text>().text =
                 selectedCave;
         }
@@ -171,9 +172,11 @@ public class OpeningScreen : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 SoundManager.Instance.PlayCollectdiamond();
-                //Settings gebruiken om het juiste level te laden.
+                //Settings for the script caveloader
+                PlayerPrefs.SetString("Cave", selectedCave);
+                PlayerPrefs.SetInt("Level", selectedCaveLevel);
+                PlayerPrefs.SetInt("Players", amountOfPlayers);
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-                
             }
 
             blinkTimer += Time.deltaTime;
@@ -192,6 +195,7 @@ public class OpeningScreen : MonoBehaviour
                 blinkTimer = 0;
             }
         }
+        
         else
         {
             blinkTimer = 0;

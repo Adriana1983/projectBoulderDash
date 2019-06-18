@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeleteBoulder : MonoBehaviour
+public class DeleteBoulderOrDiamond : MonoBehaviour
 {
     private float timer;
     void Update()
