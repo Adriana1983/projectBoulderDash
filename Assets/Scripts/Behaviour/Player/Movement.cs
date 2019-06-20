@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Behaviour.Objects;
 using Camera;
+using Helper_Scripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -57,6 +58,7 @@ namespace Behaviour.Player
         public void OnDestroy()
         {
             deathScreen.isActive = true;
+            GameObject.Find("Main Camera").GetComponent<ColorFade>().isActive = true;
         }
         
 

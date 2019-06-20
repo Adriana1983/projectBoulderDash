@@ -56,7 +56,6 @@ namespace Camera
                 SoundManager.Instance.PlayDeathSound();
                 while (alpha <= fadeEndValue)
                 {
-                   
                     SetColorImage (ref alpha, fadeDirection);
                     yield return null;
                 }
