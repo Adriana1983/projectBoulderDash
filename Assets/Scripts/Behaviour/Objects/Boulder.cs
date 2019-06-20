@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Behaviour.Objects;
 using Random = System.Random;
 
 public class Boulder : MonoBehaviour
