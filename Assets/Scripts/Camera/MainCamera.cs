@@ -39,7 +39,11 @@ namespace Camera
             {
                 isLocked = !isLocked;
             }
-            if (Input.GetKey(KeyCode.R)) SceneManager.LoadScene("MainScene");
+
+            if (Input.GetKey(KeyCode.R) && Time.timeScale != 0)
+            {
+                SceneManager.LoadScene("MainScene");
+            }
             
            
 
