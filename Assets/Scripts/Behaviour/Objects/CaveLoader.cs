@@ -28,7 +28,9 @@ public class CaveLoader : MonoBehaviour
         Boulder = 0,
         SpawnRockford = 1,
         Diamond = 2,
-        MagicWall = 3
+        MagicWall = 3,
+        Exitdoor =4,
+        Amoeba = 5
     }
 
 
@@ -44,10 +46,11 @@ public class CaveLoader : MonoBehaviour
 
     void Awake()
     {
-        Time.timeScale = 0.2f;
-        
+        //Time.timeScale = 0.2f;
+
         //loading text file and separating by breaklines
-        TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/Testcave");
+        /*TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/Testcave")*/;
+        TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/CaveG-1");
         List<string> caveDataList = caveData.text.Trim().Split('\n').Reverse().ToList();
 
         Height = caveDataList.Count;
@@ -87,6 +90,12 @@ public class CaveLoader : MonoBehaviour
                         break;
                     case 'm':
                         GameObject.Instantiate(GetPrefab(Prefabs.MagicWall), new Vector3(x, y, 0), Quaternion.identity);
+                        break;
+                    case 'P':
+                        GameObject.Instantiate(GetPrefab(Prefabs.Exitdoor), new Vector3(x, y, 0), Quaternion.identity);
+                        break;
+                    case 'a':
+                        GameObject.Instantiate(GetPrefab(Prefabs.Amoeba), new Vector3(x, y, 0), Quaternion.identity);
                         break;
                         #endregion
                 }

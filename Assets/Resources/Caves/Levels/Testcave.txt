@@ -1,19 +1,12 @@
-WWWWW
-Wr rW
-Wr rW
-Wr rW
-WW WW
-WW WW
-WW WW
-WW WW
-WW WW
-WW WW
-WW WW
-WW WW
-WW WW
-WW WW
-WW WW
-WW WW
-WW WW
-WW WW
-WW WW
+WWWWWWWWWW
+Wr rW    W
+Wr rW    W
+Wr rW    W
+WW WW    W
+WW WW  X W
+WW WW  d W
+WW WW  P W
+WW WW    W
+WW WW    W
+WW WW    W
+WWWWWWWWWW

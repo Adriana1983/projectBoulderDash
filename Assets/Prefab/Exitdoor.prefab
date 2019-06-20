@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4687945847014263031}
   - component: {fileID: 4687945847014263033}
   - component: {fileID: 4687945847014263030}
+  - component: {fileID: 91323818}
   m_Layer: 11
   m_Name: Exitdoor
   m_TagString: Exitdoor
@@ -122,5 +123,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
-  testsprite: {fileID: -1467245338962671776, guid: ee9737bd621734a4e81cd1d15b7c87ac,
-    type: 3}
+  exitDoorAnimation: {fileID: 0}
+--- !u!95 &91323818
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4687945847014263032}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 31e177a8fb5cbea4f838a986d38406fb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
