@@ -12,10 +12,12 @@ namespace Helper_Scripts
         public Shader shader;
         public RawImage blackScreen;
         public float time;
+        private bool isFaded;
         
         public void Start()
         {
             isActive = false;
+            isFaded = false;
         }
 
         public void Update()
@@ -23,7 +25,10 @@ namespace Helper_Scripts
             if (isActive)
             {
                 StartCoroutine(Fade());
-                blackScreen.CrossFadeAlpha (1.0f, time, true);
+                if (!isFaded)
+                {
+                    StartCoroutine(FadeToBlack());
+                }
             }
         }
         
@@ -35,13 +40,14 @@ namespace Helper_Scripts
         
         private IEnumerator FadeToBlack() 
         {
-            blackScreen.color = Color.black;
-            blackScreen.canvasRenderer.SetAlpha(0.2f);
+            
+            blackScreen.CrossFadeAlpha (1.0f, time, false);
+            
             while (blackScreen.color.a < 1.0f)
             {
-                
                 yield return null;
             }
+            isFaded = true;
         }
 
     }
