@@ -38,16 +38,15 @@ namespace Helper_Scripts
             yield return null;
         }
         
-        private IEnumerator FadeToBlack() 
+        private IEnumerator FadeToBlack()
         {
-            
+            blackScreen.color = Color.black;
+            blackScreen.canvasRenderer.SetAlpha(0.0f);
             blackScreen.CrossFadeAlpha (1.0f, time, false);
-            
-            while (blackScreen.color.a < 1.0f)
+            if (blackScreen.color.a == 1.0f)
             {
-                yield return null;
+                yield return isFaded = true;
             }
-            isFaded = true;
         }
 
     }
