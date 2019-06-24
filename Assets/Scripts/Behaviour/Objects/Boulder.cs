@@ -7,14 +7,14 @@ namespace Behaviour.Objects
     {
         private float timer = 0.15f; //time betwee actions
         Random random = new Random();
-        public bool Falling;
+        public bool falling;
         bool moving = false;
 
         public GameObject explosion;
 
         //Magic wall variables
         public bool activatedWall;
-        public bool LastpositionFalling;
+        public bool lastpositionFalling;
 
         //Return bool decides if rockford is allowed to move in the movement script
         public bool BoulderHit(Vector3 targetDirection)
@@ -58,7 +58,7 @@ namespace Behaviour.Objects
                 {
                     //there's nothing beneath this boulder
                     transform.position += Vector3.down;
-                    Falling = true; //this boolean is used to remember if the boulder is falling
+                    falling = true; //this boolean is used to remember if the boulder is falling
                 }
                 else
                 {
@@ -66,7 +66,7 @@ namespace Behaviour.Objects
                     switch (hit.collider.tag)
                     {
                         case "MagicWall":
-                            if (LastpositionFalling || Falling)
+                            if (lastpositionFalling || falling)
                             {
                                 if (activatedWall == false)
                                 {
@@ -76,7 +76,7 @@ namespace Behaviour.Objects
                             }
                             break;
                         case "Dirt":
-                            if (Falling)
+                            if (falling)
                                 SoundManager.Instance.PlayBoulder();
                             break;
 
@@ -84,12 +84,12 @@ namespace Behaviour.Objects
                         case "Diamond":
                         case "Boulder":
 
-                            if (Falling)
+                            if (falling)
                                 SoundManager.Instance.PlayBoulder();
 
                             //don't test collision on falling things
-                            if (hit.collider.tag == "Boulder" && hit.collider.gameObject.GetComponent<Boulder>().Falling) break;
-                            if (hit.collider.tag == "Diamond" && hit.collider.gameObject.GetComponent<Diamond>().Falling) break;
+                            if (hit.collider.tag == "Boulder" && hit.collider.gameObject.GetComponent<Boulder>().falling) break;
+                            if (hit.collider.tag == "Diamond" && hit.collider.gameObject.GetComponent<Diamond>().falling) break;
 
                             //check space left and right of hit object
                             RaycastHit2D hit_left = Physics2D.Raycast(hit.point + new Vector2(0, -0.5f), Vector2.left, 1);
@@ -104,30 +104,30 @@ namespace Behaviour.Objects
                                 if (random.Next(0, 1) == 0)
                                 {
                                     transform.position = transform.position + Vector3.left;
-                                    Falling = true;
+                                    falling = true;
                                 }
                                 else
                                 {
                                     transform.position = transform.position + Vector3.right;
-                                    Falling = true;
+                                    falling = true;
                                 }
                             }
                             //left space is empty Boulder falls left
                             else if (hit_left.collider == null && left.collider == null)
                             {
                                 transform.position = transform.position + Vector3.left;
-                                Falling = true;
+                                falling = true;
                             }
                             //right space is empty Boulder falls right
                             else if (hit_right.collider == null && right.collider == null)
                             {
                                 transform.position = transform.position + Vector3.right;
-                                Falling = true;
+                                falling = true;
                             }
                             break;
 
                         case "Player":
-                            if (Falling)
+                            if (falling)
                             {
                                 //player dies
                                 DrawExplosion(hit);
@@ -139,7 +139,7 @@ namespace Behaviour.Objects
 
                         case "Firefly":
                         case "Butterfly":
-                            if (Falling)
+                            if (falling)
                             {
                                 //firefly/butterfly dies
                                 DrawExplosion(hit);
@@ -150,8 +150,8 @@ namespace Behaviour.Objects
                         default:
                             break;
                     }
-                    LastpositionFalling = Falling;
-                    Falling = false;
+                    lastpositionFalling = falling;
+                    falling = false;
                 }
 
                 timer = 0.15f;

@@ -1,3 +1,4 @@
+100,20,25,60,12
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W............X.........................W
 Wwwwwwwwwwwww wwwwwwww.................W
@@ -20,20 +21,3 @@ Wwwwwwwwwwwwwwwwwwwwww.................W
 W......................................W
 W......................................P
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

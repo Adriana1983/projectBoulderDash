@@ -1,3 +1,4 @@
+80,20,40,60,8
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 Wwwwwwwwww.r....r...r..r.r..r.wwwwwwwwwW
 Ww        .r........r.....r...        wW
@@ -20,20 +21,3 @@ W..Xr......r.rr......r..r........r....PW
 Wrr........r.rr.........r...r........r.W
 W...r.r....r..r....r...r....r..r.r.....W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

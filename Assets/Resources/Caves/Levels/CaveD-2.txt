@@ -1,3 +1,4 @@
+100,20,5,20,36
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 WX......r.........r........r.....r.....W
 W.............................r........W
@@ -20,20 +21,3 @@ W.............r...........r......r..r..W
 W..............r.................r..r..W
 W.........r...........................PW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

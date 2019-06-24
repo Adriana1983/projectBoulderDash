@@ -1,3 +1,4 @@
+30,20,10,15,12
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W.......r.rr......r..d..... ..r.....r.rW
 W..X....r.rr.........r...r........d....W
@@ -20,20 +21,3 @@ W. .d....r....d.....r. ......r.rd..d...W
 W...r..d. ..r. r..............r r..r...W
 W...r.....r...........ddr.......r....r.W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

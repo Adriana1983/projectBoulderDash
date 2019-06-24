@@ -1,3 +1,4 @@
+130,20,5,10,80
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 Wrddrrddddrdrdddrrdrd.ddrrddrrdddrrdrdrW
 W.drddrrdrddrrrrrrdrrdddd..rrrdrdd.rdrdW
@@ -20,20 +21,3 @@ Wrdr.w           wdrdrddrw           wdW
 Wrdrdw           wdrddr..w           wrW
 Wrdd.wwwwwwwwwwwwwdrdd..dwwwwwwwwwwwwwrW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
