@@ -11,10 +11,9 @@ namespace Behaviour.Player
 {
     public class Movement : MonoBehaviour
     {
-        public int score = 0;
-        private bool Finished;
+        private bool finished;
         public float timerNextScene = 5;
-        
+
         public float speed = 10.0f;
         public string hitDirection;
         public string inputGot;
@@ -73,7 +72,7 @@ namespace Behaviour.Player
             isHit = false;
 
             //Player isn't moving, allow movement
-            if (!isMoving)
+            if (!isMoving && !finished)
             {
                 //Variable for requested player direction
                 Vector3 targetDirection = Vector3.zero;
@@ -120,14 +119,12 @@ namespace Behaviour.Player
                             else
                                 mustMove = false;
                             break;
-
                         //we hit dirt
                         case "Dirt":
                             {
                                 //Allow player to move
                                 mustMove = true;
                                 //Delete the dirt
-
                                 SoundManager.Instance.PlayWalkDirt();
                                 //Get reference to tilemap
                                 var map = hit.collider.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
@@ -140,21 +137,21 @@ namespace Behaviour.Player
                             mustMove = true;
                             SoundManager.Instance.PlayCollectdiamond();
                             Destroy(hit.collider.gameObject);
-                            GameObject.FindWithTag("Exitdoor").GetComponent<Exitdoor>().score += 10; 
-                            
+                            Score.Instance.score += Score.Instance.initialDiamondsValue;
+                            Score.Instance.diamondsCollected++;
                             break;
                         case "Exitdoor":
-                            
+
                             mustMove = false;
-                            if (GameObject.FindWithTag("Exitdoor").GetComponent<Exitdoor>().score >= 10)
+                            if (Score.Instance.diamondsCollected >= Score.Instance.diamondsNeeded)
                             {
                                 mustMove = true;
-                            SoundManager.Instance.PlayFinished();
-                            Destroy(GameObject.FindWithTag("Exitdoor"));
-                            speed = 0;
-                            targetDirection = lastPos;
-                            Finished = true;
-                        }
+                                
+                                SoundManager.Instance.PlayFinished();
+                                Destroy(hit.collider.gameObject);
+
+                                finished = true;
+                            }
                             //Finish sound, Pause, reset score, load next level, .
                             break;
                         //We hit something else, player cannot move
@@ -205,16 +202,19 @@ namespace Behaviour.Player
                     ghost.enabled = false;
                     isMoving = false;
                     mustMove = false;
-                }
-            }
-            
-            //check if the level has been finished
-            if (Finished == true)
-            {
-                timerNextScene -= Time.deltaTime;
-                if (timerNextScene < 0)
-                {
-                    //Change scene
+
+                    //check if the level has been finished
+                    if (finished == true)
+                    {
+                        Score.Instance.CurrentCave = (char)(Score.Instance.CurrentCave + 1);
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+                        timerNextScene -= Time.deltaTime;
+                        if (timerNextScene < 0)
+                        {
+                            //Change scene
+                        }
+                    }
                 }
             }
         }

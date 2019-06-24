@@ -9,10 +9,9 @@ public class Diamond : MonoBehaviour
 {
     private float timer = 0.15f;
     Random random = new Random();
-    public bool Falling;
-    public bool LastpositionFalling;
+    public bool falling;
+    public bool lastpositionFalling;
     public bool activatedWall;
-    public int score;
 
     void Update()
     {
@@ -24,18 +23,18 @@ public class Diamond : MonoBehaviour
 
             if (hitDown.collider == null)
             {
-                Falling = true;
+                falling = true;
                 transform.position += Vector3.down;
             }
             else
             {
-                if (Falling)
+                if (falling)
                     SoundManager.Instance.PlayDiamondSequence();
 
                 switch (hitDown.collider.tag)
                 {
                     case "MagicWall":
-                        if (LastpositionFalling)
+                        if (lastpositionFalling)
                         {
                             if (activatedWall == false)
                             {
@@ -49,9 +48,9 @@ public class Diamond : MonoBehaviour
                     case "Diamond":
                     case "Boulder":
                         if (hitDown.collider.CompareTag("Boulder") &&
-                            hitDown.collider.gameObject.GetComponent<Boulder>().Falling) break;
+                            hitDown.collider.gameObject.GetComponent<Boulder>().falling) break;
                         if (hitDown.collider.CompareTag("Diamond") &&
-                            hitDown.collider.gameObject.GetComponent<Diamond>().Falling) break;
+                            hitDown.collider.gameObject.GetComponent<Diamond>().falling) break;
 
                         RaycastHit2D hitColliderLeft =
                             Physics2D.Raycast(hitDown.point + new Vector2(0, -0.5f), Vector2.left, 1);
@@ -85,7 +84,7 @@ public class Diamond : MonoBehaviour
 
                         break;
                     case "Player":
-                        if (Falling)
+                        if (falling)
                         {
                             //Player death
                         }
@@ -93,8 +92,8 @@ public class Diamond : MonoBehaviour
                         break;
                 }
 
-                LastpositionFalling = Falling;
-                Falling = false;
+                lastpositionFalling = falling;
+                falling = false;
             }
 
             timer = 0.15f;

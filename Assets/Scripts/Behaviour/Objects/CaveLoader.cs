@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class CaveLoader : MonoBehaviour
 {
@@ -12,15 +13,21 @@ public class CaveLoader : MonoBehaviour
     public Tilemap Dirt;
     public Tilemap Boulders;
     public Tilemap Wall;
+    public Tilemap Amoeba;
+    public Tilemap Diamond;
 
     public TileBase[] Tiles;
     public GameObject[] Prefab;
+
+    public Text CaveAndIntermissionUI;
+
 
     enum Tile
     {
         Bounds = 0,
         Dirt = 1,
-        Wall = 2
+        Wall = 2,
+        Amoeba = 3
     }
 
     enum Prefabs
@@ -29,8 +36,8 @@ public class CaveLoader : MonoBehaviour
         SpawnRockford = 1,
         Diamond = 2,
         MagicWall = 3,
-        Exitdoor =4,
-        Amoeba = 5
+        Exitdoor = 4
+     
     }
 
 
@@ -49,9 +56,14 @@ public class CaveLoader : MonoBehaviour
         //Time.timeScale = 0.2f;
 
         //loading text file and separating by breaklines
-        /*TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/Testcave")*/;
-        TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/CaveG-1");
+        /*TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/Testcave");*/
+        TextAsset caveData = (TextAsset)Resources.Load($"Caves/Levels/Cave{Score.Instance.CurrentCave}-1");
         List<string> caveDataList = caveData.text.Trim().Split('\n').Reverse().ToList();
+        List<string> caveSettings = caveDataList.Last().Split(',').ToList();
+
+        Score.Instance.SetCaveData(caveSettings);
+
+        caveDataList.RemoveAt(caveDataList.Count()-1);
 
         Height = caveDataList.Count;
         Width = caveDataList[0].Length;
@@ -69,24 +81,23 @@ public class CaveLoader : MonoBehaviour
                     case 'w':
                         Wall.SetTile(new Vector3Int(x, y, 0), GetTile(Tile.Wall));
                         break;
-
                     case '.':
                         Dirt.SetTile(new Vector3Int(x, y, 0), GetTile(Tile.Dirt));
+                        break;
+                    case 'a':
+                        Amoeba.SetTile(new Vector3Int(x, y, 0), GetTile(Tile.Amoeba));
                         break;
                     #endregion
 
                     #region Prefabs
                     case 'r':
-                        var b = GameObject.Instantiate(GetPrefab(Prefabs.Boulder), new Vector3(x, y, 0), Quaternion.identity);
-                        b.transform.parent = Boulders.transform;
+                        Instantiate(GetPrefab(Prefabs.Boulder), new Vector3(x, y, 0), Quaternion.identity, Boulders.transform);                       
                         break;
-
                     case 'X':
                         GameObject.Instantiate(GetPrefab(Prefabs.SpawnRockford), new Vector3(x, y, 0), Quaternion.identity);
                         break;
-
                     case 'd':
-                        GameObject.Instantiate(GetPrefab(Prefabs.Diamond), new Vector3(x, y, 0), Quaternion.identity);
+                        Instantiate(GetPrefab(Prefabs.Diamond), new Vector3(x, y, 0), Quaternion.identity, Diamond.transform);
                         break;
                     case 'm':
                         GameObject.Instantiate(GetPrefab(Prefabs.MagicWall), new Vector3(x, y, 0), Quaternion.identity);
@@ -94,13 +105,17 @@ public class CaveLoader : MonoBehaviour
                     case 'P':
                         GameObject.Instantiate(GetPrefab(Prefabs.Exitdoor), new Vector3(x, y, 0), Quaternion.identity);
                         break;
-                    case 'a':
-                        GameObject.Instantiate(GetPrefab(Prefabs.Amoeba), new Vector3(x, y, 0), Quaternion.identity);
-                        break;
+                    
                         #endregion
                 }
             }
         }
+    }
+
+    private void Update()
+    {
+        Score.Instance.caveTime -= Time.deltaTime;
+        CaveAndIntermissionUI.text = $"DR: {Score.Instance.diamondsNeeded.ToString("F0")} DV: {Score.Instance.initialDiamondsValue.ToString("F0")} DC: {Score.Instance.diamondsCollected}   Time: {Score.Instance.caveTime.ToString("F0")} Score: {Score.Instance.score}";
     }
 
 }

@@ -5,22 +5,24 @@ using UnityEngine;
 
 public class Exitdoor : MonoBehaviour
 {
-    public int score = 0;
-    public Animator exitDoorAnimation;
+    Animator exitDoorAnimation;
 
     void Start()
     {
-        gameObject.GetComponent<Animator>().enabled = false;
+        exitDoorAnimation = gameObject.GetComponent<Animator>();
+        exitDoorAnimation.enabled = false;
     }
 
     void Update()
     {
         if (GameObject.FindWithTag("Player") == isActiveAndEnabled)
         {
-            if (score >= 10)
+            if (Score.Instance.diamondsCollected >= Score.Instance.diamondsNeeded)
             {
-                //Sound here
-                gameObject.GetComponent<Animator>().enabled = true;
+                if (exitDoorAnimation.enabled == false)
+                    SoundManager.Instance.PlayCrack();
+
+                exitDoorAnimation.enabled = true;
             }
         }
     }

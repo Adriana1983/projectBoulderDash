@@ -1,3 +1,4 @@
+160,20,20,0,21
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W..d.....r.r..r........r......r.rr.....W
 W..r........r.....r.. d................W
@@ -20,20 +21,3 @@ W. X......wrr w..rw...w...r....r..r.r..W
 W.........wr .w..rw...w... ..r.....r...W
 W...rrr...w...w.. wd..w.r....d.. ..r.  P
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

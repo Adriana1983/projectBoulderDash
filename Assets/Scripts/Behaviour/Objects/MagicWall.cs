@@ -12,7 +12,7 @@ public class MagicWall : MonoBehaviour
     public GameObject Diamond;
     public bool activated;
     private float activeDuration;
-    private float Timer = 0.15f;
+    private float timer = 0.15f;
     private SpriteRenderer wallRenderer;
     
     private void Update()
@@ -39,8 +39,8 @@ public class MagicWall : MonoBehaviour
         //if duration is still active
         if (activeDuration > 0)
         {
-            Timer -= Time.deltaTime;
-            if (Timer < 0)
+            timer -= Time.deltaTime;
+            if (timer < 0)
             {
                 RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector2.up, 1);
                 RaycastHit2D hitdown = Physics2D.Raycast(transform.position, Vector2.down, 1f);
@@ -52,7 +52,7 @@ public class MagicWall : MonoBehaviour
                     {
                         case "Diamond":
                             //activated = true;
-                            if (hitup.collider.gameObject.GetComponent<Diamond>().LastpositionFalling)
+                            if (hitup.collider.gameObject.GetComponent<Diamond>().lastpositionFalling)
                             {
                                 Destroy(hitup.collider.gameObject);
                                 Instantiate(Boulder,
@@ -64,7 +64,7 @@ public class MagicWall : MonoBehaviour
                             break;
                         case "Boulder":
                             //activated = true;
-                            if (hitup.collider.gameObject.GetComponent<Boulder>().LastpositionFalling || hitup.collider.gameObject.GetComponent<Boulder>().Falling)
+                            if (hitup.collider.gameObject.GetComponent<Boulder>().lastpositionFalling || hitup.collider.gameObject.GetComponent<Boulder>().falling)
                             {
                                 Destroy(hitup.collider.gameObject);
                                 Instantiate(Diamond,
@@ -77,7 +77,7 @@ public class MagicWall : MonoBehaviour
                     }
                 }
 
-                Timer = 0.15f;
+                timer = 0.15f;
             }
         }
         else //If duration expired

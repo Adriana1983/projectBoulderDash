@@ -1,3 +1,4 @@
+120,8,10,20,25
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W.r...rrr..r.r... r.Xr.r...r.rr......r.W
 W.w.q....r.  ..r.rrr....w..r.rr...... .W
@@ -20,20 +21,3 @@ W  ......rrr..r. .rr.. r....r..r.r....rW
 W .......rrr..r..r r...r..r.  ..r.  ...W
 Wrrrr..r.r.rr..rr ..Pr..q r....r.rr....W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

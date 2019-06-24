@@ -1,3 +1,4 @@
+155,140,5,8,55
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W...r.....P....r..X.a...r.....r........W
 W.r.rr.........r...r........r......r.r.W
@@ -20,20 +21,3 @@ W..r.rrrrrrrrrrrrrrrrrrrrrrrrrrrrrr....W
 Wr....................................rW
 W......................................W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
