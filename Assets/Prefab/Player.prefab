@@ -109,8 +109,7 @@ MonoBehaviour:
   time: 0
   layer:
     serializedVersion: 2
-    m_Bits: 7680
-  dirtTileMap: {fileID: 0}
+    m_Bits: 15872
 --- !u!95 &1151457489614880409
 Animator:
   serializedVersion: 3
