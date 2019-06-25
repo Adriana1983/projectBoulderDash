@@ -22,12 +22,22 @@ public class OpeningScreen : MonoBehaviour
     private int selectedCaveLevel = 1;
     private float blinkTimer = 0;
     public List<string> cavelist = new List<string>();
+    public Dictionary<int, string> cavesToNumbers = new Dictionary<int, string>();
 
     void Start()
     {
         //Lijst van caves zodat je makkelijk nieuwe kan toevoegen
         cavelist.InsertRange(cavelist.Count, new string[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"});
         clip = SoundManager.PlayBDmusicLoop;
+        int number = 0;
+        cavelist.InsertRange(cavelist.Count,
+            new string[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"});
+        foreach (var caves in cavelist)
+        {
+            
+            cavesToNumbers.Add(number, caves);
+            number++;
+        }
         
     }
     
@@ -124,7 +134,7 @@ public class OpeningScreen : MonoBehaviour
                 selectedCaveNumber--;
             }
 
-            selectedCave = cavelist[selectedCaveNumber];
+            selectedCave = cavesToNumbers[selectedCaveNumber];
             GameObject.Find("Cave").transform.Find("CaveLevel").GetComponent<Text>().text =
                 selectedCave;
         }
@@ -174,9 +184,11 @@ public class OpeningScreen : MonoBehaviour
                 SoundManager.Instance.PlayCollectdiamond();
                 SoundManager.Instance.StopAllAudio();
                 //Settings for the script caveloader
-                PlayerPrefs.SetString("Cave", selectedCave);
+                PlayerPrefs.SetInt("Cave", selectedCaveNumber);
                 PlayerPrefs.SetInt("Level", selectedCaveLevel);
+                
                 PlayerPrefs.SetInt("Players", amountOfPlayers);
+              
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
 

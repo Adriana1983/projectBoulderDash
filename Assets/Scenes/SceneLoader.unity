@@ -2532,7 +2532,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12.657241
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3177,3 +3177,5 @@ MonoBehaviour:
   - {fileID: 9210319615607237902, guid: de5dc768acfadc0469dc0bf995f1e23f, type: 3}
   - {fileID: 2007398031164448160, guid: cb5fda802464f2443b4e7b50dba1f9c4, type: 3}
   - {fileID: 3921607198779758255, guid: fdf162cc328117940a75fe0185aef5b2, type: 3}
+  cavelist: []
+  LevelFinished: 0

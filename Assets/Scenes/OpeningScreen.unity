@@ -663,7 +663,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8.8
+  orthographic size: 11
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2103,6 +2103,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3980626641629480017, guid: c8ac817c79dbf0748849f9113ec407cf,
+        type: 3}
+      propertyPath: Diamond
+      value: 
+      objectReference: {fileID: 2007398031164448160, guid: cb5fda802464f2443b4e7b50dba1f9c4,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8ac817c79dbf0748849f9113ec407cf, type: 3}
 --- !u!1001 &911320358

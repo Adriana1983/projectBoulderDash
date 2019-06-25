@@ -124,7 +124,7 @@ namespace Behaviour.Player
                                 map.SetTile(map.WorldToCell(targetPos + targetDirection), null);
 
                             break;
-
+                      
                         //We hit something else, player cannot move
                         default:
                             mustMove = false;
