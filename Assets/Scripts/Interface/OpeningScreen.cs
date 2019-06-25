@@ -20,14 +20,13 @@ public class OpeningScreen : MonoBehaviour
     private int selectedCaveNumber = 0;
     private string selectedCave;
     private int selectedCaveLevel = 1;
-    private float blinkTimer = 0;
+    private float blinkTimer;
     public List<string> cavelist = new List<string>();
     public Dictionary<int, string> cavesToNumbers = new Dictionary<int, string>();
 
     void Start()
     {
         //Lijst van caves zodat je makkelijk nieuwe kan toevoegen
-        cavelist.InsertRange(cavelist.Count, new string[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"});
         clip = SoundManager.PlayBDmusicLoop;
         int number = 0;
         cavelist.InsertRange(cavelist.Count,
