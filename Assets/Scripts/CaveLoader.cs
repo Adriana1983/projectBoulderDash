@@ -16,8 +16,7 @@ public class CaveLoader : MonoBehaviour
     public TileBase[] Tiles;
     public GameObject[] Prefab;
 
-    public Dictionary<int, string> cavesToNumbers = new Dictionary<int, string>();
-    private int SelectedCave;
+    private string SelectedCave;
     private int SelectedLevel;
 
     enum Tile
@@ -48,23 +47,13 @@ public class CaveLoader : MonoBehaviour
 
     void Awake()
     {
-        int number = 0;
-        List<string> cavelist = new List<string>();
-        cavelist.InsertRange(cavelist.Count,
-            new string[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"});
-        foreach (var caves in cavelist)
-        {
-            cavesToNumbers.Add(number, caves);
-            number++;
-        }
-
-        SelectedCave = PlayerPrefs.GetInt("Cave");
+        SelectedCave = PlayerPrefs.GetString("Cave");
         SelectedLevel = PlayerPrefs.GetInt("Level");
 
         //loading text file and separating by breaklines
         List<string> caveDataList = new List<string>();
         TextAsset caveData;
-        caveData = (TextAsset) Resources.Load("Caves/Levels/Cave" + cavesToNumbers[SelectedCave] + "-" + SelectedLevel);
+        caveData = (TextAsset) Resources.Load("Caves/Levels/Cave" + SelectedCave + "-" + SelectedLevel);
         caveDataList = caveData.text.Trim().Split('\n').Reverse().ToList();
 
         Height = caveDataList.Count;

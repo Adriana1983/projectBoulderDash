@@ -21,22 +21,13 @@ public class OpeningScreen : MonoBehaviour
     private string selectedCave;
     private int selectedCaveLevel = 1;
     private float blinkTimer;
-    public List<string> cavelist = new List<string>();
-    public Dictionary<int, string> cavesToNumbers = new Dictionary<int, string>();
+    public List<string> caveSelectieList = new List<string>();
 
     void Start()
     {
         //Lijst van caves zodat je makkelijk nieuwe kan toevoegen
         clip = SoundManager.PlayBDmusicLoop;
-        int number = 0;
-        cavelist.InsertRange(cavelist.Count,
-            new string[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"});
-        foreach (var caves in cavelist)
-        {
-            
-            cavesToNumbers.Add(number, caves);
-            number++;
-        }
+        caveSelectieList.InsertRange(caveSelectieList.Count, new string[] {"A", "E", "I", "M"});
         
     }
     
@@ -115,7 +106,7 @@ public class OpeningScreen : MonoBehaviour
             GameObject.Find("Cave").transform.Find("CaveLevel").GetComponent<Text>().color = Color.red;
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                if (selectedCaveNumber == cavelist.Count - 1)
+                if (selectedCaveNumber == caveSelectieList.Count - 1)
                 {
                     selectedCaveNumber = -1;
                 }
@@ -127,13 +118,13 @@ public class OpeningScreen : MonoBehaviour
             {
                 if (selectedCaveNumber == 0)
                 {
-                    selectedCaveNumber = cavelist.Count;
+                    selectedCaveNumber = caveSelectieList.Count;
                 }
 
                 selectedCaveNumber--;
             }
 
-            selectedCave = cavesToNumbers[selectedCaveNumber];
+            selectedCave = caveSelectieList[selectedCaveNumber];
             GameObject.Find("Cave").transform.Find("CaveLevel").GetComponent<Text>().text =
                 selectedCave;
         }
@@ -183,7 +174,7 @@ public class OpeningScreen : MonoBehaviour
                 SoundManager.Instance.PlayCollectdiamond();
                 SoundManager.Instance.StopAllAudio();
                 //Settings for the script caveloader
-                PlayerPrefs.SetInt("Cave", selectedCaveNumber);
+                PlayerPrefs.SetString("Cave", caveSelectieList[selectedCaveNumber]);
                 PlayerPrefs.SetInt("Level", selectedCaveLevel);
                 
                 PlayerPrefs.SetInt("Players", amountOfPlayers);
