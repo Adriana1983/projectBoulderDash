@@ -25,10 +25,9 @@ public class OpeningScreen : MonoBehaviour
 
     void Start()
     {
-        //Lijst van caves zodat je makkelijk nieuwe kan toevoegen
+        //Lijst van begin caves
         clip = SoundManager.PlayBDmusicLoop;
         caveSelectieList.InsertRange(caveSelectieList.Count, new string[] {"A", "E", "I", "M"});
-        
     }
     
     void Update()
@@ -166,11 +165,8 @@ public class OpeningScreen : MonoBehaviour
         }
 
         //Play button / Press enter to start
-        if (selectedOption == 4)
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            GameObject.Find("Play").GetComponent<Outline>().effectColor = Color.red;
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
                 SoundManager.Instance.PlayCollectdiamond();
                 SoundManager.Instance.StopAllAudio();
                 //Settings for the script caveloader
@@ -180,38 +176,30 @@ public class OpeningScreen : MonoBehaviour
                 PlayerPrefs.SetInt("Players", amountOfPlayers);
               
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            }
-
-            blinkTimer += Time.deltaTime;
-            if (blinkTimer < 0.75f)
-            {
-                GameObject.Find("PressStart").GetComponent<Text>().text = "";
-            }
-
-            if (blinkTimer > 0.75f)
-            {
-                GameObject.Find("PressStart").GetComponent<Text>().text = "Press Enter to start";
-
-            }
-            if (blinkTimer >= 1.5f)
-            {
-                blinkTimer = 0;
-            }
+            //Blinking loop
+            
         }
-        
-        else
-        {
-            blinkTimer = 0;
-            GameObject.Find("PressStart").GetComponent<Text>().text = "Press Enter to start";
-            GameObject.Find("Play").GetComponent<Outline>().effectColor = Color.black;
-        }
-
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) ||
             Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             SoundManager.Instance.PlayCollectdiamond();            
         }
+        
+        blinkTimer += Time.deltaTime;
+        if (blinkTimer < 0.5f)
+        {
+            GameObject.Find("Play").GetComponent<Text>().text = "";
+        }
 
+        if (blinkTimer > 0.5f)
+        {
+            GameObject.Find("Play").GetComponent<Text>().text = "^ Press Enter ^ " +
+                                                                "To Play";
+        }
+        if (blinkTimer >= 1.25f)
+        {
+            blinkTimer = 0;
+        }
     }
 
     
