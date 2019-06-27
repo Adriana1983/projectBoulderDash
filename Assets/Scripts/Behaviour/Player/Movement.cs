@@ -32,6 +32,8 @@ namespace Behaviour.Player
         public LayerMask layer;
         public BoxCollider2D ghost;
 
+        public bool Pauze;
+        
         //Animation direction clockwise
         enum Direction
         {
@@ -57,80 +59,98 @@ namespace Behaviour.Player
 
         private void Update()
         {
-        
-            lastPos = transform.position;
-            inputGot = Input.inputString;
-            
-            if (inputGot.Length < 1)
+            //Pauze code
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
             {
-                inputGot = inputGot.ToUpper();
+                switch (Pauze)
+                {
+                    case true:
+                        Time.timeScale = 1;
+                        Pauze = false;
+                        break;
+                    case false:
+                        Time.timeScale = 0;
+                        Pauze = true;
+                        break;
+                }
             }
-            else
+
+            if (Pauze == false)
             {
-                inputGot = char.ToUpper(inputGot[0]) + inputGot.Substring(1);
-            }
+                lastPos = transform.position;
+                inputGot = Input.inputString;
 
-            isHit = false;
-
-            //Player isn't moving, allow movement
-            if (!isMoving && !finished)
-            {
-                //Variable for requested player direction
-                Vector3 targetDirection = Vector3.zero;
-                
-                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ||
-                    Input.GetAxisRaw("PadHorizontal") == -1  ||
-                    Input.GetAxisRaw("LeftJoystickHorizontal") == -1)
+                if (inputGot.Length < 1)
                 {
-                    mustMove = true;
-                    targetDirection = Vector3.left;
-                    animationDirection = (int)Direction.Left;
+                    inputGot = inputGot.ToUpper();
                 }
-                else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ||
-                         Input.GetAxisRaw("PadHorizontal") == 1  ||
-                         Input.GetAxisRaw("LeftJoystickHorizontal") == 1)
+                else
                 {
-                    mustMove = true;
-                    targetDirection = Vector3.right;
-                    animationDirection = (int)Direction.Right;
-                }
-                else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) || 
-                         Input.GetAxisRaw("PadVertical") == 1  ||
-                         Input.GetAxisRaw("LeftJoystickVertical") == -1) 
-                {
-                    mustMove = true;
-                    targetDirection = Vector3.up;
-                    animationDirection = (int)Direction.Up;
-                }
-                else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ||
-                         Input.GetAxisRaw("PadVertical") == -1  ||
-                         Input.GetAxisRaw("LeftJoystickVertical") == 1)
-                {
-                    mustMove = true;
-                    targetDirection = Vector3.down;
-                    animationDirection = (int)Direction.Down;
+                    inputGot = char.ToUpper(inputGot[0]) + inputGot.Substring(1);
                 }
 
-                //Check for collision in requested player direction
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, targetDirection, 1, layer);
+                isHit = false;
 
-                //Did we hit anything?
-                if (hit.collider != null)
+                //Player isn't moving, allow movement
+                if (!isMoving && !finished)
                 {
-                    //What did we hit?
-                    switch (hit.collider.gameObject.tag)
+                    //Variable for requested player direction
+                    Vector3 targetDirection = Vector3.zero;
+
+                    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ||
+                        Input.GetAxisRaw("PadHorizontal") == -1 ||
+                        Input.GetAxisRaw("LeftJoystickHorizontal") == -1)
                     {
-                        //We hit a boulder
-                        case "Boulder":
-                            //can't move boulders in stay in place mode
-                            if (!Input.GetKey(KeyCode.LeftControl))
-                                //call boulder hit function, decides if the player can move the boulder
-                                mustMove = hit.collider.gameObject.GetComponent<Boulder>().BoulderHit(targetDirection);
-                            else
-                                mustMove = false;
-                            break;
-                        //we hit dirt
-                        case "Dirt":
+                        mustMove = true;
+                        targetDirection = Vector3.left;
+                        animationDirection = (int) Direction.Left;
+                    }
+                    else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ||
+                             Input.GetAxisRaw("PadHorizontal") == 1 ||
+                             Input.GetAxisRaw("LeftJoystickHorizontal") == 1)
+                    {
+                        mustMove = true;
+                        targetDirection = Vector3.right;
+                        animationDirection = (int) Direction.Right;
+                    }
+                    else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ||
+                             Input.GetAxisRaw("PadVertical") == 1 ||
+                             Input.GetAxisRaw("LeftJoystickVertical") == -1)
+                    {
+                        mustMove = true;
+                        targetDirection = Vector3.up;
+                        animationDirection = (int) Direction.Up;
+                    }
+                    else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ||
+                             Input.GetAxisRaw("PadVertical") == -1 ||
+                             Input.GetAxisRaw("LeftJoystickVertical") == 1)
+                    {
+                        mustMove = true;
+                        targetDirection = Vector3.down;
+                        animationDirection = (int) Direction.Down;
+                    }
+
+                    //Check for collision in requested player direction
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, targetDirection, 1, layer);
+
+                    //Did we hit anything?
+                    if (hit.collider != null)
+                    {
+                        //What did we hit?
+                        switch (hit.collider.gameObject.tag)
+                        {
+                            //We hit a boulder
+                            case "Boulder":
+                                //can't move boulders in stay in place mode
+                                if (!Input.GetKey(KeyCode.LeftControl))
+                                    //call boulder hit function, decides if the player can move the boulder
+                                    mustMove = hit.collider.gameObject.GetComponent<Boulder>()
+                                        .BoulderHit(targetDirection);
+                                else
+                                    mustMove = false;
+                                break;
+                            //we hit dirt
+                            case "Dirt":
                             {
                                 //Allow player to move
                                 mustMove = true;
@@ -142,87 +162,90 @@ namespace Behaviour.Player
                                 if (map != null)
                                     map.SetTile(map.WorldToCell(targetPos + targetDirection), null);
                             }
-                            break;
-                        case "Diamond":
-                            mustMove = true;
-                            SoundManager.Instance.PlayCollectdiamond();
-                            Destroy(hit.collider.gameObject);
-                            Score.Instance.score += Score.Instance.initialDiamondsValue;
-                            Score.Instance.diamondsCollected++;
-                            break;
-                        case "Exitdoor":
-
-                            mustMove = false;
-                            if (Score.Instance.diamondsCollected >= Score.Instance.diamondsNeeded)
-                            {
+                                break;
+                            case "Diamond":
                                 mustMove = true;
-                                
-                                SoundManager.Instance.PlayFinished();
+                                SoundManager.Instance.PlayCollectdiamond();
                                 Destroy(hit.collider.gameObject);
+                                Score.Instance.score += Score.Instance.initialDiamondsValue;
+                                Score.Instance.diamondsCollected++;
+                                break;
+                            case "Exitdoor":
 
-                                finished = true;
-                            }
-                            //Finish sound, Pause, reset score, load next level, .
-                            break;
-                        //We hit something else, player cannot move
-                        default:
-                            mustMove = false;
-                            break;
+                                mustMove = false;
+                                if (Score.Instance.diamondsCollected >= Score.Instance.diamondsNeeded)
+                                {
+                                    mustMove = true;
+
+                                    SoundManager.Instance.PlayFinished();
+                                    Destroy(hit.collider.gameObject);
+
+                                    finished = true;
+                                }
+
+                                //Finish sound, Pause, reset score, load next level, .
+                                break;
+                            //We hit something else, player cannot move
+                            default:
+                                mustMove = false;
+                                break;
+                        }
                     }
-                }
 
-                //Did the player have to move?
-                if (mustMove)
-                {
-                    //Check for stay in place mode, else allow player movement
-                    if (!(Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.JoystickButton0)))
+                    //Did the player have to move?
+                    if (mustMove)
                     {
-                        if (hit.collider == null)
-                            SoundManager.Instance.PlayWalkEmpty();
+                        //Check for stay in place mode, else allow player movement
+                        if (!(Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.JoystickButton0)))
+                        {
+                            if (hit.collider == null)
+                                SoundManager.Instance.PlayWalkEmpty();
 
-                        targetPos += targetDirection;
-                        ghost.transform.position = targetPos;
-                        ghost.enabled = true;
+                            targetPos += targetDirection;
+                            ghost.transform.position = targetPos;
+                            ghost.enabled = true;
 
-                        animator.SetInteger("AnimationDirection", animationDirection);
+                            animator.SetInteger("AnimationDirection", animationDirection);
 
-                        animator.SetBool("isMoving", true);
-                        isMoving = true;
+                            animator.SetBool("isMoving", true);
+                            isMoving = true;
+                        }
+                    }
+                    else
+                    {
+                        animator.SetInteger("AnimationDirection", 0);
+                        Idle();
                     }
                 }
+                //Player is still moving
                 else
                 {
-                    animator.SetInteger("AnimationDirection", 0);
-                    Idle();
-                }
-            }
-            //Player is still moving
-            else
-            {
-                //The Current Position = Move To (the current position to the new position by the speed * Time.DeltaTime)
-                if (isMoving)
-                {
-                    time = 0;
-                    transform.position = Vector2.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
-                }
-
-                //Wait for movement to finish
-                if (transform.position == targetPos)
-                {
-                    ghost.enabled = false;
-                    isMoving = false;
-                    mustMove = false;
-
-                    //check if the level has been finished
-                    if (finished == true)
+                    //The Current Position = Move To (the current position to the new position by the speed * Time.DeltaTime)
+                    if (isMoving)
                     {
-                        Score.Instance.CurrentCave = (char)(Score.Instance.CurrentCave + 1);
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                        time = 0;
+                        transform.position =
+                            Vector2.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+                    }
 
-                        timerNextScene -= Time.deltaTime;
-                        if (timerNextScene < 0)
+                    //Wait for movement to finish
+                    if (transform.position == targetPos)
+                    {
+                        ghost.enabled = false;
+                        isMoving = false;
+                        mustMove = false;
+
+                        //check if the level has been finished
+                        if (finished == true)
                         {
-                            //Change scene
+                            Score.Instance.CurrentCave = (char) (Score.Instance.CurrentCave + 1);
+                            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+                            timerNextScene -= Time.deltaTime;
+                            if (timerNextScene < 0)
+                            {
+                                //Change scene
+                            }
                         }
                     }
                 }
@@ -230,29 +253,31 @@ namespace Behaviour.Player
         }
 
         public void Idle()
-        {
-            time += Time.deltaTime;
-
-            if (time > 10.0f)
             {
-                animator.SetInteger("idle", 2);
-            }
-            else if (time > 5.0f)
-            {
-                animator.SetInteger("idle", 1);
-            }
-            else
-            {
-                animator.SetInteger("idle", 0);
-            }
-            isIdle = true;
-            animator.SetBool("isMoving", isMoving);
+                time += Time.deltaTime;
 
-        }
+                if (time > 10.0f)
+                {
+                    animator.SetInteger("idle", 2);
+                }
+                else if (time > 5.0f)
+                {
+                    animator.SetInteger("idle", 1);
+                }
+                else
+                {
+                    animator.SetInteger("idle", 0);
+                }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            Destroy(other.gameObject);
-        }
+                isIdle = true;
+                animator.SetBool("isMoving", isMoving);
+
+            }
+
+            private void OnTriggerEnter(Collider other)
+            {
+                Destroy(other.gameObject);
+            }
+        
     }
 }
