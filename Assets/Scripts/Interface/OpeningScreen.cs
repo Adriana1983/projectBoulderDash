@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
+using System.Threading;
 using Camera;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -21,6 +23,8 @@ public class OpeningScreen : MonoBehaviour
     private string selectedCave;
     private int selectedCaveLevel = 1;
     private float blinkTimer;
+    private bool delayTrue;
+    private float delay;
     public List<string> caveSelectieList = new List<string>();
 
     void Start()
@@ -30,6 +34,48 @@ public class OpeningScreen : MonoBehaviour
         caveSelectieList.InsertRange(caveSelectieList.Count, new string[] {"A", "E", "I", "M"});
     }
     
+    public static string GoDirection()
+    {
+        string direction = null;
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow) ||
+            Input.GetAxisRaw("PadHorizontal") == -1 ||
+            Input.GetAxisRaw("LeftJoystickHorizontal") == -1)
+        {
+            direction = "Left";
+        }
+
+        if (direction == null)
+        {
+            if (Input.GetKeyDown(KeyCode.RightArrow) ||
+                Input.GetAxisRaw("PadHorizontal") == 1 ||
+                Input.GetAxisRaw("LeftJoystickHorizontal") == 1)
+            {
+                direction = "Right"; 
+            }
+        }
+
+        if (direction == null)
+        {
+            if (Input.GetKeyDown(KeyCode.DownArrow) ||
+                Input.GetAxisRaw("PadVertical") == -1 ||
+                Input.GetAxisRaw("LeftJoystickVertical") == -1)
+            {
+                direction = "Down";
+            }
+        }
+        if (direction == null)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow) || 
+                Input.GetAxisRaw("PadVertical") == 1  ||
+                Input.GetAxisRaw("LeftJoystickVertical") == 1)
+            {
+                direction = "Up";
+            }
+        }
+    
+    return direction;
+    }
     void Update()
     {
         //Loop so the background music keeps playing
@@ -49,123 +95,156 @@ public class OpeningScreen : MonoBehaviour
                 clipPlaying = false;
             }
         }
-        
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+
+        if (delayTrue)
         {
-            if (selectedOption == 4)
-            {
-                selectedOption = 0;
-            }
-            selectedOption += 1;
+            delay += Time.deltaTime;
         }
-        
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+
+        if (delay > 0.2)
         {
+            delay = 0;
+            delayTrue = false;
+        }
+
+        if (delayTrue == false)
+        {
+            if (GoDirection() == "Down")
+            {
+                if (selectedOption == 3)
+                {
+                    selectedOption = 0;
+                }
+
+                selectedOption += 1;
+                delayTrue = true;
+            }
+
+            if (GoDirection() == "Up")
+            {
+                if (selectedOption == 1)
+                {
+                    selectedOption = 4;
+                }
+
+                selectedOption -= 1;
+                delayTrue = true;
+            }
+
+            //Selectie Players
             if (selectedOption == 1)
             {
-                selectedOption = 5;
+                GameObject.Find("Players").GetComponent<Outline>().effectColor = Color.red;
+                GameObject.Find("Players").transform.Find("PlayersAmount").GetComponent<Text>().color = Color.red;
+
+                if (GoDirection() == "Right")
+                {
+                    if (amountOfPlayers == 2)
+                    {
+                        amountOfPlayers = 0;
+                    }
+
+                    amountOfPlayers += 1;
+                    delayTrue = true;
+                }
+
+                if (GoDirection() == "Left")
+                {
+                    if (amountOfPlayers == 1)
+                    {
+                        amountOfPlayers = 3;
+                    }
+
+                    amountOfPlayers -= 1;
+                    delayTrue = true;
+                }
+
+                GameObject.Find("Players").transform.Find("PlayersAmount").GetComponent<Text>().text =
+                    amountOfPlayers.ToString();
             }
-            selectedOption -= 1;
+            else
+            {
+                GameObject.Find("Players").GetComponent<Outline>().effectColor = Color.black;
+                GameObject.Find("Players").transform.Find("PlayersAmount").GetComponent<Text>().color = Color.white;
+            }
+
+            //Selectie Caves
+            if (selectedOption == 2)
+            {
+                GameObject.Find("Cave").GetComponent<Outline>().effectColor = Color.red;
+                GameObject.Find("Cave").transform.Find("CaveLevel").GetComponent<Text>().color = Color.red;
+                if (GoDirection() == "Right")
+                {
+                    if (selectedCaveNumber == caveSelectieList.Count - 1)
+                    {
+                        selectedCaveNumber = -1;
+                    }
+
+                    selectedCaveNumber++;
+                    delayTrue = true;
+                }
+
+                if (GoDirection() == "Left")
+                {
+                    if (selectedCaveNumber == 0)
+                    {
+                        selectedCaveNumber = caveSelectieList.Count;
+                    }
+
+                    selectedCaveNumber--;
+                    delayTrue = true;
+                }
+
+                selectedCave = caveSelectieList[selectedCaveNumber];
+                GameObject.Find("Cave").transform.Find("CaveLevel").GetComponent<Text>().text =
+                    selectedCave;
+            }
+            else
+            {
+                GameObject.Find("Cave").GetComponent<Outline>().effectColor = Color.black;
+                GameObject.Find("Cave").transform.Find("CaveLevel").GetComponent<Text>().color = Color.white;
+            }
+
+            //SelectieLevels
+            if (selectedOption == 3)
+            {
+                GameObject.Find("Level").GetComponent<Outline>().effectColor = Color.red;
+                GameObject.Find("Level").transform.Find("SelectedLevel").GetComponent<Text>().color = Color.red;
+
+                if (GoDirection() == "Right")
+                {
+                    if (selectedCaveLevel == 5)
+                    {
+                        selectedCaveLevel = 0;
+                    }
+
+                    selectedCaveLevel += 1;
+                    delayTrue = true;
+                }
+
+                if (GoDirection() == "Left")
+                {
+                    if (selectedCaveLevel == 1)
+                    {
+                        selectedCaveLevel = 6;
+                    }
+
+                    selectedCaveLevel -= 1;
+                    delayTrue = true;
+                }
+
+                GameObject.Find("Level").transform.Find("SelectedLevel").GetComponent<Text>().text =
+                    selectedCaveLevel.ToString();
+            }
+            else
+            {
+                GameObject.Find("Level").GetComponent<Outline>().effectColor = Color.black;
+                GameObject.Find("Level").transform.Find("SelectedLevel").GetComponent<Text>().color = Color.white;
+            }
         }
         
-        //Selectie Players
-        if (selectedOption == 1)
-        {
-            GameObject.Find("Players").GetComponent<Outline>().effectColor = Color.red;
-            GameObject.Find("Players").transform.Find("PlayersAmount").GetComponent<Text>().color = Color.red;
-
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                if (amountOfPlayers == 2)
-                {
-                    amountOfPlayers = 0;
-                }
-                amountOfPlayers += 1;
-            }
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                if (amountOfPlayers == 1)
-                {
-                    amountOfPlayers = 3;
-                }
-                amountOfPlayers -= 1;
-            }
-            GameObject.Find("Players").transform.Find("PlayersAmount").GetComponent<Text>().text = amountOfPlayers.ToString();
-        }
-        else
-        {
-            GameObject.Find("Players").GetComponent<Outline>().effectColor = Color.black;
-            GameObject.Find("Players").transform.Find("PlayersAmount").GetComponent<Text>().color = Color.white;
-        }
-        
-        //Selectie Caves
-        if (selectedOption == 2)
-        {
-            GameObject.Find("Cave").GetComponent<Outline>().effectColor = Color.red;
-            GameObject.Find("Cave").transform.Find("CaveLevel").GetComponent<Text>().color = Color.red;
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                if (selectedCaveNumber == caveSelectieList.Count - 1)
-                {
-                    selectedCaveNumber = -1;
-                }
-
-                selectedCaveNumber++;
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                if (selectedCaveNumber == 0)
-                {
-                    selectedCaveNumber = caveSelectieList.Count;
-                }
-
-                selectedCaveNumber--;
-            }
-
-            selectedCave = caveSelectieList[selectedCaveNumber];
-            GameObject.Find("Cave").transform.Find("CaveLevel").GetComponent<Text>().text =
-                selectedCave;
-        }
-        else
-        {
-            GameObject.Find("Cave").GetComponent<Outline>().effectColor = Color.black;
-            GameObject.Find("Cave").transform.Find("CaveLevel").GetComponent<Text>().color = Color.white;
-        }
-        
-        //SelectieLevels
-        if (selectedOption == 3)
-        {
-            GameObject.Find("Level").GetComponent<Outline>().effectColor = Color.red;
-            GameObject.Find("Level").transform.Find("SelectedLevel").GetComponent<Text>().color = Color.red;
-
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                if (selectedCaveLevel == 5)
-                {
-                    selectedCaveLevel = 0;
-                }
-                selectedCaveLevel += 1;
-            }
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                if (selectedCaveLevel == 1)
-                {
-                    selectedCaveLevel = 6;
-                }
-                selectedCaveLevel -= 1;
-            }
-            GameObject.Find("Level").transform.Find("SelectedLevel").GetComponent<Text>().text = selectedCaveLevel.ToString();
-        }
-        else
-        {
-            GameObject.Find("Level").GetComponent<Outline>().effectColor = Color.black;
-            GameObject.Find("Level").transform.Find("SelectedLevel").GetComponent<Text>().color = Color.white;
-
-        }
-
         //Play button / Press enter to start
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.JoystickButton0))
         {
                 SoundManager.Instance.PlayCollectdiamond();
                 SoundManager.Instance.StopAllAudio();
@@ -176,15 +255,13 @@ public class OpeningScreen : MonoBehaviour
                 PlayerPrefs.SetInt("Players", amountOfPlayers);
               
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            //Blinking loop
-            
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) ||
-            Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
+        if (GoDirection() != null)
         {
             SoundManager.Instance.PlayCollectdiamond();            
         }
-        
+
+        //Blinking loop       
         blinkTimer += Time.deltaTime;
         if (blinkTimer < 0.5f)
         {
@@ -201,6 +278,4 @@ public class OpeningScreen : MonoBehaviour
             blinkTimer = 0;
         }
     }
-
-    
 }
