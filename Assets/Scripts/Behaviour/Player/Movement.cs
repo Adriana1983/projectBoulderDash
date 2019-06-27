@@ -57,9 +57,10 @@ namespace Behaviour.Player
 
         private void Update()
         {
+        
             lastPos = transform.position;
-
             inputGot = Input.inputString;
+            
             if (inputGot.Length < 1)
             {
                 inputGot = inputGot.ToUpper();
@@ -76,25 +77,34 @@ namespace Behaviour.Player
             {
                 //Variable for requested player direction
                 Vector3 targetDirection = Vector3.zero;
-                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                
+                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ||
+                    Input.GetAxisRaw("PadHorizontal") == -1  ||
+                    Input.GetAxisRaw("LeftJoystickHorizontal") == -1)
                 {
                     mustMove = true;
                     targetDirection = Vector3.left;
                     animationDirection = (int)Direction.Left;
                 }
-                else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ||
+                         Input.GetAxisRaw("PadHorizontal") == 1  ||
+                         Input.GetAxisRaw("LeftJoystickHorizontal") == 1)
                 {
                     mustMove = true;
                     targetDirection = Vector3.right;
                     animationDirection = (int)Direction.Right;
                 }
-                else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+                else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) || 
+                         Input.GetAxisRaw("PadVertical") == 1  ||
+                         Input.GetAxisRaw("LeftJoystickVertical") == -1) 
                 {
                     mustMove = true;
                     targetDirection = Vector3.up;
                     animationDirection = (int)Direction.Up;
                 }
-                else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+                else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ||
+                         Input.GetAxisRaw("PadVertical") == -1  ||
+                         Input.GetAxisRaw("LeftJoystickVertical") == 1)
                 {
                     mustMove = true;
                     targetDirection = Vector3.down;
@@ -165,7 +175,7 @@ namespace Behaviour.Player
                 if (mustMove)
                 {
                     //Check for stay in place mode, else allow player movement
-                    if (!Input.GetKey(KeyCode.LeftControl))
+                    if (!(Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.JoystickButton0)))
                     {
                         if (hit.collider == null)
                             SoundManager.Instance.PlayWalkEmpty();
