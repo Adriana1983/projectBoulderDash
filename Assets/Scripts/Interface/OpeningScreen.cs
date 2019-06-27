@@ -255,7 +255,8 @@ public class OpeningScreen : MonoBehaviour
                 PlayerPrefs.SetInt("Players", amountOfPlayers);
               
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
+        } 
+        //Plays sound whenever the selection changes
         if (GoDirection() != null)
         {
             SoundManager.Instance.PlayCollectdiamond();            
@@ -270,9 +271,19 @@ public class OpeningScreen : MonoBehaviour
 
         if (blinkTimer > 0.5f)
         {
-            GameObject.Find("Play").GetComponent<Text>().text = "^ Press Enter ^ " +
-                                                                "To Play";
-        }
+            if (Input.GetJoystickNames()[0] != "")
+            {
+                GameObject.Find("Play").GetComponent<Text>().text = "^ Press A ^     " +
+                                                                    "To Play";
+            }
+            else
+            {
+                GameObject.Find("Play").GetComponent<Text>().text = "^ Press Enter ^ " +
+                                                                    "To Play";
+            }
+
+        } 
+
         if (blinkTimer >= 1.25f)
         {
             blinkTimer = 0;
