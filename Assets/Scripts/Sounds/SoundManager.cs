@@ -32,7 +32,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip bdmusic; //opening tune
     public AudioClip cover; //building up cave/intermission
     public AudioClip crack; //Rockford appears in cave - he's immediately able to move - cave timer starts running -- opening exit
-    public AudioClip finished; //upon completing cave/intermission remaining seconds turn in to score
+    public AudioClip finished; //upon completing cave/intermission remaining seconds turn into score
 
     public AudioClip amoeba; //when amoeba grows
     public AudioClip explosion; //all explosions

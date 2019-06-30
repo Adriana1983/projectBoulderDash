@@ -32,13 +32,35 @@ public class Score : MonoBehaviour
     public char CurrentCave = 'A';
 
     public float caveTime = 150;
-    public float amoebaMagicTime = 75; //this is both amoebaSlowGrowthTome as magicWallMillingTime
+    public float amoebaMagicTime = 75; //this is both amoebaSlowGrowthTime as magicWallMillingTime
     public int initialDiamondsValue = 50;
     public int extraDiamondsValue = 90;
     public int diamondsNeeded = 75;
     public int diamondsCollected = 0;
 
-    public int score = 0;
+    public int life = 3;
+
+    public bool Finish = false;
+    private int extraLifeScore = 0;
+    private int score = 0;
+    public int TotalScore
+    {
+        get
+        {
+            return score;
+        }
+        set
+        {
+            extraLifeScore = value;
+            if (extraLifeScore > 500)
+            {
+                extraLifeScore = 0;
+                life++;
+            }
+            score = value;
+        }
+    }
+
 
     public void SetCaveData(List<string> caveSettings)
     {
@@ -54,5 +76,4 @@ public class Score : MonoBehaviour
     {
         DontDestroyOnLoad(this.gameObject);
     }
-
 }
