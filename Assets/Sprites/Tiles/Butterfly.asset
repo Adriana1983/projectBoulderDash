@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: Butterfly
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 7347462790551688587, guid: b686abe08b178564891837a289b7949c, type: 3}
+  - {fileID: -5341379075850347858, guid: b686abe08b178564891837a289b7949c, type: 3}
+  - {fileID: 2396862695907515793, guid: b686abe08b178564891837a289b7949c, type: 3}
+  - {fileID: -5255411328857583911, guid: b686abe08b178564891837a289b7949c, type: 3}
+  - {fileID: -5024787791212417305, guid: b686abe08b178564891837a289b7949c, type: 3}
+  - {fileID: -4651610518390447897, guid: b686abe08b178564891837a289b7949c, type: 3}
+  - {fileID: -302694773896946909, guid: b686abe08b178564891837a289b7949c, type: 3}
+  - {fileID: -1386572146570428669, guid: b686abe08b178564891837a289b7949c, type: 3}
+  m_MinSpeed: 6
+  m_MaxSpeed: 6
+  m_AnimationStartTime: 0
+  m_TileColliderType: 2

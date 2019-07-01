@@ -218,7 +218,6 @@ namespace Behaviour.Creatures
             
             if (mustGrow)
             {
-                Debug.Log("Amoeba has grown on "+ direction);
                 // create a new amoeba and add it to the list
                 amoebaCollection.Add(
                     new AmoebaCell(
