@@ -51,6 +51,7 @@ namespace MainCamera
             }
         }
 
+
         private void InitializeCameraBounds()
         {
             // TODO find way to automate this

@@ -1,0 +1,23 @@
+120,20,40,60,6
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+Wwwwwwwwww....r......r.r....r.wwwwwwwwwW
+Ww        ...........r.r....r.        wW
+Ww dq     ........rr.r..r.....     qd wW
+Wwwwwwwwww........rr.r..r.....wwwwwwwwwW
+Ww        .r.r.......r..r.....        wW
+Ww dq     .r.rr..r....r...r...     qd wW
+Wwwwwwwwww..r.r..r........r...wwwwwwwwwW
+Ww        ....r....r....r..r..        wW
+Ww dq     .....r.....r...r....     qd wW
+Wwwwwwwwww.........r......r.r.wwwwwwwwwW
+Ww        ....r.......r...r.r.        wW
+Ww dq     ..r......r.rr.......     qd wW
+Wwwwwwwwww.........r.rr.......wwwwwwwwwW
+W.r.............rr.r..r....r...r....r..W
+Wr..............r..r..r...........r....W
+W........rrr.......r....r....r....r....W
+W........r.rr..r....r...r..r....r..r...W
+W..X......r.r..r........r.....r.......PW
+W.rrr.......r....r....r..r.r......r....W
+W...r...r....r.....r...r..........r....W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
