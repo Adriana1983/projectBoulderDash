@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using Helper_Scripts;
+using UnityEditor;
 using UnityEditor.Experimental;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Debug = UnityEngine.Debug;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -19,20 +22,23 @@ namespace Behaviour.Creatures
         Right = 2,
         Down = 3
     }
+
     public class FireflyCell
     {
         private TileBase firefly;
         private Vector2Int position;
         private Vector2Int flyDirection;
-        private Direction lastDirection;
+        private int faceDirection;
+        private int lastWall;
         private bool canMove;
-        
+
         public FireflyCell(TileBase firefly, Vector2Int position)
         {
             this.firefly = firefly;
             this.position = position;
             flyDirection = position;
-            lastDirection = Direction.Left;
+            faceDirection = 0;
+            lastWall = 0;
             canMove = false;
         }
 
@@ -47,7 +53,7 @@ namespace Behaviour.Creatures
             get => firefly;
             set => firefly = value;
         }
-        
+
         public Vector2Int Position
         {
             get => position;
@@ -59,11 +65,17 @@ namespace Behaviour.Creatures
             get => flyDirection;
             set => flyDirection = value;
         }
-        
-        public Direction LastDirection
+
+        public int FaceDirection
         {
-            get => lastDirection;
-            set => lastDirection = value;
+            get => faceDirection;
+            set => faceDirection = value;
+        }
+
+        public int LastWall
+        {
+            get => lastWall;
+            set => lastWall = value;
         }
     }
 
@@ -99,30 +111,45 @@ namespace Behaviour.Creatures
         public bool isMoving;
         public bool mustMove;
         public Tilemap fireflyTilemap;
-        
+
         private List<Vector3> allowedDirections;
         public List<FireflyCell> fireflyCollection;
         public Dictionary<Vector2Int, string> tiles;
         public Dictionary<Vector2Int, string> neighbourTiles;
         public List<WallDirection> wallDirection;
         public List<WallDirection> moveDirection;
-        
-        
+
+        public List<Vector2Int> directions = new List<Vector2Int>
+        {
+            Vector2Int.left,
+            Vector2Int.up,
+            Vector2Int.right,
+            Vector2Int.down
+        };
+
         private Tilemap[] tilemaps;
         private GameObject[] gameObjects;
+
         private void Start()
         {
             tilemaps = FindObjectsOfType<Tilemap>();
-            gameObjects =  FindObjectsOfType<GameObject>() ;
+            gameObjects = FindObjectsOfType<GameObject>();
             isMoving = false;
             mustMove = false;
             fireflyCollection = new List<FireflyCell>();
             tiles = new Dictionary<Vector2Int, string>();
-           
+
             fireflyTilemap = gameObject.GetComponent<Tilemap>();
             neighbourTiles = new Dictionary<Vector2Int, string>();
             wallDirection = new List<WallDirection>();
-            
+            moveDirection = new List<WallDirection>
+            {
+                new WallDirection(0, Vector2Int.left),
+                new WallDirection(1, Vector2Int.up),
+                new WallDirection(2, Vector2Int.right),
+                new WallDirection(3, Vector2Int.down)
+            };
+
             UpdateGridInfo();
             GetFireflies();
             GetMoveDirection();
@@ -140,7 +167,7 @@ namespace Behaviour.Creatures
         public IEnumerator Move()
         {
             int i = 0;
-            
+
             // update the grid info
             UpdateGridInfo();
             GetMoveDirection();
@@ -162,23 +189,21 @@ namespace Behaviour.Creatures
                     }
                 }
             }
-            
+
             // when all fireflies have finished moving, start another cycle
             if (i == fireflyCollection.Count)
             {
                 mustMove = false;
             }
-            
+
             //waits for moveSpeed amount of seconds till next movement
             yield return new WaitForSeconds(moveSpeed);
             if (!mustMove)
             {
                 isMoving = false;
             }
-            
-            
         }
-        
+
         public void GetFireflies()
         {
             for (int n = fireflyTilemap.cellBounds.xMin; n < fireflyTilemap.cellBounds.xMax; n++)
@@ -187,7 +212,7 @@ namespace Behaviour.Creatures
                 {
                     Vector3Int localPlace = new Vector3Int(n, p, 0);
                     Vector2Int location = new Vector2Int(localPlace.x, localPlace.y);
-                       
+
                     if (fireflyTilemap.HasTile(localPlace))
                     {
                         fireflyCollection.Add(
@@ -195,12 +220,12 @@ namespace Behaviour.Creatures
                                 fireflyTilemap.GetTile(localPlace),
                                 location
                             )
-                        ); 
+                        );
                     }
                 }
             }
         }
-        
+
         // updates all tile information on teh grid
         public void UpdateGridInfo()
         {
@@ -224,22 +249,18 @@ namespace Behaviour.Creatures
                 }
             }
         }
-        
+
         // get neighbour tiles for each firefly
-        public void GetNeighbourTiles(Vector2Int position)
+        public void GetNeighbourTiles(Vector2Int position, int lastDir)
         {
             neighbourTiles.Clear();
-            
+
             string tileName;
-            
+
+
             // depending on this, choose the priority direction
-            Vector2Int[] directions = 
-            {
-                Vector2Int.left,
-                Vector2Int.up,
-                Vector2Int.right,
-                Vector2Int.down
-            };
+
+
             foreach (var direction in directions)
             {
                 Vector2Int tilePosition = new Vector2Int(position.x + direction.x, position.y + direction.y);
@@ -251,9 +272,9 @@ namespace Behaviour.Creatures
                 {
                     tileName = "Void";
                 }
+
                 neighbourTiles.Add(new Vector2Int(tilePosition.x, tilePosition.y), tileName);
             }
-            
         }
 
         public void GetMoveDirection()
@@ -262,117 +283,183 @@ namespace Behaviour.Creatures
             {
                 //bool hasDirection = false;
                 Vector2Int pos = firefly.Position;
-                GetNeighbourTiles(pos);
-                int iterator = 0;
+                GetNeighbourTiles(pos, firefly.FaceDirection);
+                int i = 0;
                 wallDirection.Clear();
                 moveDirection.Clear();
-                
-                // get directions which firefly can move
+
                 foreach (var tile in neighbourTiles)
                 {
-                    bool canMove = false;
-                    switch (iterator)
+                    bool isWall = false;
+                    switch (tile.Value)
                     {
-                        // left
-                        case 0:
-                            switch (tile.Value)
-                            {
-                                case "Player":
-                                    // explode?
-                                    break;
-                                case "Void":
-                                    canMove = true;
-                                    break;
-                                case "Amoeba":
-                                    // explode
-                                    break;
-                            }
+                        case "Player":
+                            // explode?
                             break;
-                        // up
-                        case 1:
-                            switch (tile.Value)
-                            {
-                                case "Player":
-                                    // explode?
-                                    break;
-                                case "Void":
-                                    canMove = true;
-                                    break;
-                                case "Amoeba":
-                                    // explode
-                                    break;
-                            }
+                        case "Void":
+                            isWall = false;
                             break;
-                        // right
-                        case 2:
-                            switch (tile.Value)
-                            {
-                                case "Player":
-                                    // explode?
-                                    break;
-                                case "Void":
-                                    canMove = true;
-                                    break;
-                                case "Amoeba":
-                                    // explode
-                                    break;
-                            }
-                            
+                        case "Amoeba":
+                            // explode
                             break;
-                        // down
-                        case 3:
-                            switch (tile.Value)
-                            {
-                                case "Player":
-                                    // explode?
-                                    break;
-                                case "Void":
-                                    canMove = true;
-                                    break;
-                                case "Amoeba":
-                                    // explode
-                                    break;
-                            }
+                        default:
+                            isWall = true;
                             break;
                     }
-                    if (canMove)
+
+                    moveDirection.Add(new WallDirection(i, tile.Key));
+                    if (isWall)
                     {
-                        moveDirection.Add(new WallDirection(iterator, tile.Key));
+                        wallDirection.Add(new WallDirection(i, tile.Key));
                     }
-                    else
-                    {
-                        wallDirection.Add(new WallDirection(iterator, tile.Key));
-                    }
-                    iterator++;
+                    i++;
                 }
-                
-                if (wallDirection.Count > 0)
+
+                if (wallDirection.Count != 0)
                 {
-                    // check move directions depending on left wall, left wall is always at index 0
-                    // first, reorder the walls so that the left wall is at index 0 depending on direction the firefly is facing
-                    int 
-                    if (firefly.LastDirection == Direction.Left)
+                    while (true)
                     {
-                        
+                        if (!isWall(CounterRotate(firefly.FaceDirection), firefly.Position))
+                        {
+                            firefly.FaceDirection = CounterRotate(firefly.FaceDirection);
+                            break;
+                        }
+
+                        if (isWall(firefly.FaceDirection, firefly.Position))
+                        {
+                            firefly.FaceDirection = Rotate(firefly.FaceDirection);
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
-                    var order = Reorder();
-                    wallDirection = order.Select(i => wallDirection[i]).ToList();
-                    firefly.FlyDirection = wallDirection.First().Coords;
+
+                    firefly.FlyDirection = moveDirection[firefly.FaceDirection].Coords;
                     firefly.CanMove = true;
-                    firefly.LastDirection = (Direction) wallDirection.First().Direction;
                 }
                 else
                 {
-                    firefly.FlyDirection = moveDirection.First().Coords;
+                    firefly.FlyDirection = moveDirection[CounterRotate(firefly.FaceDirection)].Coords;
                     firefly.CanMove = true;
-                    firefly.LastDirection = Direction.Left;
                 }
+
+//                if (wallDirection.Count == 0)
+//                {
+//                    //firefly.FlyDirection = moveDirection[firefly.LastWall].Coords;
+//                    if (firefly.LastWall == 8)
+//                    {
+//                        firefly.FlyDirection = moveDirection[0].Coords;
+//                        firefly.CanMove = true;
+//                    }
+//                    else
+//                    {
+//                        firefly.FlyDirection = moveDirection[firefly.LastWall].Coords;
+//                        firefly.CanMove = true;
+//                    }
+//                    
+
+//                }
+//                else
+//                {
+////                    while (!(isWall((firefly.FaceDirection + 4 - 1) % 4, firefly.Position) && !isWall(firefly.FaceDirection, firefly.Position)))
+////                    {
+////                        firefly.FaceDirection = Rotate(firefly.FaceDirection);
+////                        firefly.LastWall = (firefly.FaceDirection + 4 - 1) % 4;
+////                    }
+//                    if (!isWall(firefly.FaceDirection, firefly.Position))
+//                    {
+//                        firefly.FlyDirection = moveDirection[firefly.FaceDirection].Coords;
+//                        firefly.LastWall = (firefly.FaceDirection + 4 - 1) % 4;
+//                        firefly.CanMove = true;
+//
+//                    }
+//                    else
+//                    {
+//                        while (isWall(firefly.FaceDirection, firefly.Position))
+//                        {
+//                            firefly.FaceDirection = Rotate(firefly.FaceDirection);
+//                        }
+//
+//                        firefly.FlyDirection = moveDirection[firefly.FaceDirection].Coords;
+//                        firefly.LastWall = (firefly.FaceDirection + 4 - 1) % 4;
+//                        firefly.CanMove = true;
+//                    }
+
+//                }
             }
         }
-        
+
+        public bool isWall(int dir, Vector2Int position)
+        {
+            string tileName;
+            bool isWall;
+
+//            List<int[]> cor = new List<int[]>();
+//            cor.Add(new int[]{-1,0});
+//            cor.Add(new int[]{0,+1});
+//            cor.Add(new int[]{+1,0});
+//            cor.Add(new int[]{0,-1});
+            Vector2Int direction = directions[dir];
+
+            Vector2Int tilePosition = new Vector2Int(position.x + direction.x, position.y + direction.y);
+            try
+            {
+                tileName = tiles[tilePosition];
+            }
+            catch (KeyNotFoundException)
+            {
+                tileName = "Void";
+            }
+
+            switch (tileName)
+            {
+                case "Player":
+                    isWall = false;
+                    // explode?
+                    break;
+                case "Void":
+                    isWall = false;
+                    break;
+                case "Amoeba":
+                    isWall = false;
+                    // explode
+                    break;
+                default:
+                    isWall = true;
+                    break;
+            }
+
+            return isWall;
+        }
+
+        public int Rotate(int dir)
+        {
+            if (dir == 3)
+            {
+                return 0;
+            }
+            else
+            {
+                return dir + 1;
+            }
+        }
+
+        public int CounterRotate(int dir)
+        {
+            if (dir == 0)
+            {
+                return 3;
+            }
+            else
+            {
+                return dir - 1;
+            }
+        }
+
         public List<int> Reorder(int direction)
         {
-            var list = new List<int>{0, 1, 2, 3};
+            var list = new List<int> {0, 1, 2, 3};
             return list.Skip(direction).Concat(list.Take(direction).Reverse()).ToList();
         }
     }
