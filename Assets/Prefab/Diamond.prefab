@@ -47,10 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c945c20198ec24f893973882669d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Falling: 0
-  LastpositionFalling: 0
+  falling: 0
+  lastpositionFalling: 0
   activatedWall: 0
-  score: 0
+  explosion: {fileID: 5259553897754313578, guid: ba8bed6362cba7248bc2254eb5fdd83c,
+    type: 3}
 --- !u!61 &2109184093356209874
 BoxCollider2D:
   m_ObjectHideFlags: 0

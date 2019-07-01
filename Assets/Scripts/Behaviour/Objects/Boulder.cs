@@ -5,16 +5,16 @@ namespace Behaviour.Objects
 {
     public class Boulder : MonoBehaviour
     {
-        private float timer = 0.15f; //time betwee actions
+        private float timer = 0.1875f; //time betwee actions
         Random random = new Random();
         public bool falling;
         bool moving = false;
 
-        public GameObject explosion;
-
         //Magic wall variables
         public bool activatedWall;
         public bool lastpositionFalling;
+
+        public GameObject explosion;
 
         //Return bool decides if rockford is allowed to move in the movement script
         public bool BoulderHit(Vector3 targetDirection)
@@ -144,6 +144,7 @@ namespace Behaviour.Objects
                                 //firefly/butterfly dies
                                 DrawExplosion(hit);
                                 Debug.Log("Firefly/Butterfly dead");
+                                Destroy(hit.collider.gameObject);
                             }
                             break;
 
@@ -154,11 +155,11 @@ namespace Behaviour.Objects
                     falling = false;
                 }
 
-                timer = 0.15f;
+                timer = 0.1875f;
             }
         }
 
-        private void DrawExplosion(RaycastHit2D hit)
+        public void DrawExplosion(RaycastHit2D hit)
         {
             //Draw 3x3 explosion grid
             GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.up + Vector3.left, Quaternion.identity);
@@ -176,5 +177,4 @@ namespace Behaviour.Objects
             SoundManager.Instance.PlayExplosion();
         }
     }
-    
 }

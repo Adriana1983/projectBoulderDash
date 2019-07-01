@@ -7,11 +7,13 @@ using UnityEngine;
 
 public class Diamond : MonoBehaviour
 {
-    private float timer = 0.15f;
+    private float timer = 0.1875f;
     Random random = new Random();
     public bool falling;
     public bool lastpositionFalling;
     public bool activatedWall;
+
+    public GameObject explosion;
 
     void Update()
     {
@@ -80,15 +82,25 @@ public class Diamond : MonoBehaviour
                         {
                             transform.position += Vector3.right;
                         }
-
-
                         break;
                     case "Player":
                         if (falling)
                         {
                             //Player death
+                            DrawExplosion(hitDown);
+                            Debug.Log("Player dead");
+                            Destroy(hitDown.collider.gameObject);
                         }
-
+                        break;
+                    case "Firefly":
+                    case "Butterfly":
+                        if (falling)
+                        {
+                            //firefly/butterfly dies
+                            DrawExplosion(hitDown);
+                            Debug.Log("Firefly/Butterfly dead");
+                            Destroy(hitDown.collider.gameObject);
+                        }
                         break;
                 }
 
@@ -96,9 +108,28 @@ public class Diamond : MonoBehaviour
                 falling = false;
             }
 
-            timer = 0.15f;
+            timer = 0.1875f;
         }
     }
+
+    public void DrawExplosion(RaycastHit2D hit)
+    {
+        //Draw 3x3 explosion grid
+        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.up + Vector3.left, Quaternion.identity);
+        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.up, Quaternion.identity);
+        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.up + Vector3.right, Quaternion.identity);
+
+        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.left, Quaternion.identity);
+        GameObject.Instantiate(explosion, hit.transform.transform.position, Quaternion.identity);
+        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.right, Quaternion.identity);
+
+        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down + Vector3.left, Quaternion.identity);
+        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down, Quaternion.identity);
+        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down + Vector3.right, Quaternion.identity);
+
+        SoundManager.Instance.PlayExplosion();
+    }
+
 }
 
 
