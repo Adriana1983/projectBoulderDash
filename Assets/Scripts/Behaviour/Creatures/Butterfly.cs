@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
-using Behaviour.Objects;
+using System.Security.Cryptography.X509Certificates;
 using Helper_Scripts;
 using UnityEditor;
 using UnityEditor.Experimental;
@@ -17,19 +17,18 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace Behaviour.Creatures
 {
-
-    public class FireflyCell
+    public class ButterflyCell
     {
-        private TileBase firefly;
+        private TileBase butterfly;
         private Vector2Int position;
         private Vector2Int flyDirection;
         private int faceDirection;
         private int lastWall;
         private bool canMove;
 
-        public FireflyCell(TileBase firefly, Vector2Int position)
+        public ButterflyCell(TileBase butterfly, Vector2Int position)
         {
-            this.firefly = firefly;
+            this.butterfly = butterfly;
             this.position = position;
             flyDirection = position;
             faceDirection = 1;
@@ -43,10 +42,10 @@ namespace Behaviour.Creatures
             set => canMove = value;
         }
 
-        public TileBase Firefly
+        public TileBase Butterfly
         {
-            get => firefly;
-            set => firefly = value;
+            get => butterfly;
+            set => butterfly = value;
         }
 
         public Vector2Int Position
@@ -74,40 +73,17 @@ namespace Behaviour.Creatures
         }
     }
 
-    public class WallDirection
-    {
-        private int direction;
-        private Vector2Int coords;
 
-        public WallDirection(int direction, Vector2Int coords)
-        {
-            this.direction = direction;
-            this.coords = coords;
-        }
-
-        public Vector2Int Coords
-        {
-            get => coords;
-            set => coords = value;
-        }
-
-        public int Direction
-        {
-            get => direction;
-            set => direction = value;
-        }
-    }
-
-    public class Firefly : MonoBehaviour
+    public class Butterfly : MonoBehaviour
     {
         public GridInfoRetriever gridInfo;
         public GameObject explosion;
         public float moveSpeed;
         public bool isMoving;
         public bool mustMove;
-        public Tilemap fireflyTilemap;
+        public Tilemap butterflyTilemap;
 
-        public List<FireflyCell> fireflyCollection;
+        public List<ButterflyCell> butterflyCollection;
         public Dictionary<Vector2Int, string> tiles;
         public Dictionary<Vector2Int, string> neighbourTiles;
         public List<WallDirection> wallDirection;
@@ -123,6 +99,7 @@ namespace Behaviour.Creatures
 
         private Tilemap[] tilemaps;
         private GameObject[] gameObjects;
+        public int butterflyCount;
 
         private void Start()
         {
@@ -130,10 +107,10 @@ namespace Behaviour.Creatures
             gameObjects = FindObjectsOfType<GameObject>();
             isMoving = false;
             mustMove = false;
-            fireflyCollection = new List<FireflyCell>();
+            butterflyCollection = new List<ButterflyCell>();
             tiles = new Dictionary<Vector2Int, string>();
 
-            fireflyTilemap = gameObject.GetComponent<Tilemap>();
+            butterflyTilemap = gameObject.GetComponent<Tilemap>();
             neighbourTiles = new Dictionary<Vector2Int, string>();
             wallDirection = new List<WallDirection>();
             moveDirection = new List<WallDirection>
@@ -145,17 +122,21 @@ namespace Behaviour.Creatures
             };
 
             UpdateGridInfo();
-            GetFireflies();
+            GetButterflies();
             GetMoveDirection();
+            butterflyCount = butterflyCollection.Count;
         }
 
         private void Update()
         {
+            
+            
             if (!isMoving)
             {
                 isMoving = true;
                 StartCoroutine(Move());
             }
+            butterflyCount = butterflyCollection.Count;
         }
 
         public IEnumerator Move()
@@ -166,27 +147,27 @@ namespace Behaviour.Creatures
             UpdateGridInfo();
             GetMoveDirection();
             // get tiles that have to be moved
-            foreach (var firefly in fireflyCollection)
+            foreach (var butterfly in butterflyCollection)
             {
-                if (firefly.CanMove)
+                if (butterfly.CanMove)
                 {
-                    fireflyTilemap.SetTile(ConvertToVector3(firefly.Position), null);
-                    fireflyTilemap.SetTile(ConvertToVector3(firefly.FlyDirection), firefly.Firefly);
+                    butterflyTilemap.SetTile(ConvertToVector3(butterfly.Position), null);
+                    butterflyTilemap.SetTile(ConvertToVector3(butterfly.FlyDirection), butterfly.Butterfly);
                     //todo: all animations and other scripts go here
                     //==== Put your other useless stuff here ====//
                     // check if fireflies finished moving
-                    if (fireflyTilemap.HasTile(ConvertToVector3(firefly.FlyDirection)))
+                    if (butterflyTilemap.HasTile(ConvertToVector3(butterfly.FlyDirection)))
                     {
                         // update firefly location
-                        firefly.Position = firefly.FlyDirection;
-                        firefly.CanMove = false;
+                        butterfly.Position = butterfly.FlyDirection;
+                        butterfly.CanMove = false;
                         i++;
                     }
                 }
             }
 
             // when all fireflies have finished moving, start another cycle
-            if (i == fireflyCollection.Count)
+            if (i == butterflyCollection.Count)
             {
                 mustMove = false;
             }
@@ -199,20 +180,20 @@ namespace Behaviour.Creatures
             }
         }
 
-        public void GetFireflies()
+        public void GetButterflies()
         {
-            for (int n = fireflyTilemap.cellBounds.xMin; n < fireflyTilemap.cellBounds.xMax; n++)
+            for (int n = butterflyTilemap.cellBounds.xMin; n < butterflyTilemap.cellBounds.xMax; n++)
             {
-                for (int p = fireflyTilemap.cellBounds.yMin; p < fireflyTilemap.cellBounds.yMax; p++)
+                for (int p = butterflyTilemap.cellBounds.yMin; p < butterflyTilemap.cellBounds.yMax; p++)
                 {
                     Vector3Int localPlace = new Vector3Int(n, p, 0);
                     Vector2Int location = new Vector2Int(localPlace.x, localPlace.y);
 
-                    if (fireflyTilemap.HasTile(localPlace))
+                    if (butterflyTilemap.HasTile(localPlace))
                     {
-                        fireflyCollection.Add(
-                            new FireflyCell(
-                                fireflyTilemap.GetTile(localPlace),
+                        butterflyCollection.Add(
+                            new ButterflyCell(
+                                butterflyTilemap.GetTile(localPlace),
                                 location
                             )
                         );
@@ -231,15 +212,19 @@ namespace Behaviour.Creatures
         {
             return new Vector3Int(v2.x, v2.y, 0);
         }
-
-        public void DestroyFirefly(Vector3Int position)
+        public Vector2Int ConvertToVector2(Vector3Int v3)
         {
-            foreach (var firefly in fireflyCollection)
+            return new Vector2Int(v3.x, v3.y);
+        }
+
+        public void DestroyButterfly(Vector3Int position)
+        {
+            foreach (var firefly in butterflyCollection)
             {
-                if (firefly.Position == new Vector2Int(position.x, position.y))
+                if (firefly.Position == ConvertToVector2(position))
                 {
-                    fireflyCollection.Remove(firefly);
-                    fireflyTilemap.SetTile(ConvertToVector3(firefly.Position), null);
+                    butterflyCollection.Remove(firefly);
+                    butterflyTilemap.SetTile(ConvertToVector3(firefly.Position), null);
                 }
             }
         }
@@ -250,6 +235,10 @@ namespace Behaviour.Creatures
             neighbourTiles.Clear();
 
             string tileName;
+
+
+            // depending on this, choose the priority direction
+
 
             foreach (var direction in directions)
             {
@@ -269,11 +258,11 @@ namespace Behaviour.Creatures
 
         public void GetMoveDirection()
         {
-            foreach (var firefly in fireflyCollection)
+            foreach (var butterfly in butterflyCollection)
             {
                 //bool hasDirection = false;
-                Vector2Int pos = firefly.Position;
-                GetNeighbourTiles(pos, firefly.FaceDirection);
+                Vector2Int pos = butterfly.Position;
+                GetNeighbourTiles(pos, butterfly.FaceDirection);
                 int i = 0;
                 wallDirection.Clear();
                 moveDirection.Clear();
@@ -284,13 +273,13 @@ namespace Behaviour.Creatures
                     switch (tile.Value)
                     {
                         case "Player":
-                            // explode?
+                            isWall = false;
                             break;
                         case "Void":
                             isWall = false;
                             break;
                         case "Amoeba":
-                            // explode
+                            isWall = false;
                             break;
                         default:
                             isWall = true;
@@ -311,24 +300,21 @@ namespace Behaviour.Creatures
                 {
                     while (true)
                     {
+                        // firefly is stuck
                         if (rotationCounter > 4)
                         {
                             break;
                         }
-                        if (firefly.FaceDirection == 8 && !checkCollision(0, firefly.Position))
+                        // if there is no wall to te 
+                        if (!checkCollision(Rotate(butterfly.FaceDirection), butterfly.Position))
                         {
-                            firefly.FaceDirection = 0;
-                            break;
-                        }
-                        if (!checkCollision(CounterRotate(firefly.FaceDirection), firefly.Position))
-                        {
-                            firefly.FaceDirection = CounterRotate(firefly.FaceDirection);
+                            butterfly.FaceDirection = Rotate(butterfly.FaceDirection);
                             break;
                         }
 
-                        if (checkCollision(firefly.FaceDirection, firefly.Position))
+                        if (checkCollision(butterfly.FaceDirection, butterfly.Position))
                         {
-                            firefly.FaceDirection = Rotate(firefly.FaceDirection);
+                            butterfly.FaceDirection = CounterRotate(butterfly.FaceDirection);
                             rotationCounter++;
                         }
                         else
@@ -336,17 +322,23 @@ namespace Behaviour.Creatures
                             break;
                         }
                     }
+                    // move forward
                     if (rotationCounter < 4)
                     {
-                        firefly.FlyDirection = moveDirection[firefly.FaceDirection].Coords;
-                        firefly.CanMove = true;
+                        butterfly.FlyDirection = moveDirection[butterfly.FaceDirection].Coords;
+                        butterfly.CanMove = true;
+                    }
+                    // firefly is stuck
+                    else
+                    {
+                        butterfly.CanMove = false;
                     }
                 }
                 // go counter clockwise
                 else
                 {
-                    firefly.FlyDirection = moveDirection[CounterRotate(firefly.FaceDirection)].Coords;
-                    firefly.CanMove = true;
+                    butterfly.FlyDirection = moveDirection[Rotate(butterfly.FaceDirection)].Coords;
+                    butterfly.CanMove = true;
                 }
             }
         }
@@ -381,7 +373,7 @@ namespace Behaviour.Creatures
                     break;
                 case "Amoeba":
                     isWall = false;
-                    DestroyFirefly(ConvertToVector3(tilePosition));
+                    DestroyButterfly(ConvertToVector3(tilePosition));
                     DrawExplosion(tilePosition);
                     // explode
                     break;
@@ -410,21 +402,22 @@ namespace Behaviour.Creatures
             }
             return dir - 1;
         }
-
+        
         public void DrawExplosion(Vector2Int tilePosition)
         {
             //Draw 3x3 explosion grid
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up + Vector3.left, Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up, Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up + Vector3.right, Quaternion.identity);
+            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up + Vector3.left, Quaternion.identity);
+            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up, Quaternion.identity);
+            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up + Vector3.right, Quaternion.identity);
 
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.left, Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)), Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.right, Quaternion.identity);
+            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.left, Quaternion.identity);
+            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)), Quaternion.identity);
+            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.right, Quaternion.identity);
 
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.down + Vector3.left, Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition))+ Vector3.down, Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.down + Vector3.right, Quaternion.identity);
+            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.down + Vector3.left, Quaternion.identity);
+            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition))+ Vector3.down, Quaternion.identity);
+            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.down + Vector3.right, Quaternion.identity);
         }
+
     }
 }

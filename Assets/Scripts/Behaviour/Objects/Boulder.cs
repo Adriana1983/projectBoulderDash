@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Behaviour.Creatures;
 using UnityEngine;
 using Behaviour.Objects;
 using Random = System.Random;
@@ -15,6 +17,14 @@ namespace Behaviour.Objects
         bool moving = false;
 
         public GameObject explosion;
+        private Firefly firefly;
+        private Butterfly butterfly;
+
+        public void Start()
+        {
+            firefly = GameObject.FindWithTag("Firefly").GetComponent<Firefly>();
+            butterfly = GameObject.FindWithTag("Butterfly").GetComponent<Butterfly>();
+        }
 
         public bool BoulderHit(Vector3 targetDirection)
         {
@@ -116,12 +126,17 @@ namespace Behaviour.Objects
                             break;
 
                         case "Firefly":
+                            if (Falling)
+                            {
+                                DrawExplosion(hit);
+                                firefly.DestroyFirefly(new Vector3Int((int)hit.transform.localPosition.x, (int)hit.transform.localPosition.y, 0));
+                            }
+                            break;
                         case "Butterfly":
                             if (Falling)
                             {
-                                //firefly/butterfly dies
                                 DrawExplosion(hit);
-                                Debug.Log("Firefly/Butterfly dead");
+                                butterfly.DestroyButterfly(new Vector3Int((int)hit.transform.localPosition.x, (int)hit.transform.localPosition.y, 0));
                             }
                             break;
 

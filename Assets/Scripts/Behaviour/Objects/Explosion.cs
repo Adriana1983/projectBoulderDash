@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Behaviour.Creatures;
 using UnityEngine;
 
 public class Explosion : StateMachineBehaviour
@@ -21,17 +22,42 @@ public class Explosion : StateMachineBehaviour
         {
             foreach (var hit in colliders)
             {
+                //Get tile layer
+                var map = hit.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
                 switch (hit.tag)
                 {
                     //All deletable tiles
                     case "Dirt":
                     case "Wall":
-                        //Get tile layer
-                        var map = hit.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
+                        
                         //Find target tile on found layer and delete it
                         map.SetTile(map.WorldToCell(animator.gameObject.transform.position), null);
                         break;
-
+                    // tiles that need to be deleted inside a list too
+                    case "Butterfly":
+                        GameObject.FindWithTag("Butterfly").GetComponent<Butterfly>()
+                            .DestroyButterfly(map.WorldToCell(animator.gameObject.transform.position));
+                        //Get tile layer
+                        map = hit.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
+                        //Find target tile on found layer and delete it
+                        map.SetTile(map.WorldToCell(animator.gameObject.transform.position), null);
+                        break;
+                    case "Firefly":
+                        GameObject.FindWithTag("Firefly").GetComponent<Firefly>()
+                            .DestroyFirefly(map.WorldToCell(animator.gameObject.transform.position));
+                        //Get tile layer
+                        map = hit.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
+                        //Find target tile on found layer and delete it
+                        map.SetTile(map.WorldToCell(animator.gameObject.transform.position), null);
+                        break;
+                    case "Amoeba":
+//                        GameObject.FindWithTag("Amoeba").GetComponent<Amoeba>()
+//                            .DestroyAmoeba(map.WorldToCell(animator.gameObject.transform.position));
+//                        //Get tile layer
+                        map = hit.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
+                        //Find target tile on found layer and delete it
+                        map.SetTile(map.WorldToCell(animator.gameObject.transform.position), null);
+                        break;
                     //All deletable GameObjects
                     case "Player":
                     case "Boulder":

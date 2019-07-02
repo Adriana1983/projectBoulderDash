@@ -41,7 +41,6 @@ namespace Helper_Scripts
                 switch (go.tag)
                 {
                     // get the gameobjects that are not on tilemaps
-                    // todo: Add fireflies and butterflies here
                     case "Player":
                         //get location on grid
                         location = tilemaps[0].WorldToCell(go.transform.position);
