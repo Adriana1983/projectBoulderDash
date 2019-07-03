@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1662202606862194999}
   - component: {fileID: 1662202606862195002}
   - component: {fileID: 1662202606862194997}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Butterfly
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -42,110 +42,40 @@ Tilemap:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1662202606862194993}
   m_Enabled: 1
-  m_Tiles:
-  - first: {x: 19, y: -3, z: 0}
-    second:
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_ObjectToInstantiate: {fileID: 0}
-      m_TileFlags: 0
-      m_ColliderType: 2
-  - first: {x: 25, y: -1, z: 0}
-    second:
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_ObjectToInstantiate: {fileID: 0}
-      m_TileFlags: 0
-      m_ColliderType: 2
-  - first: {x: 15, y: 0, z: 0}
-    second:
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_ObjectToInstantiate: {fileID: 0}
-      m_TileFlags: 0
-      m_ColliderType: 2
-  m_AnimatedTiles:
-  - first: {x: 19, y: -3, z: 0}
-    second:
-      m_AnimatedSprites:
-      - {fileID: 7347462790551688587, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -5341379075850347858, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: 2396862695907515793, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -5255411328857583911, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -5024787791212417305, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -4651610518390447897, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -302694773896946909, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -1386572146570428669, guid: b686abe08b178564891837a289b7949c, type: 3}
-      m_AnimationSpeed: 6
-      m_AnimationTimeOffset: 0
-      m_IsLooping: 1
-  - first: {x: 25, y: -1, z: 0}
-    second:
-      m_AnimatedSprites:
-      - {fileID: 7347462790551688587, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -5341379075850347858, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: 2396862695907515793, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -5255411328857583911, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -5024787791212417305, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -4651610518390447897, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -302694773896946909, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -1386572146570428669, guid: b686abe08b178564891837a289b7949c, type: 3}
-      m_AnimationSpeed: 6
-      m_AnimationTimeOffset: 0
-      m_IsLooping: 1
-  - first: {x: 15, y: 0, z: 0}
-    second:
-      m_AnimatedSprites:
-      - {fileID: 7347462790551688587, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -5341379075850347858, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: 2396862695907515793, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -5255411328857583911, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -5024787791212417305, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -4651610518390447897, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -302694773896946909, guid: b686abe08b178564891837a289b7949c, type: 3}
-      - {fileID: -1386572146570428669, guid: b686abe08b178564891837a289b7949c, type: 3}
-      m_AnimationSpeed: 6
-      m_AnimationTimeOffset: 0
-      m_IsLooping: 1
+  m_Tiles: {}
+  m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 3
-    m_Data: {fileID: 11400000, guid: 179e99cfba392e344a4540779a9ad87d, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 3
-    m_Data: {fileID: -1386572146570428669, guid: b686abe08b178564891837a289b7949c,
-      type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileMatrixArray:
-  - m_RefCount: 3
+  - m_RefCount: 0
     m_Data:
-      e00: 1
-      e01: 0
-      e02: 0
+      e00: NaN
+      e01: NaN
+      e02: 13230.164
       e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
+      e10: NaN
+      e11: NaN
+      e12: 3.49e-43
       e13: 0
       e20: 0
-      e21: 0
-      e22: 1
+      e21: 13230.148
+      e22: 0
       e23: 0
       e30: 0
-      e31: 0
+      e31: 3.49e-43
       e32: 0
-      e33: 1
+      e33: 0
   m_TileColorArray:
-  - m_RefCount: 3
-    m_Data: {r: 1, g: 1, b: 1, a: 1}
+  - m_RefCount: 0
+    m_Data: {r: 6.423241e-35, g: 6.423241e-35, b: 6.423241e-35, a: 6.423241e-35}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: -3, z: 0}

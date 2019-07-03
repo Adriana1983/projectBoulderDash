@@ -29,7 +29,6 @@ public class Explosion : StateMachineBehaviour
                     //All deletable tiles
                     case "Dirt":
                     case "Wall":
-                        
                         //Find target tile on found layer and delete it
                         map.SetTile(map.WorldToCell(animator.gameObject.transform.position), null);
                         break;
@@ -73,7 +72,6 @@ public class Explosion : StateMachineBehaviour
     //Destroy explosion game object when animation done
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        
         Destroy(animator.gameObject);
     }
 }

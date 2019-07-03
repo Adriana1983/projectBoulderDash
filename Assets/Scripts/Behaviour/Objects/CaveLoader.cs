@@ -18,6 +18,8 @@ public class CaveLoader : MonoBehaviour
     public Tilemap Amoeba;
     public Tilemap Diamond;
     public Tilemap ChangeCave;
+    public Tilemap Firefly;
+    public Tilemap Butterfly;
 
     public TileBase[] Tiles;
     public GameObject[] Prefab;
@@ -30,7 +32,9 @@ public class CaveLoader : MonoBehaviour
         Bounds = 0,
         Dirt = 1,
         Wall = 2,
-        Amoeba = 3
+        Amoeba = 3,
+        Firefly = 4,
+        Butterfly = 5
     }
 
     enum Prefabs
@@ -62,7 +66,7 @@ public class CaveLoader : MonoBehaviour
         Time.timeScale = 0f;
 
         //loading text file and separating by breaklines
-        /*TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/Testcave");*/
+        //TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/Testcave");
         //TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/CaveT-1");
         TextAsset caveData = (TextAsset)Resources.Load($"Caves/Levels/Cave{Score.Instance.CurrentCave}-1");
         List<string> caveDataList = caveData.text.Trim().Split('\n').Reverse().ToList();
@@ -101,6 +105,12 @@ public class CaveLoader : MonoBehaviour
                         break;
                     case 'a':
                         Amoeba.SetTile(pos, GetTile(Tile.Amoeba));
+                        break;
+                    case 'q':
+                        Firefly.SetTile(pos, GetTile(Tile.Firefly));
+                        break;
+                    case 'B':
+                        Butterfly.SetTile(pos, GetTile(Tile.Butterfly));
                         break;
                     #endregion
 

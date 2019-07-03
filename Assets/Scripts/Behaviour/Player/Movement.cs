@@ -19,7 +19,7 @@ namespace Behaviour.Player
         public string hitDirection;
         public string inputGot;
         public bool isHit;
-
+        public GameObject explosion;
         public Vector3 lastPos;
         public Vector3 targetPos;
         public bool mustMove;
@@ -192,6 +192,10 @@ namespace Behaviour.Player
                                 Score.Instance.Finish = true;
                             }
                             break;
+                        case "Firefly":
+                        case "Butterfly:":
+                            Destroy(gameObject);
+                            break;
                         //we hit something else, player cannot move
                         default:
                             mustMove = false;
@@ -291,18 +295,37 @@ namespace Behaviour.Player
 
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            Destroy(other.gameObject);
-        }
+//        private void OnTriggerEnter(Collider other)
+//        {
+//            Destroy(other.gameObject);
+//        }
 
         void OnDestroy()
         {
+            DrawExplosion(gameObject.transform.position);
             Score.Instance.life--;
             if (Score.Instance.life == 0)
             {
                 //game over
             }
+        }
+        
+        public void DrawExplosion(Vector3 position)
+        {
+            //Draw 3x3 explosion grid
+            GameObject.Instantiate(explosion, position + Vector3.up + Vector3.left, Quaternion.identity);
+            GameObject.Instantiate(explosion, position + Vector3.up, Quaternion.identity);
+            GameObject.Instantiate(explosion, position + Vector3.up + Vector3.right, Quaternion.identity);
+
+            GameObject.Instantiate(explosion, position + Vector3.left, Quaternion.identity);
+            GameObject.Instantiate(explosion, position, Quaternion.identity);
+            GameObject.Instantiate(explosion, position + Vector3.right, Quaternion.identity);
+
+            GameObject.Instantiate(explosion, position + Vector3.down + Vector3.left, Quaternion.identity);
+            GameObject.Instantiate(explosion, position + Vector3.down, Quaternion.identity);
+            GameObject.Instantiate(explosion, position + Vector3.down + Vector3.right, Quaternion.identity);
+
+            SoundManager.Instance.PlayExplosion();
         }
     }
 }
