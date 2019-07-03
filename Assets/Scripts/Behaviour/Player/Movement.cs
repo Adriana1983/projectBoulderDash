@@ -4,13 +4,18 @@ using System.Collections.Generic;
 using System.Reflection;
 using Behaviour.Objects;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 namespace Behaviour.Player
 {
     public class Movement : MonoBehaviour
     {
-        public float speed = 10.0f;
+        private bool finished;
+        public float timerNextScene = 5;
+
+        //rockfort movement speed
+        public float speed = 7.5f;
         public string hitDirection;
         public string inputGot;
         public bool isHit;
@@ -26,6 +31,7 @@ namespace Behaviour.Player
         public float time;
 
         public LayerMask layer;
+        public BoxCollider2D ghost;
 
         //Animation direction clockwise
         enum Direction
@@ -43,6 +49,29 @@ namespace Behaviour.Player
             isMoving = false;
             mustMove = false;
             hitDirection = "";
+
+            //Added ghost collider to prefent boulders from falling while Rockford is not yet in target position (this couldn't be fixed with a LateUpdate!)
+            //Remove Rockford as parent from ghost collider to have it work as a gameobject but still have it appear in the direction of Rockford's movement
+            ghost.gameObject.transform.parent = null;
+            ghost.enabled = false;
+        }
+
+        //this List & method hold all pressed keys - it is created for the purpose to give priority to the last pressed key to move Rockford
+        List<KeyCode> inputs = new List<KeyCode>();
+        void OnGUI()
+        {
+            Event e = Event.current;
+            //check if a key is pressed
+            if (e.isKey && e.type == EventType.KeyDown)
+            {
+                if (!inputs.Contains(e.keyCode))
+                    inputs.Insert(0, e.keyCode); // add new key to top of list
+            }
+            //check if key is released
+            else if (e.isKey && e.type == EventType.KeyUp)
+            {
+                inputs.Remove(e.keyCode);
+            }
         }
 
         private void Update()
@@ -62,33 +91,40 @@ namespace Behaviour.Player
             isHit = false;
 
             //Player isn't moving, allow movement
-            if (!isMoving)
+            if (!isMoving && !finished)
             {
                 //Variable for requested player direction
                 Vector3 targetDirection = Vector3.zero;
-                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+
+                if (inputs.Count > 0)
                 {
-                    mustMove = true;
-                    targetDirection = Vector3.left;
-                    animationDirection = (int)Direction.Left;
-                }
-                else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-                {
-                    mustMove = true;
-                    targetDirection = Vector3.right;
-                    animationDirection = (int)Direction.Right;
-                }
-                else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
-                {
-                    mustMove = true;
-                    targetDirection = Vector3.up;
-                    animationDirection = (int)Direction.Up;
-                }
-                else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-                {
-                    mustMove = true;
-                    targetDirection = Vector3.down;
-                    animationDirection = (int)Direction.Down;
+                    //changed this code to give priority to the last pressed key to move Rockford in that direction
+                    //previous code gave priority to moving to the left
+
+                    if (inputs[0] == KeyCode.A || inputs[0] == KeyCode.LeftArrow)
+                    {
+                        mustMove = true;
+                        targetDirection = Vector3.left;
+                        animationDirection = (int)Direction.Left;
+                    }
+                    else if (inputs[0] == KeyCode.D || inputs[0] == KeyCode.RightArrow)
+                    {
+                        mustMove = true;
+                        targetDirection = Vector3.right;
+                        animationDirection = (int)Direction.Right;
+                    }
+                    else if (inputs[0] == KeyCode.W || inputs[0] == KeyCode.UpArrow)
+                    {
+                        mustMove = true;
+                        targetDirection = Vector3.up;
+                        animationDirection = (int)Direction.Up;
+                    }
+                    else if (inputs[0] == KeyCode.S || inputs[0] == KeyCode.DownArrow)
+                    {
+                        mustMove = true;
+                        targetDirection = Vector3.down;
+                        animationDirection = (int)Direction.Down;
+                    }
                 }
 
                 //Check for collision in requested player direction
@@ -109,23 +145,54 @@ namespace Behaviour.Player
                             else
                                 mustMove = false;
                             break;
-
                         //we hit dirt
                         case "Dirt":
-                            //Allow player to move
-                            mustMove = true;
-                            //Delete the dirt
-
-                            SoundManager.Instance.PlayWalkDirt();
-                            //Get reference to tilemap
-                            var map = hit.collider.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
-                            //Delete tile
-                            if (map != null)
-                                map.SetTile(map.WorldToCell(targetPos + targetDirection), null);
-
+                            {
+                                //Allow player to move
+                                mustMove = true;
+                                //Delete the dirt
+                                SoundManager.Instance.PlayWalkDirt();
+                                //Get reference to tilemap
+                                var map = hit.collider.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
+                                //Delete tile
+                                if (map != null)
+                                    map.SetTile(map.WorldToCell(targetPos + targetDirection), null);
+                            }
                             break;
+                        //we hit diamond
+                        case "Diamond":
+                            mustMove = true;
+                            SoundManager.Instance.PlayCollectdiamond();
+                            Destroy(hit.collider.gameObject);
 
-                        //We hit something else, player cannot move
+                            if (Score.Instance.diamondsCollected < Score.Instance.diamondsNeeded)
+                            {
+                                //counting score by counting diamond value of current cave & current difficulty level
+                                Score.Instance.TotalScore += Score.Instance.initialDiamondsValue;
+                            }
+                            else
+                            {
+                                Score.Instance.TotalScore += Score.Instance.extraDiamondsValue;
+                            }
+                            //counting collected diamonds
+                            Score.Instance.diamondsCollected++;
+                            break;
+                        //exit opens when required amound of diamond have been collected - if it's not open it behaves as Titanium Wall (a.k.a. bounds)
+                        case "Exitdoor":
+                            mustMove = false;
+                            if (Score.Instance.diamondsCollected >= Score.Instance.diamondsNeeded)
+                            {
+                                mustMove = true;
+
+                                SoundManager.Instance.PlayFinished();//this sound is play upon completing cave/intermission the remaining time is turned into score (1 point per second)
+                                //destroy exit when Rockford enter the position of exit
+                                Destroy(hit.collider.gameObject);
+
+                                finished = true;
+                                Score.Instance.Finish = true;
+                            }
+                            break;
+                        //we hit something else, player cannot move
                         default:
                             mustMove = false;
                             break;
@@ -142,6 +209,9 @@ namespace Behaviour.Player
                             SoundManager.Instance.PlayWalkEmpty();
 
                         targetPos += targetDirection;
+                        ghost.transform.position = targetPos;
+                        ghost.enabled = true;
+
                         animator.SetInteger("AnimationDirection", animationDirection);
 
                         animator.SetBool("isMoving", true);
@@ -167,8 +237,35 @@ namespace Behaviour.Player
                 //Wait for movement to finish
                 if (transform.position == targetPos)
                 {
+                    ghost.enabled = false;
                     isMoving = false;
                     mustMove = false;
+
+                    //check if the level has been finished
+                    if (finished == true)
+                    {
+                        //remaining time turns into score
+                        if (Score.Instance.caveTime > 0)
+                        {
+                            Score.Instance.caveTime--;
+
+                            if (Score.Instance.caveTime < 0) Score.Instance.caveTime = 0;
+
+                            Score.Instance.TotalScore++;
+                        }
+                        else
+                        {
+                            var caveloader = GameObject.FindObjectOfType<CaveLoader>();
+
+                            if (caveloader.FillScreen() == 0)
+                            {
+                                //Change scene
+
+                                Score.Instance.CurrentCave = (char)(Score.Instance.CurrentCave + 1);
+                                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -192,6 +289,20 @@ namespace Behaviour.Player
             isIdle = true;
             animator.SetBool("isMoving", isMoving);
 
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            Destroy(other.gameObject);
+        }
+
+        void OnDestroy()
+        {
+            Score.Instance.life--;
+            if (Score.Instance.life == 0)
+            {
+                //game over
+            }
         }
     }
 }

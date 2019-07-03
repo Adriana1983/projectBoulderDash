@@ -61,6 +61,7 @@ public class Explosion : StateMachineBehaviour
                     //All deletable GameObjects
                     case "Player":
                     case "Boulder":
+                    case "Diamond": 
                         Destroy(hit.gameObject);
                         break;
                 }

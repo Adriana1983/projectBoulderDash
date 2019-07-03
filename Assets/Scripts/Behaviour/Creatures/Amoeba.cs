@@ -7,7 +7,6 @@ using System.Numerics;
 using Behaviour.Objects;
 using Helper_Scripts;
 using JetBrains.Annotations;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Quaternion = UnityEngine.Quaternion;
@@ -166,7 +165,7 @@ namespace Behaviour.Creatures
         public void TurnToBoulder(Vector3Int location)
         {
             Vector3 localPlace = boulderTilemap.GetCellCenterWorld(location);
-            Instantiate(boulder, localPlace, Quaternion.identity);
+            Instantiate(boulder, localPlace, Quaternion.identity, boulderTilemap.gameObject.transform);
             boulder.layer = LayerMask.NameToLayer("Boulder");
         }
         

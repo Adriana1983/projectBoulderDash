@@ -1,0 +1,23 @@
+70,20,10,15,12
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+Wr..... .r.. .r....r..r.r... . r.......W
+Wr.X.d....r.....r...r.......r. r.......W
+W r..r........r......r.rr...... ..r....W
+W..r.....r.  ....d...r.rr.........rd..rW
+W......r......r.rd......r........ ..r. W
+Wr.rr.........r.rd...... ..r...d.... ..W
+Wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwr..r.r..W
+W.............r..r..d........r.....r...W
+W...rrrd..d... r...r....r..d.r.... ....W
+W...rr r..r.... ...r..r.....r........r.W
+W.... .r..r........r..... ..d.r .....r.W
+W...... ....r....r..r.r...... .........W
+W..r.... ..... ...r.......... ..r.....rW
+W..r.....wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwW
+W.r....r...r.......r. r......... r..r..W
+W....r......r.rr...... ..r........r...PW
+W. r........r.rr.........r...r........rW
+W....r.r....r..r.... ...r..d. ..r.r....W
+W....d.rd...... ..r..d.....r..... .....W
+W.rr r..r....r...r....r..r.r...........W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
