@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 1662202606862194999}
   - component: {fileID: 1662202606862195002}
   - component: {fileID: 1662202606862194997}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Butterfly
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1662202606862194993}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -228,6 +228,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridInfo: {fileID: 0}
+  explosion: {fileID: 5259553897754313578, guid: ba8bed6362cba7248bc2254eb5fdd83c,
+    type: 3}
   moveSpeed: 0.4
   isMoving: 0
   mustMove: 0
@@ -237,6 +239,7 @@ MonoBehaviour:
   - {x: 0, y: 1}
   - {x: 1, y: 0}
   - {x: 0, y: -1}
+  butterflyCount: 0
 --- !u!19719996 &1662202606862194997
 TilemapCollider2D:
   m_ObjectHideFlags: 0

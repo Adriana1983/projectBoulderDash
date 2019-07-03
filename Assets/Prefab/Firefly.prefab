@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5350727779472859174}
   - component: {fileID: 5350727779472859172}
   - component: {fileID: 5350727779472859173}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Firefly
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5350727779472859192}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -201,7 +201,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridInfo: {fileID: 0}
-  explosion: {fileID: 0}
+  explosion: {fileID: 5259553897754313578, guid: ba8bed6362cba7248bc2254eb5fdd83c,
+    type: 3}
   moveSpeed: 0.4
   isMoving: 0
   mustMove: 0

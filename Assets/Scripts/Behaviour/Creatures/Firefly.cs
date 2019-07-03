@@ -373,7 +373,6 @@ namespace Behaviour.Creatures
                 case "Player":
                     isWall = false;
                     DrawExplosion(tilePosition);
-                    Debug.Log("Player dead");
                     Destroy(GameObject.FindWithTag("Player"));
                     break;
                 case "Void":
@@ -389,7 +388,6 @@ namespace Behaviour.Creatures
                     isWall = true;
                     break;
             }
-            Debug.Log(tileName + " at position " + tilePosition);
             return isWall;
         }
 
