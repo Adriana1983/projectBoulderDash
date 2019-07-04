@@ -152,8 +152,7 @@ namespace Behaviour.Creatures
                 if (butterfly.CanMove)
                 {
                     // destroy player if he dares to oppose the butterfly
-                    // destroy player if he dares to oppose the firefly
-                    if (PlayerSpawned()
+                    if (PlayerSpawned() // check if player has spawned, otherwise unwanted errors
                         && butterflyTilemap.WorldToCell(GameObject.FindWithTag("Player").transform.position)
                         == ConvertToVector3(butterfly.FlyDirection)
                     )

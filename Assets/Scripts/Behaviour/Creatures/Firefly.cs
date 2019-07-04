@@ -177,7 +177,7 @@ namespace Behaviour.Creatures
                 if (firefly.CanMove)
                 {
                     // destroy player if he dares to oppose the firefly
-                    if (PlayerSpawned()
+                    if (PlayerSpawned()// check if player has spawned, otherwise unwanted errors
                         && fireflyTilemap.WorldToCell(GameObject.FindWithTag("Player").transform.position)
                         == ConvertToVector3(firefly.FlyDirection)
                     )
@@ -485,7 +485,6 @@ namespace Behaviour.Creatures
                 return false;
             }
             return true;
-            
         }
     }
 }

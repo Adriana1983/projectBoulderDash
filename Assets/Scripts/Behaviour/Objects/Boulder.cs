@@ -169,6 +169,8 @@ namespace Behaviour.Objects
                             if (falling)
                             {
                                 DrawExplosion(map.WorldToCell(gameObject.transform.position));
+                                DrawDiamonds(map.WorldToCell(gameObject.transform.position), map);
+                                
                             }
                             break;
 
@@ -213,8 +215,20 @@ namespace Behaviour.Objects
                 position + Vector3.down + Vector3.left,
                 position + Vector3.down,
                 position + Vector3.down + Vector3.right
-                
             };
+        }
+
+        public void DrawDiamonds(Vector3 pos, Tilemap map)
+        {
+            CreateList(pos);
+            foreach (var block in explosionRadius)
+            {
+                if (!map.HasTile(new Vector3Int((int) block.x, (int) block.y, 0)))
+                {
+                    InstantiatePrefab(diamond, block);
+                    //diamond.layer = LayerMask.NameToLayer("Diamonds");
+                }
+            }
         }
     }
 }

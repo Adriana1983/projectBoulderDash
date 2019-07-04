@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class Explosion : StateMachineBehaviour
 {
-
-    public bool isDiamond = false;
     //At start of explosion animation delete things that are on the same tile
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
