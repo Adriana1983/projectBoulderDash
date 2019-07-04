@@ -113,7 +113,7 @@ MonoBehaviour:
   time: 0
   layer:
     serializedVersion: 2
-    m_Bits: 32256
+    m_Bits: 65024
   ghost: {fileID: 6819696139007256731}
 --- !u!95 &1151457489614880409
 Animator:

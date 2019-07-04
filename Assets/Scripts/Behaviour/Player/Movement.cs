@@ -194,6 +194,9 @@ namespace Behaviour.Player
                             break;
                         case "Firefly":
                         case "Butterfly:":
+                            Debug.Log(hit.collider.gameObject.tag);
+                            mustMove = false;
+                            DrawExplosion(gameObject.transform.position);
                             Destroy(gameObject);
                             break;
                         //we hit something else, player cannot move
@@ -302,7 +305,6 @@ namespace Behaviour.Player
 
         void OnDestroy()
         {
-            DrawExplosion(gameObject.transform.position);
             Score.Instance.life--;
             if (Score.Instance.life == 0)
             {

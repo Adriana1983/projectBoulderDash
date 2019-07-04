@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using Behaviour.Creatures;
 using UnityEngine;
 using Behaviour.Objects;
+using UnityEngine.Tilemaps;
+using Quaternion = UnityEngine.Quaternion;
 using Random = System.Random;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Behaviour.Objects
 {
@@ -15,6 +20,7 @@ namespace Behaviour.Objects
         public bool falling;
         bool moving = false;
 
+        private List<Vector3> explosionRadius;
         //Magic wall variables
         public bool activatedWall;
         public bool lastpositionFalling;
@@ -22,11 +28,13 @@ namespace Behaviour.Objects
         public GameObject explosion;
         private Firefly firefly;
         private Butterfly butterfly;
+        public GameObject diamond;
 
         public void Start()
         {
             firefly = GameObject.FindWithTag("Firefly").GetComponent<Firefly>();
             butterfly = GameObject.FindWithTag("Butterfly").GetComponent<Butterfly>();
+           
         }
 
         //Return bool decides if rockford is allowed to move in the movement script
@@ -75,6 +83,7 @@ namespace Behaviour.Objects
                 }
                 else
                 {
+                    Tilemap map = hit.collider.gameObject.GetComponent<Tilemap>();
                     //there is something beneath this boulder
                     switch (hit.collider.tag)
                     {
@@ -143,7 +152,7 @@ namespace Behaviour.Objects
                             if (falling)
                             {
                                 //player dies
-                                DrawExplosion(hit);
+                                DrawExplosion(hit.transform.transform.position);
                                 Debug.Log("Player dead");
                                 Destroy(hit.collider.gameObject);
 
@@ -153,15 +162,13 @@ namespace Behaviour.Objects
                         case "Firefly":
                             if (falling)
                             {
-                                DrawExplosion(hit);
-                                firefly.DestroyFirefly(new Vector3Int((int)hit.transform.localPosition.x, (int)hit.transform.localPosition.y, 0));
+                                DrawExplosion(map.WorldToCell(gameObject.transform.position));
                             }
                             break;
                         case "Butterfly":
                             if (falling)
                             {
-                                DrawExplosion(hit);
-                                butterfly.DestroyButterfly(new Vector3Int((int)hit.transform.localPosition.x, (int)hit.transform.localPosition.y, 0));
+                                DrawExplosion(map.WorldToCell(gameObject.transform.position));
                             }
                             break;
 
@@ -176,22 +183,38 @@ namespace Behaviour.Objects
             }
         }
 
-        public void DrawExplosion(RaycastHit2D hit)
+        
+        public void DrawExplosion(Vector3 position)
         {
-            //Draw 3x3 explosion grid
-            GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.up + Vector3.left, Quaternion.identity);
-            GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.up, Quaternion.identity);
-            GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.up + Vector3.right, Quaternion.identity);
-
-            GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.left, Quaternion.identity);
-            GameObject.Instantiate(explosion, hit.transform.transform.position, Quaternion.identity);
-            GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.right, Quaternion.identity);
-
-            GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down + Vector3.left, Quaternion.identity);
-            GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down, Quaternion.identity);
-            GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down + Vector3.right, Quaternion.identity);
+            CreateList(position);
+            foreach (var block in explosionRadius)
+            {
+                InstantiatePrefab(explosion, block);
+            }
 
             SoundManager.Instance.PlayExplosion();
+        }
+
+        public void InstantiatePrefab(GameObject prefab, Vector3 position)
+        {
+            Instantiate(prefab, position, Quaternion.identity);
+        }
+
+        public void CreateList(Vector3 position)
+        {
+            explosionRadius = new List<Vector3>
+            {
+                position + Vector3.up + Vector3.left,
+                position + Vector3.up,
+                position + Vector3.up + Vector3.right,
+                position + Vector3.left,
+                position,
+                position + Vector3.right,
+                position + Vector3.down + Vector3.left,
+                position + Vector3.down,
+                position + Vector3.down + Vector3.right
+                
+            };
         }
     }
 }

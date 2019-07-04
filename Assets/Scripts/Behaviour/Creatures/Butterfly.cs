@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
+using Behaviour.Player;
 using Helper_Scripts;
 using UnityEditor;
 using UnityEditor.Experimental;
@@ -82,6 +83,7 @@ namespace Behaviour.Creatures
         public bool isMoving;
         public bool mustMove;
         public Tilemap butterflyTilemap;
+        private bool mustWait;
 
         public List<ButterflyCell> butterflyCollection;
         public Dictionary<Vector2Int, string> tiles;
@@ -100,6 +102,7 @@ namespace Behaviour.Creatures
         private Tilemap[] tilemaps;
         private GameObject[] gameObjects;
         public int butterflyCount;
+        private List<Vector3> explosionRadius;
 
         private void Start()
         {
@@ -107,6 +110,7 @@ namespace Behaviour.Creatures
             gameObjects = FindObjectsOfType<GameObject>();
             isMoving = false;
             mustMove = false;
+            mustWait = true;
             butterflyCollection = new List<ButterflyCell>();
             tiles = new Dictionary<Vector2Int, string>();
 
@@ -123,14 +127,11 @@ namespace Behaviour.Creatures
 
             UpdateGridInfo();
             GetButterflies();
-            GetMoveDirection();
             butterflyCount = butterflyCollection.Count;
         }
 
         private void Update()
         {
-            
-            
             if (!isMoving)
             {
                 isMoving = true;
@@ -142,7 +143,6 @@ namespace Behaviour.Creatures
         public IEnumerator Move()
         {
             int i = 0;
-            //bool isSame = false;
             // update the grid info
             UpdateGridInfo();
             GetMoveDirection();
@@ -151,17 +151,35 @@ namespace Behaviour.Creatures
             {
                 if (butterfly.CanMove)
                 {
-                    butterflyTilemap.SetTile(ConvertToVector3(butterfly.Position), null);
-                    butterflyTilemap.SetTile(ConvertToVector3(butterfly.FlyDirection), butterfly.Butterfly);
-                    //todo: all animations and other scripts go here
-                    //==== Put your other useless stuff here ====//
-                    // check if fireflies finished moving
-                    if (butterflyTilemap.HasTile(ConvertToVector3(butterfly.FlyDirection)))
+                    // destroy player if he dares to oppose the butterfly
+                    // destroy player if he dares to oppose the firefly
+                    if (PlayerSpawned()
+                        && butterflyTilemap.WorldToCell(GameObject.FindWithTag("Player").transform.position)
+                        == ConvertToVector3(butterfly.FlyDirection)
+                    )
                     {
-                        // update firefly location
-                        butterfly.Position = butterfly.FlyDirection;
-                        butterfly.CanMove = false;
-                        i++;
+                        DrawExplosion(GameObject.FindWithTag("Player").gameObject.transform.position);
+                        butterflyTilemap.SetTile(ConvertToVector3(butterfly.Position), null);
+                        butterflyCollection.Remove(butterfly);
+                    }
+                    else if (butterflyTilemap.HasTile(ConvertToVector3(butterfly.FlyDirection)))
+                    {
+                       // if there is another butterfly, skip a turn
+                       butterfly.CanMove = false;
+                       i++;
+                    }
+                    else
+                    {
+                        butterflyTilemap.SetTile(ConvertToVector3(butterfly.FlyDirection), butterfly.Butterfly);
+                        // check if fireflies finished moving
+                        if (butterflyTilemap.HasTile(ConvertToVector3(butterfly.FlyDirection)))
+                        {
+                            butterflyTilemap.SetTile(ConvertToVector3(butterfly.Position), null);
+                            // update firefly location
+                            butterfly.Position = butterfly.FlyDirection;
+                            butterfly.CanMove = false;
+                            i++;
+                        } 
                     }
                 }
             }
@@ -223,10 +241,22 @@ namespace Behaviour.Creatures
             {
                 if (firefly.Position == ConvertToVector2(position))
                 {
-                    butterflyCollection.Remove(firefly);
-                    butterflyTilemap.SetTile(ConvertToVector3(firefly.Position), null);
+                    try
+                    {
+                        butterflyCollection.Remove(firefly);
+                        butterflyTilemap.SetTile(ConvertToVector3(firefly.Position), null);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log("fly already extinct");
+                    }
                 }
             }
+        }
+        
+        public void RemoveButterfly(ButterflyCell butterfly)
+        {
+            butterflyCollection.Remove(butterfly);
         }
 
         // get neighbour tiles for each firefly
@@ -306,13 +336,13 @@ namespace Behaviour.Creatures
                             break;
                         }
                         // if there is no wall to te 
-                        if (!checkCollision(Rotate(butterfly.FaceDirection), butterfly.Position))
+                        if (!CheckCollision(Rotate(butterfly.FaceDirection), butterfly.Position))
                         {
                             butterfly.FaceDirection = Rotate(butterfly.FaceDirection);
                             break;
                         }
 
-                        if (checkCollision(butterfly.FaceDirection, butterfly.Position))
+                        if (CheckCollision(butterfly.FaceDirection, butterfly.Position))
                         {
                             butterfly.FaceDirection = CounterRotate(butterfly.FaceDirection);
                             rotationCounter++;
@@ -343,7 +373,7 @@ namespace Behaviour.Creatures
             }
         }
 
-        public bool checkCollision(int dir, Vector2Int position)
+        public bool CheckCollision(int dir, Vector2Int position)
         {
             string tileName;
             bool isWall;
@@ -364,7 +394,6 @@ namespace Behaviour.Creatures
             {
                 case "Player":
                     isWall = false;
-                    DrawExplosion(tilePosition);
                     Destroy(GameObject.FindWithTag("Player"));
                     break;
                 case "Void":
@@ -373,7 +402,6 @@ namespace Behaviour.Creatures
                 case "Amoeba":
                     isWall = false;
                     DestroyButterfly(ConvertToVector3(tilePosition));
-                    DrawExplosion(tilePosition);
                     // explode
                     break;
                 default:
@@ -400,22 +428,55 @@ namespace Behaviour.Creatures
             }
             return dir - 1;
         }
-        
-        public void DrawExplosion(Vector2Int tilePosition)
+
+        public void DrawExplosion(Vector3 position)
         {
-            //Draw 3x3 explosion grid
-            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up + Vector3.left, Quaternion.identity);
-            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up, Quaternion.identity);
-            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up + Vector3.right, Quaternion.identity);
+            CreateList(position);
+            foreach (var block in explosionRadius)
+            {
+                InstantiatePrefab(explosion, block);
+            }
 
-            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.left, Quaternion.identity);
-            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)), Quaternion.identity);
-            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.right, Quaternion.identity);
-
-            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.down + Vector3.left, Quaternion.identity);
-            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition))+ Vector3.down, Quaternion.identity);
-            Instantiate(explosion, butterflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.down + Vector3.right, Quaternion.identity);
+            SoundManager.Instance.PlayExplosion();
         }
+
+        public void InstantiatePrefab(GameObject prefab, Vector3 position)
+        {
+            Instantiate(prefab, position, Quaternion.identity);
+        }
+
+        public void CreateList(Vector3 position)
+        {
+            explosionRadius = new List<Vector3>
+            {
+                position + Vector3.up + Vector3.left,
+                position + Vector3.up,
+                position + Vector3.up + Vector3.right,
+                position + Vector3.left,
+                position,
+                position + Vector3.right,
+                position + Vector3.down + Vector3.left,
+                position + Vector3.down,
+                position + Vector3.down + Vector3.right
+                
+            };
+        }
+
+        public bool PlayerSpawned()
+        {
+            try
+            {
+                GameObject.FindWithTag("Player").GetComponent<Movement>();
+
+            }
+            catch (NullReferenceException)
+            {
+                return false;
+            }
+            return true;
+            
+        }
+
 
     }
 }

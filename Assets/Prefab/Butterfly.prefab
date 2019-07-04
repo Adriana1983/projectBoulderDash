@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 1662202606862194999}
   - component: {fileID: 1662202606862195002}
   - component: {fileID: 1662202606862194997}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Butterfly
-  m_TagString: Enemy
+  m_TagString: Butterfly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

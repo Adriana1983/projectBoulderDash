@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Behaviour.Creatures;
 using UnityEngine;
 
 public class Explosion : StateMachineBehaviour
 {
+
+    public bool isDiamond = false;
     //At start of explosion animation delete things that are on the same tile
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -52,10 +55,6 @@ public class Explosion : StateMachineBehaviour
                     case "Amoeba":
 //                        GameObject.FindWithTag("Amoeba").GetComponent<Amoeba>()
 //                            .DestroyAmoeba(map.WorldToCell(animator.gameObject.transform.position));
-//                        //Get tile layer
-                        map = hit.gameObject.GetComponent<UnityEngine.Tilemaps.Tilemap>();
-                        //Find target tile on found layer and delete it
-                        map.SetTile(map.WorldToCell(animator.gameObject.transform.position), null);
                         break;
                     //All deletable GameObjects
                     case "Player":

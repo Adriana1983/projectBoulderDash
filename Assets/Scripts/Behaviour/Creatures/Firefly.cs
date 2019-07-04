@@ -5,9 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using Behaviour.Objects;
+using Behaviour.Player;
 using Helper_Scripts;
 using UnityEditor;
 using UnityEditor.Experimental;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Debug = UnityEngine.Debug;
@@ -106,6 +108,7 @@ namespace Behaviour.Creatures
         public bool isMoving;
         public bool mustMove;
         public Tilemap fireflyTilemap;
+        public int fireflyCount;
 
         public List<FireflyCell> fireflyCollection;
         public Dictionary<Vector2Int, string> tiles;
@@ -123,6 +126,7 @@ namespace Behaviour.Creatures
 
         private Tilemap[] tilemaps;
         private GameObject[] gameObjects;
+        private List<Vector3> explosionRadius;
 
         private void Start()
         {
@@ -146,41 +150,65 @@ namespace Behaviour.Creatures
 
             UpdateGridInfo();
             GetFireflies();
-            GetMoveDirection();
         }
 
         private void Update()
         {
+            // update the grid info
+            UpdateGridInfo();
             if (!isMoving)
             {
+                
                 isMoving = true;
                 StartCoroutine(Move());
             }
+            fireflyCount = fireflyCollection.Count;
         }
+
 
         public IEnumerator Move()
         {
             int i = 0;
             //bool isSame = false;
-            // update the grid info
-            UpdateGridInfo();
             GetMoveDirection();
             // get tiles that have to be moved
             foreach (var firefly in fireflyCollection)
             {
                 if (firefly.CanMove)
                 {
-                    fireflyTilemap.SetTile(ConvertToVector3(firefly.Position), null);
-                    fireflyTilemap.SetTile(ConvertToVector3(firefly.FlyDirection), firefly.Firefly);
-                    //todo: all animations and other scripts go here
-                    //==== Put your other useless stuff here ====//
-                    // check if fireflies finished moving
-                    if (fireflyTilemap.HasTile(ConvertToVector3(firefly.FlyDirection)))
+                    // destroy player if he dares to oppose the firefly
+                    if (PlayerSpawned()
+                        && fireflyTilemap.WorldToCell(GameObject.FindWithTag("Player").transform.position)
+                        == ConvertToVector3(firefly.FlyDirection)
+                    )
                     {
-                        // update firefly location
-                        firefly.Position = firefly.FlyDirection;
+                        DrawExplosion(GameObject.FindWithTag("Player").gameObject.transform.position);
+                        fireflyTilemap.SetTile(ConvertToVector3(firefly.Position), null);
+                        fireflyCollection.Remove(firefly);
+                    }
+                    else if (fireflyTilemap.HasTile(ConvertToVector3(firefly.FlyDirection)))
+                    {
+                        // if there is another butterfly, skip a turn
                         firefly.CanMove = false;
                         i++;
+                    }
+                    else
+                    {
+                        if (fireflyTilemap.HasTile(ConvertToVector3(firefly.FlyDirection)))
+                        {
+                            // reset position and skip a move
+                            firefly.FlyDirection = firefly.Position;
+                        }
+                        fireflyTilemap.SetTile(ConvertToVector3(firefly.FlyDirection), firefly.Firefly);
+                        // check if fireflies finished moving
+                        if (fireflyTilemap.HasTile(ConvertToVector3(firefly.FlyDirection)))
+                        {
+                            fireflyTilemap.SetTile(ConvertToVector3(firefly.Position), null);
+                            // update firefly location
+                            firefly.Position = firefly.FlyDirection;
+                            firefly.CanMove = false;
+                            i++;
+                        }
                     }
                 }
             }
@@ -238,8 +266,16 @@ namespace Behaviour.Creatures
             {
                 if (firefly.Position == new Vector2Int(position.x, position.y))
                 {
-                    fireflyCollection.Remove(firefly);
-                    fireflyTilemap.SetTile(ConvertToVector3(firefly.Position), null);
+                    try
+                    {
+                        fireflyCollection.Remove(firefly);
+                        fireflyTilemap.SetTile(ConvertToVector3(firefly.Position), null);
+                    }    
+                    catch (Exception e)
+                    {
+                        Debug.Log("fly already extinct");
+                    }
+                    
                 }
             }
         }
@@ -284,13 +320,8 @@ namespace Behaviour.Creatures
                     switch (tile.Value)
                     {
                         case "Player":
-                            // explode?
-                            break;
                         case "Void":
-                            isWall = false;
-                            break;
                         case "Amoeba":
-                            // explode
                             break;
                         default:
                             isWall = true;
@@ -372,16 +403,16 @@ namespace Behaviour.Creatures
             {
                 case "Player":
                     isWall = false;
-                    DrawExplosion(tilePosition);
-                    Destroy(GameObject.FindWithTag("Player"));
+                    //DrawExplosion(tilePosition);
+                   // Destroy(GameObject.FindWithTag("Player"));
                     break;
                 case "Void":
                     isWall = false;
                     break;
                 case "Amoeba":
                     isWall = false;
-                    DestroyFirefly(ConvertToVector3(tilePosition));
-                    DrawExplosion(tilePosition);
+                    //DestroyFirefly(ConvertToVector3(tilePosition));
+                    //DrawExplosion(tilePosition);
                     // explode
                     break;
                 default:
@@ -409,20 +440,52 @@ namespace Behaviour.Creatures
             return dir - 1;
         }
 
-        public void DrawExplosion(Vector2Int tilePosition)
+        
+        public void DrawExplosion(Vector3 position)
         {
-            //Draw 3x3 explosion grid
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up + Vector3.left, Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up, Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.up + Vector3.right, Quaternion.identity);
+            CreateList(position);
+            foreach (var block in explosionRadius)
+            {
+                InstantiatePrefab(explosion, block);
+            }
 
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.left, Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)), Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.right, Quaternion.identity);
+            SoundManager.Instance.PlayExplosion();
+        }
+        
+        public void InstantiatePrefab(GameObject prefab, Vector3 position)
+        {
+            Instantiate(prefab, position, Quaternion.identity);
+        }
 
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.down + Vector3.left, Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition))+ Vector3.down, Quaternion.identity);
-            Instantiate(explosion, fireflyTilemap.GetCellCenterWorld(ConvertToVector3(tilePosition)) + Vector3.down + Vector3.right, Quaternion.identity);
+        public void CreateList(Vector3 position)
+        {
+            explosionRadius = new List<Vector3>
+            {
+                position + Vector3.up + Vector3.left,
+                position + Vector3.up,
+                position + Vector3.up + Vector3.right,
+                position + Vector3.left,
+                position,
+                position + Vector3.right,
+                position + Vector3.down + Vector3.left,
+                position + Vector3.down,
+                position + Vector3.down + Vector3.right
+                
+            };
+        }
+
+        public bool PlayerSpawned()
+        {
+            try
+            {
+                GameObject.FindWithTag("Player").GetComponent<Movement>();
+            }
+            catch (NullReferenceException)
+            {
+                return false;
+            }
+            return true;
+            
         }
     }
 }
