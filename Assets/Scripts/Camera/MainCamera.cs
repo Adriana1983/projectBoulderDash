@@ -3,31 +3,31 @@ using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 using Vector2 = UnityEngine.Vector3;
 using Behaviour.Player;
+using System;
 
 namespace MainCamera
 {
     public class MainCamera : MonoBehaviour
     {
-        private GameObject mainCamera;
-        private GameObject player;
-        private GameObject playerSpawn;
+        [SerializeField] private GameObject mainCamera;
+        [SerializeField] private GameObject player;
+        [SerializeField] private GameObject playerSpawn;
         private Movement movementScript;
 
-        [SerializeField] private Vector3 minCameraPosition;
-        [SerializeField] private Vector3 maxCameraPosition;
+        private Vector3 minCameraPosition = new Vector3(9.5f, 5, -10);
+        private Vector3 maxCameraPosition = new Vector3(29.5f, 16, -10);
         private Vector3 currentPos;
 
         private float mapWidth;
         private float mapHeight;
 
-        private bool foundPos;
+        private bool isMoving;
 
         private List<Vector3> cameraBounds = new List<Vector3>();
 
         void Awake()
         {
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-            playerSpawn = GameObject.FindGameObjectWithTag("Door");
 
             mapWidth = maxCameraPosition.x;
             mapHeight = maxCameraPosition.y;
@@ -36,18 +36,23 @@ namespace MainCamera
         }
         void Start()
         {
+            isMoving = false;
             InitializeCameraBounds();
-            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, WhereIs(playerSpawn.transform.position), 10 * Time.deltaTime);
-            currentPos = new Vector3(0, 0, -10);
-            foundPos = false;
         }
 
         void Update()
         {
             if(PlayerHasSpawned())
             {
-                movementScript = player.GetComponent<Movement>();
+                // movementScript = player.GetComponent<Movement>();
                 mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, WhereIs(player.transform.position), 10 * Time.deltaTime);
+            }
+            else
+            {
+                playerSpawn = GameObject.FindGameObjectWithTag("Door");
+                Debug.Log(playerSpawn.transform.position);
+                mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, WhereIs(playerSpawn.transform.position), 10 * Time.deltaTime);
+                currentPos = WhereIs(playerSpawn.transform.position);
             }
         }
 
@@ -56,13 +61,13 @@ namespace MainCamera
         {
             // TODO find way to automate this
             cameraBounds.Add(new Vector3(9.5f, 16, -10));
-            cameraBounds.Add(new Vector3(9.5f, 10.5f, -10));
-            cameraBounds.Add(new Vector3(9.5f, 5, -10));
             cameraBounds.Add(new Vector3(19.5f, 16, -10));
-            cameraBounds.Add(new Vector3(19.5f, 10.5f, -10));
-            cameraBounds.Add(new Vector3(19.5f, 5, -10));
             cameraBounds.Add(new Vector3(29.5f, 16, -10));
+            cameraBounds.Add(new Vector3(9.5f, 10.5f, -10));
+            cameraBounds.Add(new Vector3(19.5f, 10.5f, -10));
             cameraBounds.Add(new Vector3(29.5f, 10.5f, -10));
+            cameraBounds.Add(new Vector3(9.5f, 5, -10));
+            cameraBounds.Add(new Vector3(19.5f, 5, -10));
             cameraBounds.Add(new Vector3(29.5f, 5, -10));
         }
 
@@ -87,27 +92,22 @@ namespace MainCamera
 
         private Vector3 WhereIs(Vector3 waldo)
         {
-            int moveDirection = movementScript.animationDirection;
-            Vector3 waldoPos = new Vector3(9.5f, 16, -10);
-            foreach(Vector3 bound in cameraBounds)
+            Vector3 waldoPos = new Vector3(waldo.x, waldo.y, -10);
+            Vector3 oldBound = mainCamera.transform.position;
+
+            float diffWidth = 100; float diffHeight = 100;
+
+            foreach (Vector3 bound in cameraBounds)
             {
-                if (IsInCoordinate(
-                    waldo, new Vector3(bound.x - 6, bound.y - 3, -10), new Vector3(bound.x + 6, bound.y + 3, -10)))
+                if (Mathf.Abs(diffWidth) > Mathf.Abs(waldo.x - bound.x))
                 {
-                    if (moveDirection == 1 || moveDirection == 3)
-                    {
-                        waldoPos = new Vector3(waldo.x, bound.y, -10);
-                        break;
-                    }
-                    else if (moveDirection == 2 || moveDirection == 4)
-                    {
-                        waldoPos = new Vector3(bound.x, waldo.y, -10);
-                        break;
-                    }
+                    diffWidth = waldo.x - bound.x;
+                    waldoPos.x = bound.x;
                 }
-                else
+                if (Mathf.Abs(diffHeight) > Mathf.Abs(waldo.y - bound.y))
                 {
-                    waldoPos = new Vector3(waldo.x, waldo.y, -10);
+                    diffHeight = waldo.y - bound.y;
+                    waldoPos.y = bound.y;
                 }
             }
             if (waldo.x < minCameraPosition.x)
