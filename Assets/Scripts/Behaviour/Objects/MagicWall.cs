@@ -12,7 +12,7 @@ public class MagicWall : MonoBehaviour
     public GameObject Diamond;
     public bool activated;
     private float activeDuration;
-    private float timer = 0.15f;
+    private float timer = 0.1875f;
     private SpriteRenderer wallRenderer;
     public bool firstactivated;
     private bool clipPlaying;
@@ -101,7 +101,7 @@ public class MagicWall : MonoBehaviour
                     }
                 }
 
-                timer = 0.15f;
+                timer = 0.1875f;
             }
         }
         else //If duration expired

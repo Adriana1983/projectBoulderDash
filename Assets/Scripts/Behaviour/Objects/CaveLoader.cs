@@ -124,10 +124,11 @@ public class CaveLoader : MonoBehaviour
                 }
             }
         }
+        
+        //Selects a random color and applies it to bounds and the caveloading animation
         randomcolor = UnityEngine.Random.ColorHSV(0f, 1f, 0.85f, 0.9f, 1f, 1f, 1f, 1f);
         GameObject.Find("Bounds").GetComponent<Tilemap>().color = randomcolor;        
         GameObject.Find("CaveChange").GetComponent<Tilemap>().color = randomcolor;        
-        //GameObject.Find("Exitdoor").GetComponent<SpriteRenderer>().color = randomcolor;
         SoundManager.Instance.PlayCover();
         Score.Instance.Finish = false;
     }
@@ -187,10 +188,10 @@ public class CaveLoader : MonoBehaviour
     }
 
     private void Start()
-    {       
-        GameObject.Find("Bounds").GetComponent<Tilemap>().color = randomcolor;        
+    {
+        //Changes the lighting color and all the sprites that dont have material
         GameObject.Find("RandomLight").GetComponent<Light>().color = randomcolor;
-        GameObject.FindGameObjectWithTag("Exitdoor").GetComponent<SpriteRenderer>().color = randomcolor;
         GameObject.FindGameObjectWithTag("Door").GetComponent<SpriteRenderer>().color = randomcolor;
+        GameObject.FindGameObjectWithTag("ExitDoor").GetComponent<SpriteRenderer>().color = randomcolor;
     }
 }

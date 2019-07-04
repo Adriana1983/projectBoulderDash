@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 91323818}
   m_Layer: 11
   m_Name: Exitdoor
-  m_TagString: Exitdoor
+  m_TagString: ExitDoor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,8 +122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89cd44b1f8f788e4faab8c2b6ef65d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  exitDoorAnimation: {fileID: 0}
 --- !u!95 &91323818
 Animator:
   serializedVersion: 3
