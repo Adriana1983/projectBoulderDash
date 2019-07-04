@@ -124,10 +124,9 @@ public class CaveLoader : MonoBehaviour
                 }
             }
         }
-        randomcolor = UnityEngine.Random.ColorHSV(0f, 1f, 1f, 1f, 1f, 1f, 1f, 1f);
+        randomcolor = UnityEngine.Random.ColorHSV(0f, 1f, 0.85f, 0.9f, 1f, 1f, 1f, 1f);
         GameObject.Find("Bounds").GetComponent<Tilemap>().color = randomcolor;        
         GameObject.Find("CaveChange").GetComponent<Tilemap>().color = randomcolor;        
-       
         //GameObject.Find("Exitdoor").GetComponent<SpriteRenderer>().color = randomcolor;
         SoundManager.Instance.PlayCover();
         Score.Instance.Finish = false;

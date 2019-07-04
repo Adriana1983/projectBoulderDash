@@ -15,26 +15,53 @@ public class MagicWall : MonoBehaviour
     private float timer = 0.15f;
     private SpriteRenderer wallRenderer;
     public bool firstactivated;
+    private bool clipPlaying;
+    private float clipTimer;
     
     private void Update()
     {
+        
         //Als er een boulder een Magic wall heeft geactiveerd doe dit
         if (firstactivated && activeDuration == 0)
         {
-            print("Test");
-            SoundManager.Instance.PlayMagicWall();
             //Zoekt alle andere magic walls en zet hun variable activated naar true
-            foreach (var variable in GameObject.FindGameObjectsWithTag("MagicWall"))
+            if (clipPlaying == false && firstactivated)
             {
-                variable.GetComponent<MagicWall>().activated = true;
-                variable.GetComponent<SpriteRenderer>().sprite = magicWallSprite;
-                variable.GetComponent<MagicWall>().activeDuration = Score.Instance.amoebaMagicTime;
+                foreach (var variable in GameObject.FindGameObjectsWithTag("MagicWall"))
+                {
+                    variable.GetComponent<SpriteRenderer>().sprite = magicWallSprite;
+                    variable.GetComponent<MagicWall>().activeDuration = Score.Instance.amoebaMagicTime;
+                }
+                firstactivated = false;
+                activated = true;
             }
-            firstactivated = false;
+            
         }
+
         //if duration is still active
         if (activeDuration > 0)
-        {
+        { 
+            if (activated)
+            {
+                
+                AudioClip clip = SoundManager.PlayMagicWallLoop;
+                if (clipPlaying == false)
+                {
+                    SoundManager.Instance.PlayMagicWall();
+                    clipPlaying = true;
+                    clipTimer = clip.length;
+                }
+
+                if (clipPlaying)
+                {
+                    clipTimer -= Time.deltaTime;
+                    if (clipTimer < 0.1f)
+                    {
+                        clipTimer = clip.length;
+                        clipPlaying = false;
+                    }
+                }
+            }
             activeDuration -= Time.deltaTime;
             timer -= Time.deltaTime;
             if (timer < 0)
@@ -81,6 +108,12 @@ public class MagicWall : MonoBehaviour
         {
             wallRenderer = GetComponent<SpriteRenderer>();
             wallRenderer.sprite = wallSprite;
+            if (activated)
+            {
+                SoundManager.Instance.StopAllAudio();
+                activated = false;
+            }
+            
         }
     }
 }

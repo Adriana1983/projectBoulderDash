@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
     //https://www.youtube.com/watch?v=tLyj02T51Oc
     private static SoundManager instance;
+    private AudioSource[] allAudio;
     public static SoundManager Instance
     {
         get
@@ -27,12 +29,13 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+
     private AudioSource sfxSource;
 
     public AudioClip bdmusic; //opening tune
     public AudioClip cover; //building up cave/intermission
     public AudioClip crack; //Rockford appears in cave - he's immediately able to move - cave timer starts running -- opening exit
-    public AudioClip finished; //upon completing cave/intermission remaining seconds turn into score
+    public AudioClip finished; //upon completing cave/intermission remaining seconds turn in to score
 
     public AudioClip amoeba; //when amoeba grows
     public AudioClip explosion; //all explosions
@@ -70,6 +73,15 @@ public class SoundManager : MonoBehaviour
         sfxSource = this.gameObject.AddComponent<AudioSource>();
     }
 
+    public void StopAllAudio()
+    {
+        allAudio = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+        foreach (var audio in allAudio)
+        {
+                audio.Stop();
+        }
+    }
+
     public void PlaySound(AudioClip clip)
     {
         if (clip != null)
@@ -81,6 +93,31 @@ public class SoundManager : MonoBehaviour
     public void PlayBDmusic()
     {
         PlaySound(bdmusic);
+    }
+
+    public static AudioClip PlayBDmusicLoop
+    {
+        get
+        {
+            instance = FindObjectOfType<SoundManager>();
+            return instance.bdmusic;
+        }
+        set
+        {
+            instance.bdmusic = value;
+        }
+    }
+    public static AudioClip PlayMagicWallLoop
+    {
+        get
+        {
+            instance = FindObjectOfType<SoundManager>();
+            return instance.magic_wall;
+        }
+        set
+        {
+            instance.magic_wall = value;
+        }
     }
 
     public void PlayCover()
@@ -131,34 +168,6 @@ public class SoundManager : MonoBehaviour
     public void PlayCollectdiamond()
     {
         PlaySound(collectdiamond);
-    }
-
-    int dcount = 1;
-    public void PlayDiamondSequence()
-    {
-        switch(dcount)
-        {
-            case 1:
-                PlayDiamond1();
-                break;
-            case 2:
-                PlayDiamond2();
-                break;
-            case 3:
-                PlayDiamond3();
-                break;
-            case 4:
-                PlayDiamond4();
-                break;
-            case 5:
-                PlayDiamond5();
-                break;
-            case 6:
-                PlayDiamond6();
-                break;
-        }
-        dcount++;
-        if (dcount == 7) dcount = 1;
     }
 
     public void PlayDiamond1()

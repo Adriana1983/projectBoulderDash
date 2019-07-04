@@ -31,7 +31,7 @@ public class Diamond : MonoBehaviour
             else
             {
                 if (falling)
-                    SoundManager.Instance.PlayDiamondSequence();
+                    //SoundManager.Instance.PlayDiamondSequence();
 
                 switch (hitDown.collider.tag)
                 {
