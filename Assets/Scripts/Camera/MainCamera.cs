@@ -32,7 +32,7 @@ namespace MainCamera
             mapWidth = maxCameraPosition.x;
             mapHeight = maxCameraPosition.y;
 
-            Camera.main.orthographicSize = 5.5f;
+            Camera.main.orthographicSize = 6.5f;
         }
         void Start()
         {
@@ -50,7 +50,6 @@ namespace MainCamera
             else
             {
                 playerSpawn = GameObject.FindGameObjectWithTag("Door");
-                Debug.Log(playerSpawn.transform.position);
                 mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, WhereIs(playerSpawn.transform.position), 10 * Time.deltaTime);
                 currentPos = WhereIs(playerSpawn.transform.position);
             }
