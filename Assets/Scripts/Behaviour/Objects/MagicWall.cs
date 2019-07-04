@@ -20,7 +20,7 @@ public class MagicWall : MonoBehaviour
     
     private void Update()
     {
-        
+
         //Als er een boulder een Magic wall heeft geactiveerd doe dit
         if (firstactivated && activeDuration == 0)
         {
@@ -29,18 +29,18 @@ public class MagicWall : MonoBehaviour
             {
                 foreach (var variable in GameObject.FindGameObjectsWithTag("MagicWall"))
                 {
-                    variable.GetComponent<SpriteRenderer>().sprite = magicWallSprite;
+                    //variable.GetComponent<SpriteRenderer>().sprite = magicWallSprite;
+                    variable.GetComponent<Animator>().enabled = true;
                     variable.GetComponent<MagicWall>().activeDuration = Score.Instance.amoebaMagicTime;
                 }
                 firstactivated = false;
                 activated = true;
             }
-            
         }
 
         //if duration is still active
         if (activeDuration > 0)
-        { 
+        {
             if (activated)
             {
                 
@@ -106,6 +106,7 @@ public class MagicWall : MonoBehaviour
         }
         else //If duration expired
         {
+            GetComponent<Animator>().enabled = false;
             wallRenderer = GetComponent<SpriteRenderer>();
             wallRenderer.sprite = wallSprite;
             if (activated)

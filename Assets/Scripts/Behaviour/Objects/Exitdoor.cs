@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using Behaviour.Player;
 using UnityEngine;
 
 public class Exitdoor : MonoBehaviour
 {
     Animator exitDoorAnimation;
+    public Material Whiteskybox;
+    private float timer;
 
     void Start()
     {
@@ -21,7 +24,13 @@ public class Exitdoor : MonoBehaviour
             {
                 if (exitDoorAnimation.enabled == false)
                     SoundManager.Instance.PlayCrack();
-
+                RenderSettings.skybox = Whiteskybox;
+                timer += Time.deltaTime;
+                if (timer >= 0.15f)
+                {
+                    RenderSettings.skybox = null;
+                    timer = 0;
+                }   
                 exitDoorAnimation.enabled = true;
             }
         }

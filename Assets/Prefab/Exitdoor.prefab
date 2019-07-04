@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89cd44b1f8f788e4faab8c2b6ef65d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Whiteskybox: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!95 &91323818
 Animator:
   serializedVersion: 3

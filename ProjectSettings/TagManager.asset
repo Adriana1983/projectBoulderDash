@@ -15,6 +15,7 @@ TagManager:
   - Door
   - Amoeba
   - MagicWall
+  - ExitDoor
   layers:
   - Default
   - TransparentFX
