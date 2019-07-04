@@ -31,7 +31,9 @@ public class Explosion : StateMachineBehaviour
                         //Find target tile on found layer and delete it
                         map.SetTile(map.WorldToCell(animator.gameObject.transform.position), null);
                         break;
-
+                    case "MagicWall":
+                        Destroy(hit.gameObject);
+                        break;
                     //All deletable GameObjects
                     case "Player":
                     case "Boulder":

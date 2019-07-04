@@ -23,7 +23,7 @@ public class CaveLoader : MonoBehaviour
     public GameObject[] Prefab;
 
     public Text CaveAndIntermissionUI;
-
+    public Color randomcolor;
 
     enum Tile
     {
@@ -43,7 +43,6 @@ public class CaveLoader : MonoBehaviour
 
     }
 
-
     private TileBase GetTile(Tile t)
     {
         return Tiles[(int)t];
@@ -58,8 +57,9 @@ public class CaveLoader : MonoBehaviour
     List<Vector3Int> ChangeCavePositionsUnload = new List<Vector3Int>();
 
     void Awake()
-    {
+    {       
         Time.timeScale = 0f;
+
 
         //loading text file and separating by breaklines
         /*TextAsset caveData = (TextAsset)Resources.Load("Caves/Levels/Testcave");*/
@@ -74,7 +74,6 @@ public class CaveLoader : MonoBehaviour
 
         Height = caveDataList.Count;
         Width = caveDataList[0].Length;
-
         for (int y = 0; y < Height; y++)
         {
             for (int x = 0; x < Width; x++)
@@ -125,7 +124,11 @@ public class CaveLoader : MonoBehaviour
                 }
             }
         }
-
+        randomcolor = UnityEngine.Random.ColorHSV(0f, 1f, 1f, 1f, 1f, 1f, 1f, 1f);
+        GameObject.Find("Bounds").GetComponent<Tilemap>().color = randomcolor;        
+        GameObject.Find("CaveChange").GetComponent<Tilemap>().color = randomcolor;        
+       
+        //GameObject.Find("Exitdoor").GetComponent<SpriteRenderer>().color = randomcolor;
         SoundManager.Instance.PlayCover();
         Score.Instance.Finish = false;
     }
@@ -182,5 +185,13 @@ public class CaveLoader : MonoBehaviour
         }
 
         return ChangeCavePositionsUnload.Count;
+    }
+
+    private void Start()
+    {       
+        GameObject.Find("Bounds").GetComponent<Tilemap>().color = randomcolor;        
+        GameObject.Find("RandomLight").GetComponent<Light>().color = randomcolor;
+        GameObject.FindGameObjectWithTag("Exitdoor").GetComponent<SpriteRenderer>().color = randomcolor;
+        GameObject.FindGameObjectWithTag("Door").GetComponent<SpriteRenderer>().color = randomcolor;
     }
 }

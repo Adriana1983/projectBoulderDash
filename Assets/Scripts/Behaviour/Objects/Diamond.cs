@@ -36,11 +36,11 @@ public class Diamond : MonoBehaviour
                 switch (hitDown.collider.tag)
                 {
                     case "MagicWall":
-                        if (lastpositionFalling)
+                        if (lastpositionFalling || falling)
                         {
                             if (activatedWall == false)
                             {
-                                hitDown.collider.gameObject.GetComponent<MagicWall>().activated = true;
+                                hitDown.collider.gameObject.GetComponent<MagicWall>().firstactivated = true;
                                 activatedWall = true;
                             }
                         }

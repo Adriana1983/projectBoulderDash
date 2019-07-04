@@ -29,10 +29,10 @@ public class Score : MonoBehaviour
     #endregion
 
     //cave variables
-    public char CurrentCave = 'A';
+    public char CurrentCave = 'H';
 
     public float caveTime = 150;
-    public float amoebaMagicTime = 75; //this is both amoebaSlowGrowthTime as magicWallMillingTime
+    public float amoebaMagicTime; //this is both amoebaSlowGrowthTime as magicWallMillingTime
     public int initialDiamondsValue = 50;
     public int extraDiamondsValue = 90;
     public int diamondsNeeded = 75;
@@ -60,7 +60,6 @@ public class Score : MonoBehaviour
             score = value;
         }
     }
-
 
     public void SetCaveData(List<string> caveSettings)
     {

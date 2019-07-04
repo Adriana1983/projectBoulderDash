@@ -70,7 +70,7 @@ namespace Behaviour.Objects
                             {
                                 if (activatedWall == false)
                                 {
-                                    hit.collider.gameObject.GetComponent<MagicWall>().activated = true;
+                                    hit.collider.gameObject.GetComponent<MagicWall>().firstactivated = true;
                                     activatedWall = true;
                                 }
                             }
