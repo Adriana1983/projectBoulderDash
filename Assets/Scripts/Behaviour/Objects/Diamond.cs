@@ -4,6 +4,7 @@ using Behaviour.Objects;
 using Random = System.Random;
 
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Diamond : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Diamond : MonoBehaviour
     public bool activatedWall;
 
     public GameObject explosion;
+    private List<Vector3> explosionRadius;
 
     void Update()
     {
@@ -87,7 +89,7 @@ public class Diamond : MonoBehaviour
                         if (falling)
                         {
                             //Player death
-                            DrawExplosion(hitDown);
+                            DrawExplosion(hitDown.transform.position);
                             Debug.Log("Player dead");
                             Destroy(hitDown.collider.gameObject);
                             Score.Instance.RockfordDies();
@@ -97,10 +99,8 @@ public class Diamond : MonoBehaviour
                     case "Butterfly":
                         if (falling)
                         {
-                            //firefly/butterfly dies
-                            DrawExplosion(hitDown);
-                            Debug.Log("Firefly/Butterfly dead");
-                            Destroy(hitDown.collider.gameObject);
+                            Tilemap map = hitDown.collider.gameObject.GetComponent<Tilemap>();
+                            DrawExplosion(map.WorldToCell(gameObject.transform.position));
                         }
                         break;
                 }
@@ -113,22 +113,37 @@ public class Diamond : MonoBehaviour
         }
     }
 
-    public void DrawExplosion(RaycastHit2D hit)
+    public void DrawExplosion(Vector3 position)
     {
-        //Draw 3x3 explosion grid
-        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.up + Vector3.left, Quaternion.identity);
-        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.up, Quaternion.identity);
-        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.up + Vector3.right, Quaternion.identity);
-
-        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.left, Quaternion.identity);
-        GameObject.Instantiate(explosion, hit.transform.transform.position, Quaternion.identity);
-        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.right, Quaternion.identity);
-
-        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down + Vector3.left, Quaternion.identity);
-        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down, Quaternion.identity);
-        GameObject.Instantiate(explosion, hit.transform.transform.position + Vector3.down + Vector3.right, Quaternion.identity);
+        CreateList(position);
+        foreach (var block in explosionRadius)
+        {
+            InstantiatePrefab(explosion, block);
+        }
 
         SoundManager.Instance.PlayExplosion();
+    }
+
+    public void InstantiatePrefab(GameObject prefab, Vector3 position)
+    {
+        Instantiate(prefab, position, Quaternion.identity);
+    }
+
+    public void CreateList(Vector3 position)
+    {
+        explosionRadius = new List<Vector3>
+        {
+            position + Vector3.up + Vector3.left,
+            position + Vector3.up,
+            position + Vector3.up + Vector3.right,
+            position + Vector3.left,
+            position,
+            position + Vector3.right,
+            position + Vector3.down + Vector3.left,
+            position + Vector3.down,
+            position + Vector3.down + Vector3.right
+                
+        };
     }
 
 }

@@ -19,7 +19,7 @@ namespace Behaviour.Player
         public string hitDirection;
         public string inputGot;
         public bool isHit;
-
+        public GameObject explosion;
         public Vector3 lastPos;
         public Vector3 targetPos;
         public bool mustMove;
@@ -33,10 +33,6 @@ namespace Behaviour.Player
         public LayerMask layer;
         public BoxCollider2D ghost;
 
-        //Camera concept 01-07-2019
-        GameObject Camera;
-        Vector3 targetCamPos;
-
         //Animation direction clockwise
         enum Direction
         {
@@ -49,17 +45,6 @@ namespace Behaviour.Player
 
         private void Start()
         {
-            #region possible new cave-camera 1
-            //Camera concept 01-07-2019
-            Camera = GameObject.FindGameObjectWithTag("MainCamera");
-            //Verplaats camera op rockford
-            Camera.transform.position = transform.position;
-            //Haal camera na voor
-            Camera.transform.position += Vector3.back;
-            //Zet camera doel gelijk aan huidig positie
-            targetCamPos = Camera.transform.position;
-            #endregion
-
             targetPos = transform.position;
             isMoving = false;
             mustMove = false;
@@ -216,6 +201,13 @@ namespace Behaviour.Player
                                 Score.Instance.Finish = true;
                             }
                             break;
+                        case "Firefly":
+                        case "Butterfly:":
+                            Debug.Log(hit.collider.gameObject.tag);
+                            mustMove = false;
+                            DrawExplosion(gameObject.transform.position);
+                            Destroy(gameObject);
+                            break;
                         //we hit something else, player cannot move
                         default:
                             mustMove = false;
@@ -236,20 +228,6 @@ namespace Behaviour.Player
                         ghost.transform.position = targetPos;
                         ghost.enabled = true;
 
-                        #region possible new cave-camera 2
-                        //Camera concept 01-07-2019
-                        var distance = transform.position - Camera.transform.position;
-                        if ((distance.x < -10 && animationDirection == (int)Direction.Left) || (distance.x > 10 && animationDirection == (int)Direction.Right))
-                        {
-                            targetCamPos += targetDirection;
-                        }
-
-                        if ((distance.y < -1 && animationDirection == (int)Direction.Down) || (distance.y > 1 && animationDirection == (int)Direction.Up))
-                        {
-                            targetCamPos += targetDirection;
-                        }
-                        #endregion
-
                         animator.SetInteger("AnimationDirection", animationDirection);
 
                         animator.SetBool("isMoving", true);
@@ -269,12 +247,7 @@ namespace Behaviour.Player
                 if (isMoving)
                 {
                     time = 0;
-
                     transform.position = Vector2.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
-                    #region possible new cave-camera 3
-                    //Camera concept 01-07-2019
-                    Camera.transform.position = Vector3.MoveTowards(Camera.transform.position, targetCamPos, speed * Time.deltaTime);
-                    #endregion
                 }
 
                 //Wait for movement to finish
@@ -334,9 +307,36 @@ namespace Behaviour.Player
 
         }
 
-        private void OnTriggerEnter(Collider other)
+//        private void OnTriggerEnter(Collider other)
+//        {
+//            Destroy(other.gameObject);
+//        }
+
+        void OnDestroy()
         {
-            Destroy(other.gameObject);
+            Score.Instance.life--;
+            if (Score.Instance.life == 0)
+            {
+                //game over
+            }
+        }
+        
+        public void DrawExplosion(Vector3 position)
+        {
+            //Draw 3x3 explosion grid
+            GameObject.Instantiate(explosion, position + Vector3.up + Vector3.left, Quaternion.identity);
+            GameObject.Instantiate(explosion, position + Vector3.up, Quaternion.identity);
+            GameObject.Instantiate(explosion, position + Vector3.up + Vector3.right, Quaternion.identity);
+
+            GameObject.Instantiate(explosion, position + Vector3.left, Quaternion.identity);
+            GameObject.Instantiate(explosion, position, Quaternion.identity);
+            GameObject.Instantiate(explosion, position + Vector3.right, Quaternion.identity);
+
+            GameObject.Instantiate(explosion, position + Vector3.down + Vector3.left, Quaternion.identity);
+            GameObject.Instantiate(explosion, position + Vector3.down, Quaternion.identity);
+            GameObject.Instantiate(explosion, position + Vector3.down + Vector3.right, Quaternion.identity);
+
+            SoundManager.Instance.PlayExplosion();
         }
     }
 }

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: Firefly
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 6346112351099890042, guid: 4212dc7d2bab87b4997511378254a9b2, type: 3}
+  - {fileID: -7347794184615023501, guid: 4212dc7d2bab87b4997511378254a9b2, type: 3}
+  - {fileID: 5687823013441668125, guid: 4212dc7d2bab87b4997511378254a9b2, type: 3}
+  - {fileID: -3258769973098781341, guid: 4212dc7d2bab87b4997511378254a9b2, type: 3}
+  - {fileID: 6033119675413038381, guid: 4212dc7d2bab87b4997511378254a9b2, type: 3}
+  - {fileID: -7586773760450299225, guid: 4212dc7d2bab87b4997511378254a9b2, type: 3}
+  - {fileID: 878752762656067961, guid: 4212dc7d2bab87b4997511378254a9b2, type: 3}
+  - {fileID: 7438593799258268351, guid: 4212dc7d2bab87b4997511378254a9b2, type: 3}
+  m_MinSpeed: 6
+  m_MaxSpeed: 6
+  m_AnimationStartTime: 0
+  m_TileColliderType: 2

@@ -96,10 +96,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32bfdc94ad694f09973c816530468422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  timerNextScene: 5
+  speed: 7.5
   hitDirection: 
   inputGot: 
   isHit: 0
+  explosion: {fileID: 5259553897754313578, guid: ba8bed6362cba7248bc2254eb5fdd83c,
+    type: 3}
   lastPos: {x: 0, y: 0, z: 0}
   targetPos: {x: 0, y: 0, z: 0}
   mustMove: 0
@@ -110,9 +113,8 @@ MonoBehaviour:
   time: 0
   layer:
     serializedVersion: 2
-    m_Bits: 15872
+    m_Bits: 65024
   ghost: {fileID: 6819696139007256731}
-  score: 0
 --- !u!95 &1151457489614880409
 Animator:
   serializedVersion: 3

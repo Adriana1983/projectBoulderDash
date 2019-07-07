@@ -15,6 +15,11 @@ TagManager:
   - Door
   - Amoeba
   - MagicWall
+  - Exitdoor
+  - Enemy
+  - Firefly
+  - Butterfly
+  - CaveChange
   layers:
   - Default
   - TransparentFX
@@ -30,8 +35,8 @@ TagManager:
   - Boulder
   - Wall
   - Amoeba
-  - 
-  - 
+  - Firefly
+  - Butterfly
   - 
   - 
   - 

@@ -13,7 +13,9 @@ namespace Helper_Scripts
     
             foreach (Tilemap tilemap in tilemaps)
             {
-                if (tilemap.gameObject.CompareTag("Boulder"))
+                if (tilemap.gameObject.CompareTag("Boulder") 
+                    || tilemap.gameObject.CompareTag("Diamond")
+                    || tilemap.gameObject.CompareTag("CaveChange"))
                 {
                     continue;
                 }
@@ -26,7 +28,11 @@ namespace Helper_Scripts
                        
                         if (tilemap.HasTile(localPlace))
                         {
-                            tiles[location] =  tilemap.GetTile(localPlace).name.Replace("OriginalTileset_","");
+                            if (tilemap.GetTile(localPlace).name != "OriginalTileset_unity_5")
+                            {
+                                 tiles[location] =  tilemap.GetTile(localPlace).name.Replace("OriginalTileset_","");
+                            }
+                           
                         }
                     }
                 }
@@ -41,7 +47,6 @@ namespace Helper_Scripts
                 switch (go.tag)
                 {
                     // get the gameobjects that are not on tilemaps
-                    // todo: Add fireflies and butterflies here
                     case "Player":
                         //get location on grid
                         location = tilemaps[0].WorldToCell(go.transform.position);
@@ -51,6 +56,16 @@ namespace Helper_Scripts
                         //get location on grid
                         location = tilemaps[0].WorldToCell(go.transform.position);
                         tiles[new Vector2Int((int)location.x, (int)location.y)] = "Boulder";
+                        break;
+                    case "Diamond":
+                        //get location on grid
+                        location = tilemaps[0].WorldToCell(go.transform.position);
+                        tiles[new Vector2Int((int)location.x, (int)location.y)] = "Diamond";
+                        break;
+                    case "Exitdoor":
+                        //get location on grid
+                        location = tilemaps[0].WorldToCell(go.transform.position);
+                        tiles[new Vector2Int((int)location.x, (int)location.y)] = "Exitdoor";
                         break;
                 }
             }
