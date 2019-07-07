@@ -1,101 +1,131 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Vector3 = UnityEngine.Vector3;
 using Vector2 = UnityEngine.Vector3;
-using UnityEngine.SceneManagement;
+using Behaviour.Player;
+using System;
 
-namespace Camera
+namespace MainCamera
 {
     public class MainCamera : MonoBehaviour
     {
-        public Transform player;
-        public Transform mainCamera;
-        public Vector3 offset;
-        private Vector3 startingPosition;
-        public bool isLocked;
-        private float cameraX;
-        private float cameraY;
-        private Vector3 cameraBounds;
+        [SerializeField] private GameObject mainCamera;
+        [SerializeField] private GameObject player;
+        [SerializeField] private GameObject playerSpawn;
+        private Movement movementScript;
 
-        public float dampTime = 0.15f;
-        private Vector3 velocity = Vector3.zero;
+        private Vector3 minCameraPosition = new Vector3(9.5f, 5, -10);
+        private Vector3 maxCameraPosition = new Vector3(29.5f, 16, -10);
+        private Vector3 currentPos;
 
+        private float mapWidth;
+        private float mapHeight;
+
+        private bool isMoving;
+
+        private List<Vector3> cameraBounds = new List<Vector3>();
+
+        void Awake()
+        {
+            mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+
+            mapWidth = maxCameraPosition.x;
+            mapHeight = maxCameraPosition.y;
+
+            Camera.main.orthographicSize = 6.5f;
+        }
         void Start()
         {
-            startingPosition = transform.position;
-            cameraX = OrthographicBounds(GetComponent<UnityEngine.Camera>()).x;
-            cameraY = OrthographicBounds(GetComponent<UnityEngine.Camera>()).y;
-            cameraBounds = OrthographicBounds(GetComponent<UnityEngine.Camera>());
+            isMoving = false;
+            InitializeCameraBounds();
         }
 
         void Update()
         {
-            //toggle spacebar for locked/unlocked camera
-            if (Input.GetKeyDown("space"))
+            if(PlayerHasSpawned())
             {
-                isLocked = !isLocked;
+                // movementScript = player.GetComponent<Movement>();
+                mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, WhereIs(player.transform.position), 10 * Time.deltaTime);
             }
-
-            if (Input.GetKey(KeyCode.N))
+            else
             {
-                Score.Instance.NextCave();
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                playerSpawn = GameObject.FindGameObjectWithTag("Door");
+                mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, WhereIs(playerSpawn.transform.position), 10 * Time.deltaTime);
+                currentPos = WhereIs(playerSpawn.transform.position);
             }
-
-
-            //            RaycastHit2D hitleft = Physics2D.Raycast(transform.position,  Vector2.left, -cameraX);
-            //            RaycastHit2D hitright = Physics2D.Raycast(transform.position, Vector2.right + cameraBounds, cameraX);
-            //            RaycastHit2D hitdown = Physics2D.Raycast(transform.position, Vector2.down + cameraBounds, -cameraY);
-            //            RaycastHit2D hitup = Physics2D.Raycast(transform.position, Vector2.up + cameraBounds, cameraY);
-            //            
-            //            if (hitleft.collider != null && hitright.collider.CompareTag("CameraBounds") )
-            //            {
-            //               Debug.Log(hitleft.collider + "left");
-            //            }
-            //            if (hitright.collider != null && hitright.collider.CompareTag("CameraBounds"))
-            //            {
-            //                Debug.Log(hitright.collider + "right");
-            //            }
-            //            if (hitdown.collider != null && hitdown.collider.CompareTag("CameraBounds"))
-            //            {
-            //                Debug.Log(hitdown.collider + "down");
-            //            }
-            //            if (hitup.collider != null && hitup.collider.CompareTag("CameraBounds"))
-            //            {
-            //                Debug.Log(hitup.collider + "up");
-            //            }
         }
 
-        void LateUpdate()
+
+        private void InitializeCameraBounds()
         {
-            //this code has been commented out so that the regions possible new cave-camera 1, 2 & 3 could be tested
-            //Vector3 point = GetComponent<UnityEngine.Camera>().WorldToViewportPoint(mainCamera.position);
-            //Vector3 delta = mainCamera.position - GetComponent<UnityEngine.Camera>()
-            //                    .ViewportToWorldPoint(new Vector3(0.5f, 0.5f,
-            //                        point.z)); //(new Vector3(0.5, 0.5, point.z));
-            
-            //if (isLocked)
-            //{
-            //    Vector3 destination =
-            //            new Vector3(player.position.x + offset.x, player.position.y + offset.y, offset.z - 10) + delta;
-            //    transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
-            //}
-            //else
-            //{
-            //    Vector3 destination = startingPosition + delta;
-            //    transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
-            //}
+            // TODO find way to automate this
+            cameraBounds.Add(new Vector3(9.5f, 16, -10));
+            cameraBounds.Add(new Vector3(19.5f, 16, -10));
+            cameraBounds.Add(new Vector3(29.5f, 16, -10));
+            cameraBounds.Add(new Vector3(9.5f, 10.5f, -10));
+            cameraBounds.Add(new Vector3(19.5f, 10.5f, -10));
+            cameraBounds.Add(new Vector3(29.5f, 10.5f, -10));
+            cameraBounds.Add(new Vector3(9.5f, 5, -10));
+            cameraBounds.Add(new Vector3(19.5f, 5, -10));
+            cameraBounds.Add(new Vector3(29.5f, 5, -10));
         }
-        
-        public static Vector3 OrthographicBounds(UnityEngine.Camera camera)
+
+        private bool PlayerHasSpawned()
         {
-            float screenAspect = (float)Screen.width / (float)Screen.height;
-            float cameraHeight = camera.orthographicSize * 2;
-           
-            return new Vector3(cameraHeight * screenAspect, cameraHeight, 0);
+            player = GameObject.FindGameObjectWithTag("Player");
+            if (player == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool IsInCoordinate(Vector3 item, Vector3 isInMin, Vector3 isInMax)
+        {
+            if (item.x > isInMin.x && item.y > isInMin.y && item.x < isInMax.x && item.y < isInMax.y)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private Vector3 WhereIs(Vector3 waldo)
+        {
+            Vector3 waldoPos = new Vector3(waldo.x, waldo.y, -10);
+            Vector3 oldBound = mainCamera.transform.position;
+
+            float diffWidth = 100; float diffHeight = 100;
+
+            foreach (Vector3 bound in cameraBounds)
+            {
+                if (Mathf.Abs(diffWidth) > Mathf.Abs(waldo.x - bound.x))
+                {
+                    diffWidth = waldo.x - bound.x;
+                    waldoPos.x = bound.x;
+                }
+                if (Mathf.Abs(diffHeight) > Mathf.Abs(waldo.y - bound.y))
+                {
+                    diffHeight = waldo.y - bound.y;
+                    waldoPos.y = bound.y;
+                }
+            }
+            if (waldo.x < minCameraPosition.x)
+            {
+                waldoPos.x = minCameraPosition.x;
+            }
+            if (waldo.x > maxCameraPosition.x)
+            {
+                waldoPos.x = maxCameraPosition.x;
+            }
+            if (waldo.y < minCameraPosition.y) 
+            {
+                waldoPos.y = minCameraPosition.y;
+            }
+            if (waldo.y > maxCameraPosition.y)
+            {
+                waldoPos.y = maxCameraPosition.y;
+            }
+            return waldoPos;
         }
     }
 }
