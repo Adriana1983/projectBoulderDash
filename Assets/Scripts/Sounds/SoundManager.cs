@@ -65,7 +65,7 @@ public class SoundManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
 
         sfxSource = this.gameObject.AddComponent<AudioSource>();
     }

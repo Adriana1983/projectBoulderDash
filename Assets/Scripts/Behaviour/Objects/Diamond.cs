@@ -90,6 +90,7 @@ public class Diamond : MonoBehaviour
                             DrawExplosion(hitDown);
                             Debug.Log("Player dead");
                             Destroy(hitDown.collider.gameObject);
+                            Score.Instance.RockfordDies();
                         }
                         break;
                     case "Firefly":

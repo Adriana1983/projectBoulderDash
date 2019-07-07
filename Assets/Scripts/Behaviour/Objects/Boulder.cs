@@ -6,6 +6,7 @@ namespace Behaviour.Objects
     public class Boulder : MonoBehaviour
     {
         private float timer = 0.1875f; //time betwee actions
+        private float timer2 = 0.1f;
         Random random = new Random();
         public bool falling;
         bool moving = false;
@@ -16,33 +17,40 @@ namespace Behaviour.Objects
 
         public GameObject explosion;
 
-        //Return bool decides if rockford is allowed to move in the movement script
+        //Return bool decides if rockford is allowed to move a boulder that can be moved
         public bool BoulderHit(Vector3 targetDirection)
         {
-            //if (moving || random.Next(0, 100) > 90)
-            //{
-            //    moving = true;
-            //}
-            //else
-            //{
-            //    Debug.Log("too bad");
-            //    return false;
-            //}
+            //This makes sure that the code in the if rns only once every tenth of a second
+            timer2 -= Time.deltaTime;
+            if (timer2 < 0)
+            {
+                timer2 = 0.1f;
+                //1 - 0.125 ^ Time.deltaTime;
+                if (random.Next(1, 8) == 1)
+                {
+                    moving = true;
+                }
+                else
+                {
+                    return false;
+                }
 
-            //Rockford can't move boulders up or down
-            if (targetDirection == Vector3.up || targetDirection == Vector3.down)
-                return false;
+                //Rockford can't move boulders up or down
+                if (targetDirection == Vector3.up || targetDirection == Vector3.down)
+                    return false;
 
-            //Check if there is something behind the boulder in the direction we want to push
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, targetDirection, 1);
-            if (hit.collider != null)
-                //There is something in the way, rockford cannot push this boulder
-                return false;
+                //Check if there is something behind the boulder in the direction we want to push
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, targetDirection, 1);
+                if (hit.collider != null)
+                    //There is something in the way, rockford cannot push this boulder
+                    return false;
 
-            //There was nothing, so move the boulder to the empty square
-            SoundManager.Instance.PlayBox_push();
-            transform.position += targetDirection;
-            return true;
+                //There was nothing, so move the boulder to the empty square
+                SoundManager.Instance.PlayBox_push();
+                transform.position += targetDirection;
+                return true;                
+            }
+            return false;
         }
 
         void Update()
@@ -133,7 +141,7 @@ namespace Behaviour.Objects
                                 DrawExplosion(hit);
                                 Debug.Log("Player dead");
                                 Destroy(hit.collider.gameObject);
-
+                                Score.Instance.RockfordDies();
                             }
                             break;
 

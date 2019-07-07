@@ -38,7 +38,12 @@ namespace Camera
             {
                 isLocked = !isLocked;
             }
-            if (Input.GetKey(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+            if (Input.GetKey(KeyCode.N))
+            {
+                Score.Instance.NextCave();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
 
 
             //            RaycastHit2D hitleft = Physics2D.Raycast(transform.position,  Vector2.left, -cameraX);
@@ -66,22 +71,23 @@ namespace Camera
 
         void LateUpdate()
         {
-            Vector3 point = GetComponent<UnityEngine.Camera>().WorldToViewportPoint(mainCamera.position);
-            Vector3 delta = mainCamera.position - GetComponent<UnityEngine.Camera>()
-                                .ViewportToWorldPoint(new Vector3(0.5f, 0.5f,
-                                    point.z)); //(new Vector3(0.5, 0.5, point.z));
+            //this code has been commented out so that the regions possible new cave-camera 1, 2 & 3 could be tested
+            //Vector3 point = GetComponent<UnityEngine.Camera>().WorldToViewportPoint(mainCamera.position);
+            //Vector3 delta = mainCamera.position - GetComponent<UnityEngine.Camera>()
+            //                    .ViewportToWorldPoint(new Vector3(0.5f, 0.5f,
+            //                        point.z)); //(new Vector3(0.5, 0.5, point.z));
             
-            if (isLocked)
-            {
-                Vector3 destination =
-                        new Vector3(player.position.x + offset.x, player.position.y + offset.y, offset.z - 10) + delta;
-                transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
-            }
-            else
-            {
-                Vector3 destination = startingPosition + delta;
-                transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
-            }
+            //if (isLocked)
+            //{
+            //    Vector3 destination =
+            //            new Vector3(player.position.x + offset.x, player.position.y + offset.y, offset.z - 10) + delta;
+            //    transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
+            //}
+            //else
+            //{
+            //    Vector3 destination = startingPosition + delta;
+            //    transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
+            //}
         }
         
         public static Vector3 OrthographicBounds(UnityEngine.Camera camera)
