@@ -33,9 +33,8 @@ namespace Behaviour.Objects
 
         public void Start()
         {
-            firefly = GameObject.FindWithTag("Firefly").GetComponent<Firefly>();
-            butterfly = GameObject.FindWithTag("Butterfly").GetComponent<Butterfly>();
-           
+            //firefly = GameObject.FindWithTag("Firefly").GetComponent<Firefly>();
+            //butterfly = GameObject.FindWithTag("Butterfly").GetComponent<Butterfly>();  
         }
 
         //Return bool decides if rockford is allowed to move a boulder that can be moved
