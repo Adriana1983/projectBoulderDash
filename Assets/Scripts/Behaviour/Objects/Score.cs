@@ -30,7 +30,7 @@ public class Score : MonoBehaviour
     #endregion
 
     //cave variables
-    public char currentCave = 'A';
+    public char currentCave = 'G';
     public char currentLevel = '1'; //currentLevel is the difficult degree, it runs from 1 to 5
 
     public float caveTime = 150;

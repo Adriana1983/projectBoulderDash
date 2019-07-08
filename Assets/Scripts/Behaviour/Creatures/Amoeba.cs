@@ -106,8 +106,6 @@ namespace Behaviour.Creatures
 
         private void Start()
         {
-            tilemaps = FindObjectsOfType<Tilemap>();
-            gameObjects =  FindObjectsOfType<GameObject>() ;
             isGrowing = false;
             mustGrow = false;
             amoebaCollection = new List<AmoebaCell>();
@@ -126,37 +124,40 @@ namespace Behaviour.Creatures
         private void Update()
         {
             amoebaCount = amoebaCollection.Count;
-
-            // if amoeba exceeds the maximum grow size, turn it to boulders
-            if (amoebaCount >= maxSize)
+            if (amoebaCount > 0)
             {
-                //turn every tile into Boulder GameObject
-                foreach (var amoebaCell in amoebaCollection)
+                UpdateGridInfo();
+                // if amoeba exceeds the maximum grow size, turn it to boulders
+                if (amoebaCount >= maxSize)
                 {
-                    amoebaTilemap.SetTile(ConvertToVector3(amoebaCell.Position), null);
-                    TurnToBoulder(ConvertToVector3(amoebaCell.Position));
+                    //turn every tile into Boulder GameObject
+                    foreach (var amoebaCell in amoebaCollection)
+                    {
+                        amoebaTilemap.SetTile(ConvertToVector3(amoebaCell.Position), null);
+                        TurnToBoulder(ConvertToVector3(amoebaCell.Position));
+                    }
+                    // destroy the script
+                    Destroy(GetComponent<Amoeba>());
                 }
-                // destroy the script
-                Destroy(GetComponent<Amoeba>());
-            }
-            // if amoeba can't grow but is not max size, turn it to diamonds
-            else if (amoebaCount < maxSize && isDormant)
-            {
-                //turn every tile into Crystal GameObject
-                foreach (var amoebaCell in amoebaCollection)
+                // if amoeba can't grow but is not max size, turn it to diamonds
+                else if (amoebaCount < maxSize && isDormant)
                 {
-                    amoebaTilemap.SetTile(ConvertToVector3(amoebaCell.Position), null);
-                    TurnToDiamond(ConvertToVector3(amoebaCell.Position));
+                    //turn every tile into Crystal GameObject
+                    foreach (var amoebaCell in amoebaCollection)
+                    {
+                        amoebaTilemap.SetTile(ConvertToVector3(amoebaCell.Position), null);
+                        TurnToDiamond(ConvertToVector3(amoebaCell.Position));
+                    }
+                    // destroy the script
+                    Destroy(GetComponent<Amoeba>());
                 }
-                // destroy the script
-                Destroy(GetComponent<Amoeba>());
-            }
-            else
-            {
-                if (isGrowing == false)
+                else
                 {
-                    isGrowing = true;
-                    StartCoroutine("Grow");
+                    if (isGrowing == false)
+                    {
+                        isGrowing = true;
+                        StartCoroutine("Grow");
+                    }
                 }
             }
         }
@@ -197,8 +198,6 @@ namespace Behaviour.Creatures
         // Initiate growth of amoeba, this function is called every x seconds depending on the growSpeed
         public IEnumerator Grow()
         {
-            // update the grid info
-            UpdateGridInfo();
             // get allowed directions to grow
             UpdateGrowLocation();
             // select a random amoeba cell to grow
@@ -436,6 +435,8 @@ namespace Behaviour.Creatures
         // updates all tile information on teh grid
         public void UpdateGridInfo()
         {
+            tilemaps = FindObjectsOfType<Tilemap>();
+            gameObjects =  FindObjectsOfType<GameObject>();
             tiles = gridInfo.GetTilemaps(tilemaps, gameObjects);
         }
 
