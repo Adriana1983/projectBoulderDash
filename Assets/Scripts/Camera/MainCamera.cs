@@ -4,6 +4,7 @@ using Vector3 = UnityEngine.Vector3;
 using Vector2 = UnityEngine.Vector3;
 using Behaviour.Player;
 using System;
+using UnityEngine.SceneManagement;
 
 namespace MainCamera
 {
@@ -15,7 +16,7 @@ namespace MainCamera
         private Movement movementScript;
 
         private Vector3 minCameraPosition = new Vector3(9.5f, 5, -10);
-        private Vector3 maxCameraPosition = new Vector3(29.5f, 16, -10);
+        private Vector3 maxCameraPosition = new Vector3(29.5f, 14.5f, -10);
         private Vector3 currentPos;
 
         private float mapWidth;
@@ -32,7 +33,7 @@ namespace MainCamera
             mapWidth = maxCameraPosition.x;
             mapHeight = maxCameraPosition.y;
 
-            Camera.main.orthographicSize = 6.5f;
+            Camera.main.orthographicSize = 7.5f;
         }
         void Start()
         {
@@ -42,7 +43,20 @@ namespace MainCamera
 
         void Update()
         {
-            if(PlayerHasSpawned())
+            #region helper keys to load next cave without completing current cave or to reload currentcave
+            if (Input.GetKey(KeyCode.N))
+            {
+                Score.Instance.NextCave();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
+            if (Input.GetKey(KeyCode.R))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            #endregion
+
+            if (PlayerHasSpawned())
             {
                 // movementScript = player.GetComponent<Movement>();
                 mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, WhereIs(player.transform.position), 10 * Time.deltaTime);
@@ -59,9 +73,9 @@ namespace MainCamera
         private void InitializeCameraBounds()
         {
             // TODO find way to automate this
-            cameraBounds.Add(new Vector3(9.5f, 16, -10));
-            cameraBounds.Add(new Vector3(19.5f, 16, -10));
-            cameraBounds.Add(new Vector3(29.5f, 16, -10));
+            cameraBounds.Add(new Vector3(9.5f, 14, -10));
+            cameraBounds.Add(new Vector3(19.5f, 14, -10));
+            cameraBounds.Add(new Vector3(29.5f, 14, -10));
             cameraBounds.Add(new Vector3(9.5f, 10.5f, -10));
             cameraBounds.Add(new Vector3(19.5f, 10.5f, -10));
             cameraBounds.Add(new Vector3(29.5f, 10.5f, -10));

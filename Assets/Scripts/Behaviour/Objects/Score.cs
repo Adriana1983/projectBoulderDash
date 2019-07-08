@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Score : MonoBehaviour
 {
@@ -29,7 +30,8 @@ public class Score : MonoBehaviour
     #endregion
 
     //cave variables
-    public char CurrentCave = 'G';
+    public char currentCave = 'A';
+    public char currentLevel = '1'; //currentLevel is the difficult degree, it runs from 1 to 5
 
     public float caveTime = 150;
     public float amoebaMagicTime = 75; //this is both amoebaSlowGrowthTime as magicWallMillingTime
@@ -38,7 +40,7 @@ public class Score : MonoBehaviour
     public int diamondsNeeded = 75;
     public int diamondsCollected = 0;
 
-    public int life = 3;
+    public int life = 3; //in the caveAndIntermissionUI this is displayed as MEN
 
     public bool Finish = false;
     private int extraLifeScore = 0;
@@ -51,7 +53,7 @@ public class Score : MonoBehaviour
         }
         set
         {
-            extraLifeScore = value;
+            extraLifeScore += (value - score);
             if (extraLifeScore > 500)
             {
                 extraLifeScore = 0;
@@ -75,5 +77,19 @@ public class Score : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
+    }
+
+    public void RockfordDies()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        life--;
+    }
+
+    int caveIndex = 0;
+    string caveOrder = "ABCDQEFGHRIJKLSMNOPT";
+    public void NextCave()
+    {
+        caveIndex++;
+        currentCave = caveOrder[caveIndex];
     }
 }

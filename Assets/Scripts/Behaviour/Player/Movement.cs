@@ -76,6 +76,15 @@ namespace Behaviour.Player
 
         private void Update()
         {
+            if (Input.GetKey(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                //add explosion
+                Score.Instance.RockfordDies();
+            }
+
+
             lastPos = transform.position;
 
             inputGot = Input.inputString;
@@ -91,7 +100,7 @@ namespace Behaviour.Player
             isHit = false;
 
             //Player isn't moving, allow movement
-            if (!isMoving && !finished)
+            if (!isMoving && !finished  && Score.Instance.caveTime > 0)
             {
                 //Variable for requested player direction
                 Vector3 targetDirection = Vector3.zero;
@@ -268,7 +277,7 @@ namespace Behaviour.Player
                             {
                                 //Change scene
 
-                                Score.Instance.CurrentCave = (char)(Score.Instance.CurrentCave + 1);
+                                Score.Instance.NextCave();
                                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                             }
                         }
