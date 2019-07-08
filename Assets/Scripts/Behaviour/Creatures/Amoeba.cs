@@ -121,7 +121,6 @@ namespace Behaviour.Creatures
             
             UpdateGridInfo();
             GetAmoebaCells();
-            UpdateGrowLocation();
         }
 
         private void Update()
@@ -245,15 +244,10 @@ namespace Behaviour.Creatures
                         defaultState
                     )
                 );
-                //todo: might wanna place an amoeba placeholder first, not sure if this is needed
                 // delete dirt if needed
                 dirtTilemap.SetTile(direction, null);
                 // place that amoeba on the scene
                 amoebaTilemap.SetTile(direction, amoeba.Amoeba);
-            
-                //todo: all animations and other scripts go here
-                //==== Put your other useless stuff here ====//
-                
                 // check if the tile is set
                 if (amoebaTilemap.HasTile(direction))
                 {

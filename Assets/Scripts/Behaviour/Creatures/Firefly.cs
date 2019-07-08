@@ -403,16 +403,15 @@ namespace Behaviour.Creatures
             {
                 case "Player":
                     isWall = false;
-                    //DrawExplosion(tilePosition);
-                   // Destroy(GameObject.FindWithTag("Player"));
+                    Destroy(GameObject.FindWithTag("Player"));
                     break;
                 case "Void":
                     isWall = false;
                     break;
                 case "Amoeba":
                     isWall = false;
-                    //DestroyFirefly(ConvertToVector3(tilePosition));
-                    //DrawExplosion(tilePosition);
+                    DestroyFirefly(ConvertToVector3(tilePosition));
+                    DrawExplosion(ConvertToVector3(tilePosition));
                     // explode
                     break;
                 default:

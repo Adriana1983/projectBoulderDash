@@ -401,6 +401,7 @@ namespace Behaviour.Creatures
                 case "Amoeba":
                     isWall = false;
                     DestroyButterfly(ConvertToVector3(tilePosition));
+                    DrawExplosion(ConvertToVector3(tilePosition));
                     // explode
                     break;
                 default:
