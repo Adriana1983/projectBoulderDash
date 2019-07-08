@@ -114,10 +114,7 @@ public class SoundManager : MonoBehaviour
             instance = FindObjectOfType<SoundManager>();
             return instance.magic_wall;
         }
-        set
-        {
-            instance.magic_wall = value;
-        }
+        
     }
 
     public void PlayCover()

@@ -7,7 +7,6 @@ using UnityEngine;
 public class MagicWall : MonoBehaviour
 {
     public Sprite wallSprite;
-    public Sprite magicWallSprite;
     public GameObject Boulder;
     public GameObject Diamond;
     public bool activated;
@@ -75,7 +74,6 @@ public class MagicWall : MonoBehaviour
                     switch (hitup.collider.tag)
                     {
                         case "Diamond":
-                            //activated = true;
                             if (hitup.collider.gameObject.GetComponent<Diamond>().lastpositionFalling)
                             {
                                 Destroy(hitup.collider.gameObject);
@@ -87,7 +85,6 @@ public class MagicWall : MonoBehaviour
 
                             break;
                         case "Boulder":
-                            //activated = true;
                             if (hitup.collider.gameObject.GetComponent<Boulder>().lastpositionFalling || hitup.collider.gameObject.GetComponent<Boulder>().falling)
                             {
                                 Destroy(hitup.collider.gameObject);

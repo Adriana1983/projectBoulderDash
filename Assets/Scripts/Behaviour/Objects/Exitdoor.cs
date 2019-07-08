@@ -7,8 +7,9 @@ using UnityEngine;
 public class Exitdoor : MonoBehaviour
 {
     Animator exitDoorAnimation;
-    public Material Whiteskybox;
+    public Material whiteSkyBox;
     private float timer;
+    private bool activated;
 
     void Start()
     {
@@ -22,16 +23,24 @@ public class Exitdoor : MonoBehaviour
         {
             if (Score.Instance.diamondsCollected >= Score.Instance.diamondsNeeded)
             {
-                if (exitDoorAnimation.enabled == false)
-                    SoundManager.Instance.PlayCrack();
-                RenderSettings.skybox = Whiteskybox;
-                timer += Time.deltaTime;
-                if (timer >= 0.15f)
+                if (activated == false)
                 {
-                    RenderSettings.skybox = null;
-                    timer = 0;
-                }   
-                exitDoorAnimation.enabled = true;
+                    RenderSettings.skybox = whiteSkyBox;
+                    timer += Time.deltaTime;
+                    print(timer);
+                    if (timer > 0.1f)
+                    {
+                        print("Test");
+                        RenderSettings.skybox = null;
+                        activated = true;
+                    }
+
+                }
+                if (exitDoorAnimation.enabled == false)
+                {
+                    SoundManager.Instance.PlayCrack();
+                    exitDoorAnimation.enabled = true;
+                }
             }
         }
     }
