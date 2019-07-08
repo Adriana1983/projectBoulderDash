@@ -51,8 +51,8 @@ public class Explosion : StateMachineBehaviour
                         map.SetTile(map.WorldToCell(animator.gameObject.transform.position), null);
                         break;
                     case "Amoeba":
-//                        GameObject.FindWithTag("Amoeba").GetComponent<Amoeba>()
-//                            .DestroyAmoeba(map.WorldToCell(animator.gameObject.transform.position));
+                        GameObject.FindWithTag("Amoeba").GetComponent<Amoeba>()
+                            .DestroyAmoeba(map.WorldToCell(animator.gameObject.transform.position));
                         break;
                     //All deletable GameObjects
                     case "Player":

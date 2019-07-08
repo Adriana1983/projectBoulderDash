@@ -458,7 +458,7 @@ MonoBehaviour:
   gridInfo: {fileID: 0}
   mustGrow: 0
   isGrowing: 0
-  maxSize: 20
+  maxSize: 200
   amoebaCount: 0
   amoebaTilemap: {fileID: 7260514136838362715}
   dirtTilemap: {fileID: 0}

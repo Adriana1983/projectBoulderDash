@@ -176,6 +176,25 @@ namespace Behaviour.Creatures
             diamond.layer = LayerMask.NameToLayer("Diamond");
         }
         
+        public void DestroyAmoeba(Vector3Int position)
+        {
+            foreach (var amoeba in amoebaCollection)
+            {
+                if (amoeba.Position == ConvertToVector2(position))
+                {
+                    try
+                    {
+                        amoebaCollection.Remove(amoeba);
+                        amoebaTilemap.SetTile(ConvertToVector3(amoeba.Position), null);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log("amoeba already extinct");
+                    }
+                }
+            }
+        }
+        
         // Initiate growth of amoeba, this function is called every x seconds depending on the growSpeed
         public IEnumerator Grow()
         {
@@ -431,5 +450,9 @@ namespace Behaviour.Creatures
             return new Vector3Int(v2.x, v2.y, 0);
         }
         
+        public Vector2Int ConvertToVector2(Vector3Int v3)
+        {
+            return new Vector2Int(v3.x, v3.y);
+        }
     }
 }
