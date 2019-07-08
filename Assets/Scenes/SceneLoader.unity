@@ -1708,9 +1708,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01946fd71ada764e9b61adcb461eb8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 1722001166}
-  player: {fileID: 0}
-  playerSpawn: {fileID: 0}
+  mainCamera: {fileID: 1722001162}
+  player: {fileID: 1151457489614880404, guid: 9f64f29edf9310248af4147b6b98ace6, type: 3}
+  playerSpawn: {fileID: 9210319615607237902, guid: de5dc768acfadc0469dc0bf995f1e23f,
+    type: 3}
 --- !u!81 &1722001164
 AudioListener:
   m_ObjectHideFlags: 0
@@ -2284,98 +2285,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Amoeba
       objectReference: {fileID: 0}
-    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: dirtTilemap
-      value: 
-      objectReference: {fileID: 1845154289}
-    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: boulderTilemap
-      value: 
-      objectReference: {fileID: 971013228}
-    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: gridInfo
-      value: 
-      objectReference: {fileID: 2123787321}
-    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: diamondTilemap
-      value: 
-      objectReference: {fileID: 373458965}
-    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: diamond
-      value: 
-      objectReference: {fileID: 2007398031164448160, guid: fb0ae78d6cb28ab4ea8292676cee680b,
-        type: 3}
-    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: boulder
-      value: 
-      objectReference: {fileID: 4472148672978847059, guid: 1e0b2ee316303f748b67923ca64ea3ef,
-        type: 3}
-    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
-        type: 3}
-      propertyPath: amoebaTilemap
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7260514136838362715, guid: a7cd22fd35b7cab4091e733c89685713,
         type: 3}
       propertyPath: m_Tiles.Array.size
@@ -2715,6 +2624,103 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TileAnchor.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155469017284642773, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: dirtTilemap
+      value: 
+      objectReference: {fileID: 1845154289}
+    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: boulderTilemap
+      value: 
+      objectReference: {fileID: 971013228}
+    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: gridInfo
+      value: 
+      objectReference: {fileID: 2123787321}
+    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: diamondTilemap
+      value: 
+      objectReference: {fileID: 373458965}
+    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: diamond
+      value: 
+      objectReference: {fileID: 2007398031164448160, guid: cb5fda802464f2443b4e7b50dba1f9c4,
+        type: 3}
+    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: boulder
+      value: 
+      objectReference: {fileID: 4472148672978847059, guid: 1e0b2ee316303f748b67923ca64ea3ef,
+        type: 3}
+    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: amoebaTilemap
+      value: 
+      objectReference: {fileID: 2000066284}
+    - target: {fileID: 8915562343522705105, guid: a7cd22fd35b7cab4091e733c89685713,
+        type: 3}
+      propertyPath: maxSize
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7260514136838362719, guid: a7cd22fd35b7cab4091e733c89685713,
         type: 3}
@@ -4015,7 +4021,7 @@ MonoBehaviour:
   Prefab:
   - {fileID: 4472148672978847059, guid: 1e0b2ee316303f748b67923ca64ea3ef, type: 3}
   - {fileID: 9210319615607237902, guid: de5dc768acfadc0469dc0bf995f1e23f, type: 3}
-  - {fileID: 2007398031164448160, guid: fb0ae78d6cb28ab4ea8292676cee680b, type: 3}
+  - {fileID: 2007398031164448160, guid: cb5fda802464f2443b4e7b50dba1f9c4, type: 3}
   - {fileID: 7183875533372562679, guid: a3546d029e369564f8febd0e2600f4ac, type: 3}
   - {fileID: 4687945847014263032, guid: ced2f192f97b386419e1aa87a7dbfac1, type: 3}
   CaveAndIntermissionUI: {fileID: 1224922597}

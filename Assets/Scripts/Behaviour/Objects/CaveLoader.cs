@@ -155,7 +155,7 @@ public class CaveLoader : MonoBehaviour
             else
             {
                 //show player who's turn it is, number of lives he has and cave + level that's loading
-                CaveAndIntermissionUI.text = $"    <color=white>player 1</color>   <color=white>{Score.Instance.life} MEN</color>   <color=white>CAVE {Score.Instance.currentCave}/{Score.Instance.currentLevel}</color>";
+                CaveAndIntermissionUI.text = $"    <color=white>player {PlayerPrefs.GetInt("Players")}</color>   <color=white>{Score.Instance.life} MEN</color>   <color=white>CAVE {Score.Instance.currentCave}/{Score.Instance.currentLevel}</color>";
             }
 
 

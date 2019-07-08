@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading;
-using Camera;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
@@ -249,12 +248,13 @@ public class OpeningScreen : MonoBehaviour
                 SoundManager.Instance.PlayCollectdiamond();
                 SoundManager.Instance.StopAllAudio();
                 //Settings for the script caveloader
+                Debug.Log(selectedCaveLevel.ToString().ToCharArray()[0]);
                 PlayerPrefs.SetString("Cave", caveSelectieList[selectedCaveNumber]);
                 PlayerPrefs.SetInt("Level", selectedCaveLevel);
                 
                 PlayerPrefs.SetInt("Players", amountOfPlayers);
               
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                SceneManager.LoadScene("SceneLoader");
         } 
         //Plays sound whenever the selection changes
         if (GoDirection() != null)
@@ -271,17 +271,20 @@ public class OpeningScreen : MonoBehaviour
 
         if (blinkTimer > 0.5f)
         {
-            if (Input.GetJoystickNames()[0] != "")
+            if (Input.GetJoystickNames().Length != 0)
             {
-                GameObject.Find("Play").GetComponent<Text>().text = "^ Press A ^     " +
-                                                                    "To Play";
+                if (Input.GetJoystickNames()[0] != "")
+                {
+                    GameObject.Find("Play").GetComponent<Text>().text = "^ Press A ^     " +
+                                                                        "To Play";
+                }
+                
             }
             else
             {
                 GameObject.Find("Play").GetComponent<Text>().text = "^ Press Enter ^ " +
                                                                     "To Play";
             }
-
         } 
 
         if (blinkTimer >= 1.25f)
