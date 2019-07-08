@@ -29,7 +29,7 @@ public class Score : MonoBehaviour
     #endregion
 
     //cave variables
-    public char CurrentCave = 'N';
+    public char CurrentCave = 'F';
 
     public float caveTime = 150;
     public float amoebaMagicTime = 75; //this is both amoebaSlowGrowthTime as magicWallMillingTime
