@@ -33,7 +33,7 @@ namespace MainCamera
             mapWidth = maxCameraPosition.x;
             mapHeight = maxCameraPosition.y;
 
-            //Camera.main.orthographicSize = 6.5f;
+            Camera.main.orthographicSize = 7.5f;
         }
         void Start()
         {
@@ -43,6 +43,7 @@ namespace MainCamera
 
         void Update()
         {
+            #region helper keys to load next cave without completing current cave or to reload currentcave
             if (Input.GetKey(KeyCode.N))
             {
                 Score.Instance.NextCave();
@@ -53,6 +54,7 @@ namespace MainCamera
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
+            #endregion
 
             if (PlayerHasSpawned())
             {
