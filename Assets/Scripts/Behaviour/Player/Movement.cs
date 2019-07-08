@@ -314,6 +314,7 @@ namespace Behaviour.Player
 
         void OnDestroy()
         {
+            GameObject.FindWithTag("MainCamera").GetComponent<MainCamera.MainCamera>().enabled = false;
             Score.Instance.life--;
             if (Score.Instance.life == 0)
             {

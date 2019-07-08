@@ -177,7 +177,6 @@ namespace Behaviour.Objects
                             {
                                 DrawExplosion(map.WorldToCell(gameObject.transform.position));
                                 DrawDiamonds(map.WorldToCell(gameObject.transform.position), map);
-                                
                             }
                             break;
 

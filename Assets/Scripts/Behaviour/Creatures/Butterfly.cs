@@ -79,6 +79,7 @@ namespace Behaviour.Creatures
     {
         public GridInfoRetriever gridInfo;
         public GameObject explosion;
+        public GameObject diamond;
         public float moveSpeed;
         public bool isMoving;
         public bool mustMove;
@@ -302,13 +303,14 @@ namespace Behaviour.Creatures
                     switch (tile.Value)
                     {
                         case "Player":
-                            isWall = false;
+                            Destroy(GameObject.FindWithTag("Player"));
                             break;
                         case "Void":
-                            isWall = false;
                             break;
                         case "Amoeba":
-                            isWall = false;
+                            DestroyButterfly(ConvertToVector3(butterfly.Position));
+                            DrawExplosion(ConvertToVector3(butterfly.Position));
+                            DrawDiamonds(ConvertToVector3(butterfly.Position), butterflyTilemap);
                             break;
                         default:
                             isWall = true;
@@ -402,7 +404,7 @@ namespace Behaviour.Creatures
                     isWall = false;
                     DestroyButterfly(ConvertToVector3(position));
                     DrawExplosion(ConvertToVector3(position));
-                    // explode
+                    DrawDiamonds(ConvertToVector3(position), butterflyTilemap);
                     break;
                 default:
                     isWall = true;
@@ -460,6 +462,19 @@ namespace Behaviour.Creatures
                 position + Vector3.down + Vector3.right
                 
             };
+        }
+        
+        public void DrawDiamonds(Vector3 pos, Tilemap map)
+        {
+            CreateList(pos);
+            foreach (var block in explosionRadius)
+            {
+                if (!map.HasTile(new Vector3Int((int) block.x, (int) block.y, 0)))
+                {
+                    InstantiatePrefab(diamond, block);
+                    //diamond.layer = LayerMask.NameToLayer("Diamonds");
+                }
+            }
         }
 
         public bool PlayerSpawned()
